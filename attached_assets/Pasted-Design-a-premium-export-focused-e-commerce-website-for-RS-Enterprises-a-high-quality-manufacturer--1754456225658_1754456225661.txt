@@ -1,0 +1,175 @@
+Design a premium, export-focused e-commerce website for RS Enterprises, a high-quality manufacturer of cashew nuts serving both domestic and international markets. The site must combine luxurious aesthetics, seamless shopping experience, and trust-building content for global buyers.
+
+The design should reflect sophistication — using elegant serif and sans-serif font pairings, dark earth-tone color palette, high-quality photography, and generous white space. The site should be modern, responsive, and optimized for a premium experience across devices.
+
+🗂️ Pages to Include:
+/home: Elegant hero, product highlights, brand story, export CTA
+
+/about: Company legacy, mission, team, certifications
+
+/shop: Full product catalog with filtering
+
+/product/[slug]: Dynamic product detail page with purchase CTA
+
+/export: Export services, logistics, certifications, and inquiry form
+
+/contact: Locations, contact form, email, phone
+
+/cart: Cart summary page with ability to edit and proceed to checkout
+
+/checkout: Shipping + payment (mock) + order summary
+
+/thank-you: Order confirmation page
+
+/privacy: Legal and privacy information
+
+🎨 Color Palette (Luxury & Organic)
+Midnight Green: #1C2B2D — primary background
+
+Warm Ivory: #F8F4EE — clean contrast background
+
+Muted Gold: #C2B280 — accents, buttons, section dividers
+
+Stone Gray: #7E7E7E — for subtle typography
+
+Cream White: #FAFAF8 — secondary backgrounds and cards
+
+✍️ Typography
+Use a serif + sans-serif pairing for a high-end look:
+
+Headings: Playfair Display (or similar serif) – bold, elegant
+
+Body Text: Inter or DM Sans – clean, modern
+
+Font sizes:
+
+Hero Headline: 64px bold serif
+
+Section Titles: 36–48px
+
+Body: 18px with 1.8 line height
+
+Uppercase sub-labels for UI elements (e.g., buttons, form labels)
+
+🧱 UI Style & Aesthetic
+Layout: Full-width sections with centered content; asymmetrical grid for a refined editorial feel
+
+Cards: Tall product cards with muted drop shadows, hover transitions (e.g., image zoom)
+
+Buttons: Solid muted-gold backgrounds, all caps text, minimal hover animations
+
+Imagery: Full-bleed, professionally lit Unsplash images representing:
+
+Cashew farms
+
+Product close-ups
+
+Clean factory scenes
+
+Export & logistics
+
+Animations: Subtle fade-ins or scroll reveals for text and sections
+
+Whitespace: Very generous padding/margins (e.g., 100px between sections)
+
+🛒 E-commerce Functionality
+Product Catalog (/shop):
+
+Responsive 3–4 column grid layout
+
+Filter by Category (Raw / Roasted / Flavored / Organic), Price, Weight
+
+Sort by: Price, Popularity, Newest
+
+Product Detail Page (/product/[slug]):
+
+Large product image
+
+Product title, short description, weight options, price
+
+Quantity input + “Add to Cart” button
+
+Export Note (e.g., “Available for international bulk purchase”)
+
+Trust badges: ISO, FSSAI, APEDA
+
+Option to “Request Bulk Quote”
+
+Cart (/cart) + Checkout (/checkout):
+
+Slide-out or full page cart
+
+Edit quantities, remove items
+
+Guest checkout supported
+
+Form for shipping details, payment info (mock integration), and order summary
+
+Confirmation Page (/thank-you):
+
+Elegant order confirmation layout
+
+Order ID, shipping summary, next steps
+
+🌍 Export-Focused Page (/export)
+Section Blocks:
+
+Introduction: “We Ship Worldwide” headline with global map visual
+
+Services:
+
+Private Labeling
+
+White-label Partnerships
+
+Bulk Procurement
+
+Shipping & Customs Support
+
+Global Certifications Section: FSSAI, APEDA, ISO logos
+
+Export Form: Name, Email, Company, Country, Message
+
+Testimonials (from international clients)
+
+CTA: “Request an Export Quote”
+
+📞 Contact Page (/contact)
+Location-based layout:
+
+India HQ: Address, contact
+
+Export Office (optional): Placeholder location
+
+Form: Name, Email, Message
+
+Support hours
+
+Map (optional)
+
+Social media links (LinkedIn, Facebook)
+
+🖼️ Imagery Guidelines
+Use realistic, elegant Unsplash photos that match these themes:
+
+Close-up cashew nuts on natural textures
+
+High-end packaging
+
+International shipping visuals
+
+Founders or factory process shots
+
+Warm, naturally-lit photography only — no stocky or cold visuals
+
+Use dummy Unsplash images wherever needed and replace with actual product shots later.
+
+✅ Final Notes
+Ensure all images are from Unsplash and visually match a premium brand identity
+
+Mobile-responsive and accessibility-friendly design
+
+Include dummy data for products and checkout until real backend is integrated
+
+Avoid cart abandonment with persistent cart icon across pages
+

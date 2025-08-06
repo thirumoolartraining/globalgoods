@@ -1,7 +1,7 @@
 import { Product } from "@shared/schema";
 
 export const PRODUCT_CATEGORIES = [
-  { value: "", label: "All Categories" },
+  { value: "all", label: "All Categories" },
   { value: "raw", label: "Raw" },
   { value: "roasted", label: "Roasted" },
   { value: "flavored", label: "Flavored" },
@@ -12,7 +12,7 @@ export const PRODUCT_CATEGORIES = [
 ];
 
 export const PRICE_RANGES = [
-  { value: "", label: "All Prices" },
+  { value: "all", label: "All Prices" },
   { value: "0-1000", label: "Under ₹1,000" },
   { value: "1000-1500", label: "₹1,000 - ₹1,500" },
   { value: "1500-2000", label: "₹1,500 - ₹2,000" },
@@ -20,7 +20,7 @@ export const PRICE_RANGES = [
 ];
 
 export const WEIGHT_OPTIONS = [
-  { value: "", label: "All Sizes" },
+  { value: "all", label: "All Sizes" },
   { value: "small", label: "250g - 1kg" },
   { value: "medium", label: "1kg - 10kg" },
   { value: "bulk", label: "10kg+" }
@@ -45,12 +45,12 @@ export function filterProducts(
   let filtered = [...products];
 
   // Filter by category
-  if (filters.category) {
+  if (filters.category && filters.category !== "all") {
     filtered = filtered.filter(product => product.category === filters.category);
   }
 
   // Filter by price range
-  if (filters.priceRange) {
+  if (filters.priceRange && filters.priceRange !== "all") {
     const price = parseFloat(filters.priceRange);
     if (filters.priceRange === "0-1000") {
       filtered = filtered.filter(product => parseFloat(product.price) < 1000);

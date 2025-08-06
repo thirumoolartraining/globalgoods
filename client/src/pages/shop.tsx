@@ -10,9 +10,9 @@ import { Search } from "lucide-react";
 
 export default function Shop() {
   const [filters, setFilters] = useState({
-    category: "",
-    priceRange: "",
-    weight: "",
+    category: "all",
+    priceRange: "all",
+    weight: "all",
     sortBy: "popularity",
     search: ""
   });
@@ -32,9 +32,9 @@ export default function Shop() {
 
   const clearFilters = () => {
     setFilters({
-      category: "",
-      priceRange: "",
-      weight: "",
+      category: "all",
+      priceRange: "all",
+      weight: "all",
       sortBy: "popularity",
       search: ""
     });

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Product } from "@shared/schema";
 import { ProductCard } from "@/components/product-card";
@@ -6,7 +6,8 @@ import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import { PRODUCT_CATEGORIES, PRICE_RANGES, WEIGHT_OPTIONS, SORT_OPTIONS, filterProducts } from "@/lib/products";
-import { Search } from "lucide-react";
+import { Search, AlertCircle } from "lucide-react";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 
 export default function Shop() {
   const [filters, setFilters] = useState({
@@ -17,9 +18,22 @@ export default function Shop() {
     search: ""
   });
 
-  const { data: products = [], isLoading } = useQuery<Product[]>({
-    queryKey: ["/api/products"],
+  const { 
+    data: products = [], 
+    isLoading, 
+    error,
+    isError 
+  } = useQuery<Product[]>({
+    queryKey: ["products"], // Changed to a simpler key
+    retry: 2, // Will retry failed requests 2 times before showing an error
   });
+
+  // Log errors for debugging
+  useEffect(() => {
+    if (isError) {
+      console.error("Error fetching products:", error);
+    }
+  }, [isError, error]);
 
   const filteredProducts = filterProducts(products, filters).filter(product =>
     product.name.toLowerCase().includes(filters.search.toLowerCase()) ||
@@ -46,6 +60,36 @@ export default function Shop() {
         <div className="max-w-7xl mx-auto px-6 lg:px-8 py-24">
           <div className="text-center">
             <h1 className="text-4xl font-serif font-bold text-midnight mb-4">Loading Products...</h1>
+            <p className="text-gray-600">Please wait while we load our products.</p>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (isError) {
+    return (
+      <div className="min-h-screen bg-warm-ivory pt-16">
+        <div className="max-w-7xl mx-auto px-6 lg:px-8 py-12">
+          <Alert variant="destructive">
+            <AlertCircle className="h-4 w-4" />
+            <AlertTitle>Error</AlertTitle>
+            <AlertDescription>
+              Failed to load products. Please try again later.
+              {process.env.NODE_ENV === 'development' && (
+                <div className="mt-2 p-2 bg-red-50 text-red-700 text-sm rounded">
+                  {error instanceof Error ? error.message : 'Unknown error occurred'}
+                </div>
+              )}
+            </AlertDescription>
+          </Alert>
+          <div className="mt-8 text-center">
+            <Button 
+              onClick={() => window.location.reload()}
+              className="bg-midnight hover:bg-midnight/90 text-white"
+            >
+              Retry
+            </Button>
           </div>
         </div>
       </div>

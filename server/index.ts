@@ -53,6 +53,23 @@ app.use((req, res, next) => {
   next();
 });
 
+// Function to get an available port
+const getPort = async (defaultPort: number): Promise<number> => {
+  const net = await import('net');
+  return new Promise((resolve) => {
+    const server = net.createServer();
+    server.unref();
+    server.on('error', () => {
+      // Port is in use, try the next one
+      resolve(getPort(defaultPort + 1));
+    });
+    server.listen(defaultPort, () => {
+      const port = (server.address() as net.AddressInfo).port;
+      server.close(() => resolve(port));
+    });
+  });
+};
+
 app.use((req, res, next) => {
   const start = Date.now();
   const path = req.path;
@@ -118,16 +135,54 @@ app.use((req, res, next) => {
     serveStatic(app);
   }
 
-  // ALWAYS serve the app on the port specified in the environment variable PORT
-  // Other ports are firewalled. Default to 5000 if not specified.
-  // this serves both the API and the client.
-  // It is the only port that is not firewalled.
-  const port = parseInt(process.env.PORT || '5000', 10);
-  server.listen({
-    port,
-    host: "127.0.0.1",
-    reusePort: false,
-  }, () => {
-    log(`serving on port ${port}`);
-  });
+  // Function to check if a port is available
+  const isPortAvailable = (port: number): Promise<boolean> => {
+    return new Promise((resolve) => {
+      const testServer = require('http').createServer();
+      testServer.once('error', () => resolve(false));
+      testServer.once('listening', () => {
+        testServer.close(() => resolve(true));
+      });
+      testServer.listen(port, '0.0.0.0');
+    });
+  };
+
+  // Find an available port starting from the specified port
+  const findAvailablePort = async (startPort: number, maxPort = 65535): Promise<number> => {
+    let port = startPort;
+    while (port <= maxPort) {
+      if (await isPortAvailable(port)) {
+        return port;
+      }
+      console.log(`Port ${port} is in use, trying ${port + 1}...`);
+      port++;
+    }
+    throw new Error(`No available ports found between ${startPort} and ${maxPort}`);
+  };
+
+  // Get the port from environment or use default 5000
+  const startPort = parseInt(process.env.PORT || '5000', 10);
+  
+  try {
+    const port = await findAvailablePort(startPort);
+    
+    server.listen({
+      port,
+      host: "0.0.0.0",
+      reusePort: false,
+    }, () => {
+      log(`Server running on http://localhost:${port}`);
+      log(`API available at http://localhost:${port}/api`);
+      
+      // Auto-open browser in development
+      if (app.get("env") === "development") {
+        const { exec } = require('child_process');
+        const start = process.platform === 'darwin' ? 'open' : process.platform === 'win32' ? 'start' : 'xdg-open';
+        exec(`${start} http://localhost:${port}`);
+      }
+    });
+  } catch (error) {
+    console.error('Failed to start server:', error);
+    process.exit(1);
+  }
 })();

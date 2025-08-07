@@ -68,25 +68,46 @@ export async function setupVite(app: Express, server: Server) {
 }
 
 export function serveStatic(app: Express) {
-  // Path to the public directory in the project root
-  const publicPath = path.resolve(import.meta.dirname, '..', 'public');
+  // Try multiple possible locations for static files in production
+  const possibleStaticDirs = [
+    path.join(process.cwd(), 'dist', 'public'),  // Vite build output
+    path.join(process.cwd(), 'public'),          // Fallback to public directory
+    path.join(import.meta.dirname, '..', 'public'), // Relative to server
+    '/var/task/dist/public',                     // Vercel serverless
+    '/var/task/public'                           // Vercel serverless fallback
+  ];
+
+  // Find the first existing static directory
+  let staticDir = possibleStaticDirs.find(dir => fs.existsSync(dir));
   
-  // Log the public path for debugging
-  console.log(`Serving static files from: ${publicPath}`);
-  
-  // Check if the public directory exists
-  if (!fs.existsSync(publicPath)) {
-    console.warn(`Warning: Public directory not found at: ${publicPath}`);
+  if (!staticDir) {
+    console.error('No static directory found. Tried:', possibleStaticDirs);
+    throw new Error('No static directory found');
   }
 
-  // Simple static file serving - match the working test server
-  app.use(express.static(publicPath));
-  
-  // Serve images from the public directory with a specific route
-  app.use('/images', express.static(path.join(publicPath, 'images'), {
+  console.log(`[Static] Serving static files from: ${staticDir}`);
+  console.log(`[Static] Directory contents:`, fs.readdirSync(staticDir));
+
+  // Serve static files with proper caching
+  app.use(express.static(staticDir, {
     maxAge: '1y',
-    immutable: true
+    immutable: true,
+    fallthrough: true,
+    index: false,
+    redirect: false
   }));
+  
+  // Serve images with a specific route and caching
+  const imagesPath = path.join(staticDir, 'images');
+  if (fs.existsSync(imagesPath)) {
+    console.log(`[Static] Serving images from: ${imagesPath}`);
+    app.use('/images', express.static(imagesPath, {
+      maxAge: '1y',
+      immutable: true
+    }));
+  } else {
+    console.warn(`[Static] Images directory not found at: ${imagesPath}`);
+  }
   
   // Log all requests for debugging
   app.use((req, res, next) => {
@@ -96,26 +117,46 @@ export function serveStatic(app: Express) {
   
   // Simple test endpoint to verify file paths
   app.get('/api/test-path', (req, res) => {
-    const imagePath = path.join(publicPath, 'images', 'products', 'cashew-butter', '1.jpg');
+    const imagePath = path.join(staticDir, 'images', 'products', 'cashew-butter', '1.jpg');
     const exists = fs.existsSync(imagePath);
     
     res.json({
       success: exists,
       message: exists ? 'Image found' : 'Image not found',
       path: imagePath,
+      staticDir,
       url: '/images/products/cashew-butter/1.jpg',
       files: fs.existsSync(path.dirname(imagePath)) 
         ? fs.readdirSync(path.dirname(imagePath))
-        : []
+        : [],
+      staticDirs: possibleStaticDirs.map(dir => ({
+        path: dir,
+        exists: fs.existsSync(dir)
+      }))
     });
   });
 
   // Fall through to index.html for client-side routing
   app.get('*', (req, res) => {
-    const indexPath = path.join(publicPath, 'index.html');
+    const indexPath = path.join(staticDir, 'index.html');
+    console.log(`[Static] Attempting to serve: ${indexPath}`);
+    
     if (fs.existsSync(indexPath)) {
+      console.log(`[Static] Found index.html at: ${indexPath}`);
       return res.sendFile(indexPath);
     }
-    res.status(404).send('Not Found');
+    
+    console.error(`[Static] index.html not found at: ${indexPath}`);
+    console.error(`[Static] Current working directory: ${process.cwd()}`);
+    console.error(`[Static] Directory contents:`, fs.readdirSync(staticDir));
+    
+    res.status(404).json({
+      error: 'Not Found',
+      message: 'The requested resource was not found',
+      path: req.path,
+      staticDir,
+      staticDirExists: fs.existsSync(staticDir),
+      staticDirContents: fs.existsSync(staticDir) ? fs.readdirSync(staticDir) : []
+    });
   });
 }

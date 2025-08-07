@@ -7,17 +7,64 @@ import { z } from "zod";
 export async function registerRoutes(app: Express): Promise<Server> {
   // Products API
   app.get("/api/products", async (req, res) => {
-    console.log(`[${new Date().toISOString()}] /api/products - Fetching products`);
+    const requestId = Math.random().toString(36).substring(2, 9);
+    const startTime = Date.now();
+    
+    const log = (message: string, data?: any) => {
+      const timestamp = new Date().toISOString();
+      const logData = data ? ` - ${JSON.stringify(data)}` : '';
+      console.log(`[${timestamp}] [${requestId}] ${message}${logData}`);
+    };
+
+    log('API Request', {
+      method: 'GET',
+      path: '/api/products',
+      query: req.query,
+      headers: {
+        'x-forwarded-for': req.headers['x-forwarded-for'],
+        'user-agent': req.headers['user-agent']
+      }
+    });
+
     try {
+      log('Fetching products from storage');
       const products = await storage.getProducts();
-      console.log(`[${new Date().toISOString()}] /api/products - Found ${products.length} products`);
+      
+      // Log basic product info (without sensitive data)
+      log('Products retrieved', {
+        count: products.length,
+        productIds: products.map(p => p.id)
+      });
+      
+      // Set cache headers
+      res.setHeader('Cache-Control', 'public, max-age=60');
+      res.setHeader('X-Request-ID', requestId);
+      
       res.json(products);
+      
+      log('Response sent', {
+        status: 200,
+        duration: Date.now() - startTime,
+        productCount: products.length
+      });
     } catch (error: unknown) {
       const errorMessage = error instanceof Error ? error.message : 'Unknown error';
-      console.error(`[${new Date().toISOString()}] /api/products - Error:`, errorMessage);
+      const stack = error instanceof Error ? error.stack : undefined;
+      
+      log('Error fetching products', {
+        error: errorMessage,
+        stack: process.env.NODE_ENV === 'development' ? stack : undefined,
+        duration: Date.now() - startTime
+      });
+      
       res.status(500).json({ 
         error: "Failed to fetch products",
-        details: process.env.NODE_ENV === 'development' ? errorMessage : undefined
+        requestId,
+        timestamp: new Date().toISOString(),
+        ...(process.env.NODE_ENV === 'development' && {
+          details: errorMessage,
+          stack
+        })
       });
     }
   });

@@ -1,6 +1,6 @@
 import express, { type Request, Response, NextFunction } from "express";
 import { registerRoutes } from "./routes";
-import { setupVite, serveStatic, log } from "./vite";
+import { setupVite, serveStatic, log as viteLog } from "./vite";
 import path from "path";
 import fs from "fs";
 import { createServer } from "http";
@@ -12,16 +12,26 @@ const app = express();
 const isProduction = process.env.NODE_ENV === 'production';
 const isVercel = !!process.env.VERCEL;
 
+// Enhanced logging function
+const log = (message: string, data?: any) => {
+  const timestamp = new Date().toISOString();
+  const logData = data ? ` - ${JSON.stringify(data, null, 2)}` : '';
+  console.log(`[${timestamp}] ${message}${logData}`);
+};
+
 // Log environment information
-console.log(`[Server] Environment: ${process.env.NODE_ENV || 'development'}`);
-console.log(`[Server] Vercel Environment: ${isVercel ? 'Yes' : 'No'}`);
-console.log(`[Server] Process CWD: ${process.cwd()}`);
-console.log(`[Server] __dirname: ${import.meta.dirname}`);
-console.log(`[Server] Vercel Environment Variables:`, {
-  VERCEL: process.env.VERCEL,
-  VERCEL_ENV: process.env.VERCEL_ENV,
-  VERCEL_URL: process.env.VERCEL_URL,
-  VERCEL_REGION: process.env.VERCEL_REGION
+log('Server starting', {
+  environment: process.env.NODE_ENV || 'development',
+  nodeVersion: process.version,
+  platform: process.platform,
+  arch: process.arch,
+  vercel: isVercel ? 'Yes' : 'No',
+  vercelEnv: process.env.VERCEL_ENV,
+  vercelUrl: process.env.VERCEL_URL,
+  vercelRegion: process.env.VERCEL_REGION,
+  cwd: process.cwd(),
+  __dirname: import.meta.dirname,
+  argv: process.argv.slice(2)
 });
 
 // Handle different environments (local vs Vercel)

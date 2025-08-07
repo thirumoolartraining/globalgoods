@@ -7,11 +7,18 @@ import { z } from "zod";
 export async function registerRoutes(app: Express): Promise<Server> {
   // Products API
   app.get("/api/products", async (req, res) => {
+    console.log(`[${new Date().toISOString()}] /api/products - Fetching products`);
     try {
       const products = await storage.getProducts();
+      console.log(`[${new Date().toISOString()}] /api/products - Found ${products.length} products`);
       res.json(products);
-    } catch (error) {
-      res.status(500).json({ error: "Failed to fetch products" });
+    } catch (error: unknown) {
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+      console.error(`[${new Date().toISOString()}] /api/products - Error:`, errorMessage);
+      res.status(500).json({ 
+        error: "Failed to fetch products",
+        details: process.env.NODE_ENV === 'development' ? errorMessage : undefined
+      });
     }
   });
 

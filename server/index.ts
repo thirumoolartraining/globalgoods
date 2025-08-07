@@ -142,9 +142,20 @@ const getPort = async (defaultPort: number): Promise<number> => {
   });
 };
 
+// Log all incoming requests
 app.use((req, res, next) => {
   const start = Date.now();
   const path = req.path;
+  const method = req.method;
+  
+  console.log(`[${new Date().toISOString()}] ${method} ${path} - Incoming request`);
+  console.log(`[${new Date().toISOString()}] Headers:`, req.headers);
+  console.log(`[${new Date().toISOString()}] Query:`, req.query);
+  
+  // Log the request body for POST/PUT requests
+  if (['POST', 'PUT', 'PATCH'].includes(method)) {
+    console.log(`[${new Date().toISOString()}] Body:`, req.body);
+  }
   let capturedJsonResponse: Record<string, any> | undefined = undefined;
 
   const originalResJson = res.json;

@@ -16,21 +16,15 @@
       }
     }
   ],
-  "routes": [
-    {
-      "src": "/api/(.*)",
-      "dest": "/api/$1"
-    },
-    {
-      "src": "/(.*\\.(?:ico|png|jpg|jpeg|svg|css|js|json|txt|webmanifest|xml))",
-      "dest": "/$1"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "/"
-    }
-  ],
   "rewrites": [
+    {
+      "source": "/api/(.*)",
+      "destination": "/api/$1"
+    },
+    {
+      "source": "/(.*\\.(?:ico|png|jpg|jpeg|svg|css|js|json|txt|webmanifest|xml))",
+      "destination": "/$1"
+    },
     {
       "source": "/(.*)",
       "destination": "/index.html"
@@ -38,7 +32,7 @@
   ],
   "headers": [
     {
-      "source": "/(.*)",
+      "source": "/(.*\\.(?:ico|png|jpg|jpeg|svg|css|js|json|txt|webmanifest|xml))",
       "headers": [
         {
           "key": "Cache-Control",

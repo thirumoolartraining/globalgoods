@@ -10,11 +10,20 @@ const app = express();
 
 // 1. First, set up static file serving before any other middleware
 const isProduction = process.env.NODE_ENV === 'production';
+const isVercel = !!process.env.VERCEL;
+
+// Log environment information
+console.log(`[Server] Environment: ${process.env.NODE_ENV || 'development'}`);
+console.log(`[Server] Vercel Environment: ${isVercel ? 'Yes' : 'No'}`);
+console.log(`[Server] Process CWD: ${process.cwd()}`);
+console.log(`[Server] __dirname: ${import.meta.dirname}`);
 
 // Handle different environments (local vs Vercel)
 const getRootDir = () => {
   // For Vercel production
-  if (process.env.VERCEL) {
+  if (isVercel) {
+    console.log('[Server] Running in Vercel environment');
+    // In Vercel, files are in the root directory
     return process.cwd();
   }
   // For local development
@@ -22,46 +31,69 @@ const getRootDir = () => {
 };
 
 const rootDir = getRootDir();
-console.log(`[Server] Environment: ${process.env.NODE_ENV || 'development'}`);
-console.log(`[Server] Root directory: ${rootDir}`);
+console.log(`[Server] Using root directory: ${rootDir}`);
 
 // Try multiple possible locations for static files
 const possibleStaticDirs = [
   path.join(rootDir, 'dist', 'public'),  // Vite build output
   path.join(rootDir, 'public'),          // Local development
-  path.join(process.cwd(), 'public')     // Vercel fallback
+  path.join(process.cwd(), 'public'),    // Vercel fallback
+  '/var/task/public',                    // Vercel serverless
+  '/var/task/dist/public'                // Vercel serverless with dist
 ];
+
+// Debug: List all files in root directory
+try {
+  console.log('[Server] Root directory contents:', fs.readdirSync(rootDir));
+} catch (e) {
+  console.error('[Server] Error reading root directory:', e);
+}
 
 // Find and serve from the first existing directory
 let staticDirFound = false;
 for (const dir of possibleStaticDirs) {
-  if (fs.existsSync(dir)) {
-    console.log(`[Server] Serving static files from: ${dir}`);
-    app.use(express.static(dir, {
-      maxAge: '1y',
-      immutable: true,
-      fallthrough: true
-    }));
-    
-    // Also serve images from the found directory
-    const imagesDir = path.join(dir, 'images');
-    if (fs.existsSync(imagesDir)) {
-      console.log(`[Server] Serving images from: ${imagesDir}`);
-      app.use('/images', express.static(imagesDir, {
+  try {
+    if (fs.existsSync(dir)) {
+      console.log(`[Server] Found static files directory: ${dir}`);
+      console.log(`[Server] Directory contents:`, fs.readdirSync(dir));
+      
+      app.use(express.static(dir, {
         maxAge: '1y',
         immutable: true,
-        fallthrough: true
+        fallthrough: true,
+        index: false,
+        redirect: false
       }));
+      
+      // Also serve images from the found directory
+      const imagesDir = path.join(dir, 'images');
+      if (fs.existsSync(imagesDir)) {
+        console.log(`[Server] Serving images from: ${imagesDir}`);
+        app.use('/images', express.static(imagesDir, {
+          maxAge: '1y',
+          immutable: true,
+          fallthrough: true
+        }));
+      }
+      
+      staticDirFound = true;
+      // Don't break, let all matching directories be checked
     }
-    
-    staticDirFound = true;
-    break;
+  } catch (e) {
+    console.error(`[Server] Error setting up static directory ${dir}:`, e);
   }
 }
 
 if (!staticDirFound) {
   console.error('[Server] Error: No static files directory found in any expected location');
-  console.error(`[Server] Tried: ${possibleStaticDirs.join(', ')}`);
+  console.error(`[Server] Tried: ${possibleStaticDirs.join('\n  - ')}`);
+  
+  // Debug: List all files in the root directory
+  try {
+    console.log('[Server] Current directory contents:', fs.readdirSync(rootDir));
+  } catch (e) {
+    console.error('[Server] Error listing directory:', e);
+  }
 }
 
 // 2. Then add body parsers

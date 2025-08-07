@@ -5,13 +5,15 @@
       "src": "package.json",
       "use": "@vercel/static-build",
       "config": {
-        "distDir": "dist/public",
-        "includeFiles": ["dist/**", "public/**"]
+        "distDir": "dist/public"
       }
     },
     {
-      "src": "server/index.ts",
-      "use": "@vercel/node"
+      "src": "dist/server/index.js",
+      "use": "@vercel/node",
+      "config": {
+        "includeFiles": ["dist/server/**", "dist/public/**"]
+      }
     }
   ],
   "routes": [
@@ -20,11 +22,7 @@
       "dest": "/api/$1"
     },
     {
-      "src": "/_next/static/(.*)",
-      "dest": "/_next/static/$1"
-    },
-    {
-      "src": "/(.*\\.(?:ico|png|jpg|jpeg|svg|css|js|json))",
+      "src": "/(.*\\.(?:ico|png|jpg|jpeg|svg|css|js|json|txt|webmanifest|xml))",
       "dest": "/$1"
     },
     {
@@ -33,6 +31,29 @@
     }
   ],
   "rewrites": [
-    { "source": "/(.*)", "destination": "/index.html" }
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
+  ],
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
+      ]
+    },
+    {
+      "source": "/api/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "no-cache, no-store, must-revalidate"
+        }
+      ]
+    }
   ]
 }

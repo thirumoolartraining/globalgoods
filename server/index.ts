@@ -17,14 +17,20 @@ console.log(`[Server] Environment: ${process.env.NODE_ENV || 'development'}`);
 console.log(`[Server] Vercel Environment: ${isVercel ? 'Yes' : 'No'}`);
 console.log(`[Server] Process CWD: ${process.cwd()}`);
 console.log(`[Server] __dirname: ${import.meta.dirname}`);
+console.log(`[Server] Vercel Environment Variables:`, {
+  VERCEL: process.env.VERCEL,
+  VERCEL_ENV: process.env.VERCEL_ENV,
+  VERCEL_URL: process.env.VERCEL_URL,
+  VERCEL_REGION: process.env.VERCEL_REGION
+});
 
 // Handle different environments (local vs Vercel)
 const getRootDir = () => {
   // For Vercel production
   if (isVercel) {
     console.log('[Server] Running in Vercel environment');
-    // In Vercel, files are in the root directory
-    return process.cwd();
+    // In Vercel serverless, the working directory is '/var/task'
+    return '/var/task';
   }
   // For local development
   return path.resolve(import.meta.dirname, '..');
@@ -37,7 +43,7 @@ console.log(`[Server] Using root directory: ${rootDir}`);
 const possibleStaticDirs = [
   path.join(rootDir, 'dist', 'public'),  // Vite build output
   path.join(rootDir, 'public'),          // Local development
-  path.join(process.cwd(), 'public'),    // Vercel fallback
+  path.join(process.cwd(), 'public'),    // Fallback
   '/var/task/public',                    // Vercel serverless
   '/var/task/dist/public'                // Vercel serverless with dist
 ];
@@ -45,8 +51,20 @@ const possibleStaticDirs = [
 // Debug: List all files in root directory
 try {
   console.log('[Server] Root directory contents:', fs.readdirSync(rootDir));
+  
+  // Debug: Check if dist directory exists
+  const distPath = path.join(rootDir, 'dist');
+  if (fs.existsSync(distPath)) {
+    console.log('[Server] Dist directory contents:', fs.readdirSync(distPath));
+    
+    // Check public directory in dist
+    const publicPath = path.join(distPath, 'public');
+    if (fs.existsSync(publicPath)) {
+      console.log('[Server] Public directory contents:', fs.readdirSync(publicPath));
+    }
+  }
 } catch (e) {
-  console.error('[Server] Error reading root directory:', e);
+  console.error('[Server] Error reading directory:', e);
 }
 
 // Find and serve from the first existing directory

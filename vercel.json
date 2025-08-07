@@ -15,12 +15,24 @@
   ],
   "routes": [
     {
-      "src": "/api/(.*)",
-      "dest": "/dist/server/index.js"
+      "src": "/_next/static/(?<file>.*)",
+      "dest": "/_next/static/$file"
+    },
+    {
+      "src": "/static/(?<file>.*)",
+      "dest": "/static/$file"
+    },
+    {
+      "src": "/images/(?<file>.*)",
+      "dest": "/images/$file"
     },
     {
       "src": "/(.*\\.(?:ico|png|jpg|jpeg|svg|css|js|json|txt|webmanifest|xml))",
       "dest": "/dist/public/$1"
+    },
+    {
+      "src": "/api/(?<path>.*)",
+      "dest": "/dist/server/index.js"
     },
     {
       "src": "/(.*)",

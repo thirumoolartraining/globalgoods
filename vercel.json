@@ -19,8 +19,12 @@
       "dest": "/dist/server/index.js"
     },
     {
+      "src": "/(.*\\.(?:ico|png|jpg|jpeg|svg|css|js|json|txt|webmanifest|xml))",
+      "dest": "/dist/public/$1"
+    },
+    {
       "src": "/(.*)",
-      "dest": "/$1"
+      "dest": "/dist/public/index.html"
     }
   ]
 }

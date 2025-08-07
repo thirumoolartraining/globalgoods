@@ -10,39 +10,58 @@ const app = express();
 
 // 1. First, set up static file serving before any other middleware
 const isProduction = process.env.NODE_ENV === 'production';
-const rootDir = path.resolve(import.meta.dirname, '..');
-const publicPath = isProduction 
-  ? path.join(rootDir, 'dist', 'public')
-  : path.join(rootDir, 'public');
 
+// Handle different environments (local vs Vercel)
+const getRootDir = () => {
+  // For Vercel production
+  if (process.env.VERCEL) {
+    return process.cwd();
+  }
+  // For local development
+  return path.resolve(import.meta.dirname, '..');
+};
+
+const rootDir = getRootDir();
 console.log(`[Server] Environment: ${process.env.NODE_ENV || 'development'}`);
-console.log(`[Server] Serving static files from: ${publicPath}`);
-console.log(`[Server] Directory exists: ${fs.existsSync(publicPath)}`);
+console.log(`[Server] Root directory: ${rootDir}`);
 
-// Serve static files from the public directory
-app.use(express.static(publicPath, {
-  maxAge: '1y',
-  immutable: true,
-  fallthrough: true
-}));
+// Try multiple possible locations for static files
+const possibleStaticDirs = [
+  path.join(rootDir, 'dist', 'public'),  // Vite build output
+  path.join(rootDir, 'public'),          // Local development
+  path.join(process.cwd(), 'public')     // Vercel fallback
+];
 
-// Serve images with a specific route
-app.use('/images', express.static(path.join(publicPath, 'images'), {
-  maxAge: '1y',
-  immutable: true,
-  fallthrough: true
-}));
+// Find and serve from the first existing directory
+let staticDirFound = false;
+for (const dir of possibleStaticDirs) {
+  if (fs.existsSync(dir)) {
+    console.log(`[Server] Serving static files from: ${dir}`);
+    app.use(express.static(dir, {
+      maxAge: '1y',
+      immutable: true,
+      fallthrough: true
+    }));
+    
+    // Also serve images from the found directory
+    const imagesDir = path.join(dir, 'images');
+    if (fs.existsSync(imagesDir)) {
+      console.log(`[Server] Serving images from: ${imagesDir}`);
+      app.use('/images', express.static(imagesDir, {
+        maxAge: '1y',
+        immutable: true,
+        fallthrough: true
+      }));
+    }
+    
+    staticDirFound = true;
+    break;
+  }
+}
 
-// For Vercel, also try serving from root dist directory
-if (isProduction) {
-  const distPath = path.join(rootDir, 'dist');
-  console.log(`[Server] Also serving from dist directory: ${distPath}`);
-  
-  app.use(express.static(distPath, {
-    maxAge: '1y',
-    immutable: true,
-    fallthrough: true
-  }));
+if (!staticDirFound) {
+  console.error('[Server] Error: No static files directory found in any expected location');
+  console.error(`[Server] Tried: ${possibleStaticDirs.join(', ')}`);
 }
 
 // 2. Then add body parsers

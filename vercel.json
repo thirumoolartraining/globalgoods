@@ -5,7 +5,8 @@
       "src": "package.json",
       "use": "@vercel/static-build",
       "config": {
-        "distDir": "dist/public"
+        "distDir": "dist/public",
+        "includeFiles": ["dist/**", "public/**"]
       }
     },
     {
@@ -17,6 +18,14 @@
     {
       "src": "/api/(.*)",
       "dest": "/api/$1"
+    },
+    {
+      "src": "/_next/static/(.*)",
+      "dest": "/_next/static/$1"
+    },
+    {
+      "src": "/(.*\\.(?:ico|png|jpg|jpeg|svg|css|js|json))",
+      "dest": "/$1"
     },
     {
       "src": "/(.*)",

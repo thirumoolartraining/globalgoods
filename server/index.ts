@@ -3,6 +3,8 @@ import { registerRoutes } from "./routes";
 import { setupVite, serveStatic, log } from "./vite";
 import path from "path";
 import fs from "fs";
+import { createServer } from "http";
+import { exec } from "child_process";
 
 const app = express();
 
@@ -53,18 +55,19 @@ app.use((req, res, next) => {
   next();
 });
 
-// Function to get an available port
+// Function to get an available port (not currently used, using findAvailablePort instead)
 const getPort = async (defaultPort: number): Promise<number> => {
-  const net = await import('net');
+  const { createServer } = await import('http');
   return new Promise((resolve) => {
-    const server = net.createServer();
+    const server = createServer();
     server.unref();
     server.on('error', () => {
       // Port is in use, try the next one
       resolve(getPort(defaultPort + 1));
     });
-    server.listen(defaultPort, () => {
-      const port = (server.address() as net.AddressInfo).port;
+    server.listen(defaultPort, '0.0.0.0', () => {
+      const address = server.address();
+      const port = typeof address === 'string' ? defaultPort : address?.port || defaultPort;
       server.close(() => resolve(port));
     });
   });
@@ -138,8 +141,11 @@ app.use((req, res, next) => {
   // Function to check if a port is available
   const isPortAvailable = (port: number): Promise<boolean> => {
     return new Promise((resolve) => {
-      const testServer = require('http').createServer();
-      testServer.once('error', () => resolve(false));
+      const testServer = createServer();
+      testServer.once('error', () => {
+        testServer.close();
+        resolve(false);
+      });
       testServer.once('listening', () => {
         testServer.close(() => resolve(true));
       });
@@ -176,9 +182,13 @@ app.use((req, res, next) => {
       
       // Auto-open browser in development
       if (app.get("env") === "development") {
-        const { exec } = require('child_process');
-        const start = process.platform === 'darwin' ? 'open' : process.platform === 'win32' ? 'start' : 'xdg-open';
-        exec(`${start} http://localhost:${port}`);
+        const startCommand = process.platform === 'darwin' ? 'open' : 
+                           process.platform === 'win32' ? 'start' : 'xdg-open';
+        exec(`${startCommand} http://localhost:${port}`, (error) => {
+          if (error) {
+            console.error('Failed to open browser:', error);
+          }
+        });
       }
     });
   } catch (error) {

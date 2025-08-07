@@ -7,17 +7,41 @@ import fs from "fs";
 const app = express();
 
 // 1. First, set up static file serving before any other middleware
-const publicPath = path.resolve(import.meta.dirname, '..', 'public');
+const isProduction = process.env.NODE_ENV === 'production';
+const rootDir = path.resolve(import.meta.dirname, '..');
+const publicPath = isProduction 
+  ? path.join(rootDir, 'dist', 'public')
+  : path.join(rootDir, 'public');
+
+console.log(`[Server] Environment: ${process.env.NODE_ENV || 'development'}`);
 console.log(`[Server] Serving static files from: ${publicPath}`);
+console.log(`[Server] Directory exists: ${fs.existsSync(publicPath)}`);
 
 // Serve static files from the public directory
-app.use(express.static(publicPath));
+app.use(express.static(publicPath, {
+  maxAge: '1y',
+  immutable: true,
+  fallthrough: true
+}));
 
 // Serve images with a specific route
 app.use('/images', express.static(path.join(publicPath, 'images'), {
   maxAge: '1y',
-  immutable: true
+  immutable: true,
+  fallthrough: true
 }));
+
+// For Vercel, also try serving from root dist directory
+if (isProduction) {
+  const distPath = path.join(rootDir, 'dist');
+  console.log(`[Server] Also serving from dist directory: ${distPath}`);
+  
+  app.use(express.static(distPath, {
+    maxAge: '1y',
+    immutable: true,
+    fallthrough: true
+  }));
+}
 
 // 2. Then add body parsers
 app.use(express.json());

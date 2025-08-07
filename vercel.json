@@ -5,12 +5,11 @@
       "src": "package.json",
       "use": "@vercel/static-build",
       "config": {
-        "distDir": "dist/public",
-        "outputDirectory": "dist"
+        "distDir": "dist/public"
       }
     },
     {
-      "src": "api/**/*.ts",
+      "src": "server/index.ts",
       "use": "@vercel/node"
     }
   ],
@@ -21,7 +20,10 @@
     },
     {
       "src": "/(.*)",
-      "dest": "/$1"
+      "dest": "/"
     }
+  ],
+  "rewrites": [
+    { "source": "/(.*)", "destination": "/index.html" }
   ]
 }

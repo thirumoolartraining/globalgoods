@@ -2,25 +2,32 @@
   "version": 2,
   "builds": [
     {
-      "src": "dist/server/index.js",
-      "use": "@vercel/node"
+      "src": "server/index.ts",
+      "use": "@vercel/node",
+      "config": {
+        "includeFiles": ["dist/**", "public/**"]
+      }
     },
     {
       "src": "package.json",
       "use": "@vercel/static-build",
       "config": {
-        "distDir": "dist/public"
+        "distDir": "dist/public",
+        "cleanUrls": true
       }
     }
   ],
-  "rewrites": [
+  "routes": [
     {
-      "source": "/api/(?<path>.*)",
-      "destination": "/dist/server/index.js"
+      "src": "/api/(.*)",
+      "dest": "/api"
     },
     {
-      "source": "/(.*)",
-      "destination": "/dist/public/index.html"
+      "src": "/(.*)",
+      "dest": "/$1",
+      "headers": {
+        "Cache-Control": "public, max-age=0, must-revalidate"
+      }
     }
   ]
 }

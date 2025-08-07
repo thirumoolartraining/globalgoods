@@ -32,11 +32,14 @@ export default function Privacy() {
             <h1 className="text-5xl md:text-6xl font-serif font-bold text-warm-ivory mb-6">
               Privacy Policy
             </h1>
-            <p className="text-xl text-warm-ivory/80 max-w-3xl mx-auto leading-relaxed">
-              Your privacy is important to us. Learn how we collect, use, and protect your information.
+            <h2 className="text-3xl font-serif font-semibold text-warm-ivory mb-6">
+              Your Privacy is Our Priority
+            </h2>
+            <p className="text-xl text-white/90 max-w-3xl mx-auto leading-relaxed [text-shadow:0_1px_2px_rgba(0,0,0,0.3)]">
+              At R S Enterprises, your privacy is of utmost importance. As a trusted manufacturer and global exporter of premium cashew nuts, we are committed to safeguarding the personal and business information you share with us. Our privacy practices are rooted in transparency, data security, and compliance—aligned with the Indian Information Technology Act and internationally recognized data protection standards, including the GDPR.
             </p>
-            <p className="text-warm-ivory/60 mt-4">
-              Last updated: August 6, 2024
+            <p className="text-white/90 mt-4 [text-shadow:0_1px_1px_rgba(0,0,0,0.3)]">
+              Last Updated: August 2025
             </p>
           </div>
         </div>
@@ -45,336 +48,151 @@ export default function Privacy() {
       {/* Privacy Policy Content */}
       <section className="py-16">
         <div className="max-w-4xl mx-auto px-6 lg:px-8">
-          <div className="space-y-12">
-            {/* Introduction */}
-            <Card className="bg-cream-white shadow-lg fade-in">
-              <CardHeader>
-                <CardTitle className="text-2xl font-serif text-midnight">Introduction</CardTitle>
-              </CardHeader>
-              <CardContent className="prose prose-stone max-w-none">
-                <p className="text-stone-gray leading-relaxed">
-                  RS Enterprises ("we," "our," or "us") is committed to protecting your privacy and ensuring 
-                  the security of your personal information. This Privacy Policy explains how we collect, use, 
-                  disclose, and safeguard your information when you visit our website, make purchases, or 
-                  interact with our services.
-                </p>
-                <p className="text-stone-gray leading-relaxed">
-                  By using our website and services, you consent to the data practices described in this policy. 
-                  If you do not agree with the practices described in this policy, please do not use our website 
-                  or services.
-                </p>
-              </CardContent>
-            </Card>
-
+          <div className="space-y-8">
             {/* Information We Collect */}
             <Card className="bg-cream-white shadow-lg fade-in">
               <CardHeader>
                 <CardTitle className="text-2xl font-serif text-midnight">Information We Collect</CardTitle>
               </CardHeader>
-              <CardContent className="space-y-6">
-                <div>
-                  <h3 className="text-xl font-serif font-semibold text-midnight mb-4">Personal Information</h3>
-                  <p className="text-stone-gray leading-relaxed mb-4">
-                    We may collect personal information that you voluntarily provide to us, including:
+              <CardContent className="space-y-4">
+                <p className="text-stone-700">
+                  When you visit our website, request a quote, place a purchase order, or connect with our export support team, we may collect the following information:
+                </p>
+                <ul className="list-disc pl-6 space-y-2 text-stone-700">
+                  <li>Full Name</li>
+                  <li>Company Name (for B2B or distributor accounts)</li>
+                  <li>Email Address</li>
+                  <li>Phone Number</li>
+                  <li>Shipping & Billing Address</li>
+                  <li>Business ID / GST Number (if applicable)</li>
+                  <li>Payment Details (via secure third-party gateways)</li>
+                  <li>Product preferences and purchase history</li>
+                  <li>Trade documentation details (for exports)</li>
+                  <li>Device, browser, and session data</li>
+                  <li>Cookies and tracking information (for analytics and performance)</li>
+                </ul>
+                <p className="text-stone-700 pt-2">
+                  We collect only the information necessary to fulfill your cashew sourcing needs and support a secure and professional buyer experience.
+                </p>
+              </CardContent>
+            </Card>
+
+            {/* Why We Collect Your Information */}
+            <Card className="bg-cream-white shadow-lg fade-in">
+              <CardHeader>
+                <CardTitle className="text-2xl font-serif text-midnight">Why We Collect Your Information</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-stone-700 mb-4">
+                  Your data helps us deliver a smooth, secure, and efficient business interaction. We use it to:
+                </p>
+                <ul className="list-disc pl-6 space-y-2 text-stone-700">
+                  <li>Process domestic and international orders</li>
+                  <li>Prepare invoices and export/commercial documentation</li>
+                  <li>Manage shipping, customs, and logistics coordination</li>
+                  <li>Provide product catalogs, batch availability updates, and trade alerts</li>
+                  <li>Maintain distributor and wholesale account relationships</li>
+                  <li>Send optional promotional communications (with opt-in consent)</li>
+                  <li>Analyze visitor behavior and product demand trends (aggregated and anonymized)</li>
+                </ul>
+              </CardContent>
+            </Card>
+
+            {/* How Your Information is Protected */}
+            <Card className="bg-cream-white shadow-lg fade-in">
+              <CardHeader>
+                <CardTitle className="text-2xl font-serif text-midnight">How Your Information is Protected</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-stone-700 mb-4">
+                  We uphold strict security standards to protect your data from unauthorized access, misuse, or disclosure.
+                </p>
+                <p className="font-semibold text-midnight mb-3">Our safeguards include:</p>
+                <ul className="list-disc pl-6 space-y-2 text-stone-700">
+                  <li>SSL Encryption for all website and form interactions</li>
+                  <li>PCI-compliant Payment Processing through secure third-party gateways (we do not store card or banking data)</li>
+                  <li>Firewall-Protected Servers with regular vulnerability checks</li>
+                  <li>Access Controls that limit data access to authorized personnel only</li>
+                </ul>
+                <p className="text-stone-700 mt-4">
+                  We continuously monitor our systems to ensure your data remains protected.
+                </p>
+              </CardContent>
+            </Card>
+
+            {/* Your Rights & Choices */}
+            <Card className="bg-cream-white shadow-lg fade-in">
+              <CardHeader>
+                <CardTitle className="text-2xl font-serif text-midnight">Your Rights & Choices</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-stone-700 mb-4">
+                  You retain full control over your information. At any time, you may:
+                </p>
+                <ul className="list-disc pl-6 space-y-2 text-stone-700">
+                  <li>Request access to the data we hold about you</li>
+                  <li>Request corrections or updates to your profile or business details</li>
+                  <li>Request deletion of personal data (subject to regulatory retention obligations)</li>
+                  <li>Unsubscribe from marketing communications</li>
+                  <li>Raise concerns about privacy, compliance, or data security</li>
+                </ul>
+                <p className="text-stone-700 mt-4">
+                  To exercise any of the above rights, please write to us at{' '}
+                  <a href="mailto:info@rsenterprises.online" className="text-muted-gold hover:underline">
+                    info@rsenterprises.online
+                  </a>. We strive to respond within 30 business days.
+                </p>
+              </CardContent>
+            </Card>
+
+            {/* Contact Us */}
+            <Card className="bg-cream-white shadow-lg fade-in">
+              <CardHeader>
+                <CardTitle className="text-2xl font-serif text-midnight">Contact Us</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-stone-700 mb-4">
+                  If you have any questions or concerns about this Privacy Policy or our data handling practices, reach out to our Data Compliance Officer:
+                </p>
+                <div className="bg-warm-ivory/20 p-6 rounded-lg border border-muted-gold/20">
+                  <p className="font-semibold text-stone-800">R S Enterprises</p>
+                  <p className="text-stone-700">Attn: Data Protection Officer</p>
+                  <p className="text-stone-700">No: 46, Iyanar Koil Street, Sivalingapuram</p>
+                  <p className="text-stone-700">Ariyankuppam, Pondicherry - 605007</p>
+                  <p className="text-stone-700">
+                    Email:{' '}
+                    <a href="mailto:info@rsenterprises.online" className="text-muted-gold hover:underline">
+                      info@rsenterprises.online
+                    </a>
                   </p>
-                  <ul className="space-y-2 text-stone-gray">
-                    <li className="flex items-start">
-                      <span className="text-muted-gold mr-2">•</span>
-                      <span>Name, email address, phone number, and mailing address</span>
-                    </li>
-                    <li className="flex items-start">
-                      <span className="text-muted-gold mr-2">•</span>
-                      <span>Company name and business information for B2B transactions</span>
-                    </li>
-                    <li className="flex items-start">
-                      <span className="text-muted-gold mr-2">•</span>
-                      <span>Payment information (processed securely through third-party processors)</span>
-                    </li>
-                    <li className="flex items-start">
-                      <span className="text-muted-gold mr-2">•</span>
-                      <span>Order history and purchasing preferences</span>
-                    </li>
-                    <li className="flex items-start">
-                      <span className="text-muted-gold mr-2">•</span>
-                      <span>Communication preferences and marketing consents</span>
-                    </li>
-                  </ul>
-                </div>
-
-                <Separator />
-
-                <div>
-                  <h3 className="text-xl font-serif font-semibold text-midnight mb-4">Automatically Collected Information</h3>
-                  <p className="text-stone-gray leading-relaxed mb-4">
-                    When you visit our website, we may automatically collect certain information:
+                  <p className="text-stone-700">
+                    Phone:{' '}
+                    <a href="tel:+917200230057" className="text-muted-gold hover:underline">
+                      +91 72002 30057
+                    </a>
                   </p>
-                  <ul className="space-y-2 text-stone-gray">
-                    <li className="flex items-start">
-                      <span className="text-muted-gold mr-2">•</span>
-                      <span>IP address, browser type, and operating system</span>
-                    </li>
-                    <li className="flex items-start">
-                      <span className="text-muted-gold mr-2">•</span>
-                      <span>Pages visited, time spent on pages, and click-through rates</span>
-                    </li>
-                    <li className="flex items-start">
-                      <span className="text-muted-gold mr-2">•</span>
-                      <span>Referral URLs and search terms used to find our website</span>
-                    </li>
-                    <li className="flex items-start">
-                      <span className="text-muted-gold mr-2">•</span>
-                      <span>Device information and mobile identifiers</span>
-                    </li>
-                  </ul>
                 </div>
-              </CardContent>
-            </Card>
-
-            {/* How We Use Your Information */}
-            <Card className="bg-cream-white shadow-lg fade-in">
-              <CardHeader>
-                <CardTitle className="text-2xl font-serif text-midnight">How We Use Your Information</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-stone-gray leading-relaxed mb-4">
-                  We use the information we collect for various business purposes, including:
+                <p className="text-stone-700 mt-4">
+                  We are committed to responding promptly and fairly to all privacy-related queries.
                 </p>
-                <div className="grid md:grid-cols-2 gap-6">
-                  <div>
-                    <h4 className="font-semibold text-midnight mb-3">Order Processing & Customer Service</h4>
-                    <ul className="space-y-2 text-stone-gray text-sm">
-                      <li className="flex items-start">
-                        <span className="text-muted-gold mr-2">•</span>
-                        <span>Process and fulfill your orders</span>
-                      </li>
-                      <li className="flex items-start">
-                        <span className="text-muted-gold mr-2">•</span>
-                        <span>Communicate about your orders and account</span>
-                      </li>
-                      <li className="flex items-start">
-                        <span className="text-muted-gold mr-2">•</span>
-                        <span>Provide customer support and respond to inquiries</span>
-                      </li>
-                      <li className="flex items-start">
-                        <span className="text-muted-gold mr-2">•</span>
-                        <span>Process payments and prevent fraud</span>
-                      </li>
-                    </ul>
-                  </div>
-                  <div>
-                    <h4 className="font-semibold text-midnight mb-3">Marketing & Improvements</h4>
-                    <ul className="space-y-2 text-stone-gray text-sm">
-                      <li className="flex items-start">
-                        <span className="text-muted-gold mr-2">•</span>
-                        <span>Send promotional materials and product updates</span>
-                      </li>
-                      <li className="flex items-start">
-                        <span className="text-muted-gold mr-2">•</span>
-                        <span>Analyze usage patterns and improve our services</span>
-                      </li>
-                      <li className="flex items-start">
-                        <span className="text-muted-gold mr-2">•</span>
-                        <span>Personalize your shopping experience</span>
-                      </li>
-                      <li className="flex items-start">
-                        <span className="text-muted-gold mr-2">•</span>
-                        <span>Conduct research and analytics</span>
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* Information Sharing */}
-            <Card className="bg-cream-white shadow-lg fade-in">
-              <CardHeader>
-                <CardTitle className="text-2xl font-serif text-midnight">Information Sharing and Disclosure</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-6">
-                <p className="text-stone-gray leading-relaxed">
-                  We do not sell, trade, or otherwise transfer your personal information to third parties without your consent, 
-                  except in the following circumstances:
-                </p>
-                
-                <div className="space-y-4">
-                  <div className="p-4 bg-warm-ivory rounded-lg">
-                    <h4 className="font-semibold text-midnight mb-2">Service Providers</h4>
-                    <p className="text-stone-gray text-sm">
-                      We may share information with trusted third-party service providers who assist us in operating our 
-                      website, conducting business, or serving you (payment processors, shipping companies, etc.).
-                    </p>
-                  </div>
-                  
-                  <div className="p-4 bg-warm-ivory rounded-lg">
-                    <h4 className="font-semibold text-midnight mb-2">Legal Requirements</h4>
-                    <p className="text-stone-gray text-sm">
-                      We may disclose information when required by law, regulation, legal process, or governmental request, 
-                      or to protect our rights, property, or safety.
-                    </p>
-                  </div>
-                  
-                  <div className="p-4 bg-warm-ivory rounded-lg">
-                    <h4 className="font-semibold text-midnight mb-2">Business Transfers</h4>
-                    <p className="text-stone-gray text-sm">
-                      In the event of a merger, acquisition, or sale of assets, your information may be transferred as part 
-                      of the business transaction.
-                    </p>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* Data Security */}
-            <Card className="bg-cream-white shadow-lg fade-in">
-              <CardHeader>
-                <CardTitle className="text-2xl font-serif text-midnight">Data Security</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-stone-gray leading-relaxed mb-4">
-                  We implement appropriate technical and organizational security measures to protect your personal information 
-                  against unauthorized access, alteration, disclosure, or destruction. These measures include:
-                </p>
-                <div className="grid md:grid-cols-2 gap-4">
-                  <div className="p-4 border border-muted-gold/20 rounded-lg">
-                    <h4 className="font-semibold text-midnight mb-2">🔒 Encryption</h4>
-                    <p className="text-stone-gray text-sm">
-                      All sensitive data is encrypted in transit and at rest using industry-standard encryption protocols.
-                    </p>
-                  </div>
-                  <div className="p-4 border border-muted-gold/20 rounded-lg">
-                    <h4 className="font-semibold text-midnight mb-2">🛡️ Access Controls</h4>
-                    <p className="text-stone-gray text-sm">
-                      Access to personal information is restricted to authorized personnel who need it for business purposes.
-                    </p>
-                  </div>
-                  <div className="p-4 border border-muted-gold/20 rounded-lg">
-                    <h4 className="font-semibold text-midnight mb-2">🔍 Regular Audits</h4>
-                    <p className="text-stone-gray text-sm">
-                      We regularly review and update our security practices and conduct security assessments.
-                    </p>
-                  </div>
-                  <div className="p-4 border border-muted-gold/20 rounded-lg">
-                    <h4 className="font-semibold text-midnight mb-2">💳 Secure Payments</h4>
-                    <p className="text-stone-gray text-sm">
-                      Payment information is processed by PCI-DSS compliant third-party payment processors.
-                    </p>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* Your Rights */}
-            <Card className="bg-cream-white shadow-lg fade-in">
-              <CardHeader>
-                <CardTitle className="text-2xl font-serif text-midnight">Your Privacy Rights</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-stone-gray leading-relaxed mb-4">
-                  Depending on your location, you may have the following rights regarding your personal information:
-                </p>
-                <div className="space-y-4">
-                  <div className="flex items-start space-x-3">
-                    <span className="text-muted-gold font-bold">✓</span>
-                    <div>
-                      <h4 className="font-semibold text-midnight">Access and Portability</h4>
-                      <p className="text-stone-gray text-sm">Request access to your personal information and receive a copy in a portable format.</p>
-                    </div>
-                  </div>
-                  <div className="flex items-start space-x-3">
-                    <span className="text-muted-gold font-bold">✓</span>
-                    <div>
-                      <h4 className="font-semibold text-midnight">Correction</h4>
-                      <p className="text-stone-gray text-sm">Request correction of inaccurate or incomplete personal information.</p>
-                    </div>
-                  </div>
-                  <div className="flex items-start space-x-3">
-                    <span className="text-muted-gold font-bold">✓</span>
-                    <div>
-                      <h4 className="font-semibold text-midnight">Deletion</h4>
-                      <p className="text-stone-gray text-sm">Request deletion of your personal information, subject to legal and business requirements.</p>
-                    </div>
-                  </div>
-                  <div className="flex items-start space-x-3">
-                    <span className="text-muted-gold font-bold">✓</span>
-                    <div>
-                      <h4 className="font-semibold text-midnight">Opt-out</h4>
-                      <p className="text-stone-gray text-sm">Opt-out of marketing communications and certain data processing activities.</p>
-                    </div>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* Cookies */}
-            <Card className="bg-cream-white shadow-lg fade-in">
-              <CardHeader>
-                <CardTitle className="text-2xl font-serif text-midnight">Cookies and Tracking Technologies</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-stone-gray leading-relaxed mb-4">
-                  We use cookies and similar tracking technologies to enhance your browsing experience, analyze site traffic, 
-                  and personalize content. Cookies are small data files stored on your device.
-                </p>
-                <div className="space-y-4">
-                  <div>
-                    <h4 className="font-semibold text-midnight mb-2">Types of Cookies We Use:</h4>
-                    <ul className="space-y-2 text-stone-gray text-sm">
-                      <li><strong>Essential Cookies:</strong> Necessary for the website to function properly</li>
-                      <li><strong>Performance Cookies:</strong> Help us analyze how visitors use our website</li>
-                      <li><strong>Functionality Cookies:</strong> Remember your preferences and settings</li>
-                      <li><strong>Marketing Cookies:</strong> Used to deliver relevant advertisements</li>
-                    </ul>
-                  </div>
-                  <div className="p-4 bg-warm-ivory rounded-lg">
-                    <p className="text-stone-gray text-sm">
-                      You can control cookies through your browser settings. However, disabling cookies may affect 
-                      the functionality of our website.
-                    </p>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* Contact Information */}
-            <Card className="bg-midnight text-warm-ivory shadow-lg fade-in">
-              <CardHeader>
-                <CardTitle className="text-2xl font-serif">Contact Us</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-warm-ivory/80 leading-relaxed mb-6">
-                  If you have any questions about this Privacy Policy or our data practices, please contact us:
-                </p>
-                <div className="grid md:grid-cols-2 gap-6">
-                  <div>
-                    <h4 className="font-semibold text-warm-ivory mb-3">Contact Information</h4>
-                    <div className="space-y-2 text-warm-ivory/80 text-sm">
-                      <p><strong>Email:</strong> privacy@rscashews.com</p>
-                      <p><strong>Phone:</strong> +91 474 2345678</p>
-                      <p><strong>Address:</strong> 123 Industrial Estate, Kollam, Kerala, India - 691001</p>
-                    </div>
-                  </div>
-                  <div>
-                    <h4 className="font-semibold text-warm-ivory mb-3">Business Hours</h4>
-                    <div className="space-y-2 text-warm-ivory/80 text-sm">
-                      <p>Monday - Friday: 9:00 AM - 6:00 PM IST</p>
-                      <p>Saturday: 9:00 AM - 2:00 PM IST</p>
-                      <p>Sunday: Closed</p>
-                    </div>
-                  </div>
-                </div>
               </CardContent>
             </Card>
 
             {/* Policy Updates */}
-            <Card className="bg-warm-ivory border border-muted-gold shadow-lg fade-in">
-              <CardContent className="p-6">
-                <h3 className="text-xl font-serif font-semibold text-midnight mb-4">Policy Updates</h3>
-                <p className="text-stone-gray leading-relaxed">
-                  We may update this Privacy Policy from time to time to reflect changes in our practices or legal requirements. 
-                  We will notify you of any material changes by posting the updated policy on our website and updating the 
-                  "Last updated" date. Your continued use of our services after any changes indicates your acceptance of the 
-                  updated policy.
+            <Card className="bg-cream-white shadow-lg fade-in">
+              <CardHeader>
+                <CardTitle className="text-2xl font-serif text-midnight">Policy Updates</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-stone-700 mb-4">
+                  This Privacy Policy may be updated periodically to reflect changes in law, industry best practices, or our own internal processes. All updates will be posted on this page with a revised "Last Updated" date.
+                </p>
+                <p className="font-semibold text-stone-800">Last Updated: August 2025</p>
+                <p className="text-stone-700 mt-4">
+                  Thank you for trusting R S Enterprises. We value your partnership and remain dedicated to protecting your privacy while delivering world-class cashew products.
+                </p>
+                <p className="text-stone-600 text-sm mt-6 text-center">
+                  © 2025 R S Enterprises. All rights reserved.
                 </p>
               </CardContent>
             </Card>

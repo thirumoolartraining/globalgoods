@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -16,7 +16,8 @@ import { useCart } from "@/hooks/use-cart";
 import { formatPrice } from "@/lib/products";
 import { Link, useLocation } from "wouter";
 import { z } from "zod";
-import { ArrowLeft, CreditCard, Truck, Shield } from "lucide-react";
+import { ArrowLeft, CreditCard, Truck, Shield, AlertCircle } from "lucide-react";
+import { MINIMUM_ORDER_QUANTITY, QUANTITY_INCREMENT, roundToNearestIncrement } from "@/lib/constants";
 
 const checkoutSchema = insertOrderSchema.extend({
   paymentMethod: z.enum(["card", "bank", "cod"]),
@@ -26,9 +27,10 @@ type CheckoutData = z.infer<typeof checkoutSchema>;
 
 export default function Checkout() {
   const [, setLocation] = useLocation();
-  const { items, totalPrice, clearCart } = useCart();
+  const { items, totalPrice, clearCart, updateQuantity } = useCart();
   const { toast } = useToast();
   const [paymentMethod, setPaymentMethod] = useState<"card" | "bank" | "cod">("card");
+  const [hasInvalidQuantities, setHasInvalidQuantities] = useState(false);
 
   const form = useForm<CheckoutData>({
     resolver: zodResolver(checkoutSchema),
@@ -74,7 +76,34 @@ export default function Checkout() {
     },
   });
 
+  // Check for invalid quantities on mount and when items change
+  useEffect(() => {
+    const invalidItems = items.some(item => item.quantity < MINIMUM_ORDER_QUANTITY);
+    setHasInvalidQuantities(invalidItems);
+    
+    if (invalidItems) {
+      toast({
+        title: "Invalid Order Quantities",
+        description: `All items must have a minimum quantity of ${MINIMUM_ORDER_QUANTITY}kg. Adjust your cart to continue.`,
+        variant: "destructive",
+      });
+    }
+  }, [items, toast]);
+
   const onSubmit = (data: CheckoutData) => {
+    // Final validation before submission
+    const invalidItems = items.some(item => item.quantity < MINIMUM_ORDER_QUANTITY);
+    
+    if (invalidItems) {
+      setHasInvalidQuantities(true);
+      toast({
+        title: "Invalid Order Quantities",
+        description: `All items must have a minimum quantity of ${MINIMUM_ORDER_QUANTITY}kg. Adjust your cart to continue.`,
+        variant: "destructive",
+      });
+      return;
+    }
+    
     orderMutation.mutate(data);
   };
 
@@ -294,17 +323,6 @@ export default function Checkout() {
                     <CardTitle className="text-2xl font-serif text-midnight">Payment Method</CardTitle>
                   </CardHeader>
                   <CardContent>
-                    <div className="bg-stone-gray/10 p-6 rounded-lg">
-                      <div className="flex items-center space-x-3 mb-4">
-                        <Shield className="h-6 w-6 text-muted-gold" />
-                        <span className="font-semibold text-midnight">Demo Checkout</span>
-                      </div>
-                      <p className="text-stone-gray">
-                        This is a demonstration checkout. Payment processing is not functional in this demo environment. 
-                        In a live environment, secure payment options would be available including credit cards, bank transfers, and digital wallets.
-                      </p>
-                    </div>
-
                     <RadioGroup 
                       value={paymentMethod} 
                       onValueChange={(value: "card" | "bank" | "cod") => {
@@ -353,11 +371,13 @@ export default function Checkout() {
                     <div className="space-y-4">
                       {items.map((item) => (
                         <div key={item.id} className="flex items-center space-x-4" data-testid={`summary-item-${item.id}`}>
-                          <img 
-                            src={item.image}
-                            alt={item.name}
-                            className="w-16 h-16 object-cover rounded-lg"
-                          />
+                          <div className="w-16 h-16 overflow-hidden rounded-lg">
+                            <img 
+                              src={item.image}
+                              alt={item.name}
+                              className="w-full h-full object-cover"
+                            />
+                          </div>
                           <div className="flex-1">
                             <h4 className="font-semibold text-midnight text-sm">{item.name}</h4>
                             <p className="text-stone-gray text-sm">Qty: {item.quantity}</p>
@@ -399,15 +419,36 @@ export default function Checkout() {
                       </div>
                     </div>
 
-                    <Button
-                      type="submit"
-                      size="lg"
-                      disabled={orderMutation.isPending}
-                      className="w-full bg-muted-gold text-midnight font-semibold uppercase tracking-wide hover:bg-muted-gold/90"
-                      data-testid="place-order-button"
-                    >
-                      {orderMutation.isPending ? "Processing..." : "Place Order"}
-                    </Button>
+                    {hasInvalidQuantities ? (
+                      <div className="bg-red-50 border border-red-200 rounded-lg p-4 text-center">
+                        <div className="flex items-center justify-center space-x-2 text-red-700 mb-2">
+                          <AlertCircle className="h-5 w-5" />
+                          <span className="font-medium">Cart Contains Invalid Quantities</span>
+                        </div>
+                        <p className="text-sm text-red-600 mb-3">
+                          All items must have a minimum quantity of {MINIMUM_ORDER_QUANTITY}kg.
+                        </p>
+                        <Button
+                          type="button"
+                          variant="outline"
+                          size="sm"
+                          className="text-red-700 border-red-300 hover:bg-red-50 hover:text-red-800"
+                          onClick={() => setLocation('/cart')}
+                        >
+                          Update Cart
+                        </Button>
+                      </div>
+                    ) : (
+                      <Button
+                        type="submit"
+                        size="lg"
+                        className="w-full bg-muted-gold text-midnight hover:bg-muted-gold/90 font-semibold uppercase tracking-wide"
+                        disabled={orderMutation.isPending || hasInvalidQuantities}
+                        data-testid="place-order-button"
+                      >
+                        {orderMutation.isPending ? "Processing..." : "Place Order"}
+                      </Button>
+                    )}
 
                     <div className="bg-warm-ivory p-4 rounded-lg">
                       <div className="grid grid-cols-3 gap-2 text-center text-xs text-stone-gray">

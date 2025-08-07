@@ -5,6 +5,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { CartProvider } from "@/hooks/use-cart";
 import { Layout } from "@/components/layout";
+import { ScrollToTop } from "@/components/scroll-to-top";
 import NotFound from "@/pages/not-found";
 import Home from "@/pages/home";
 import About from "@/pages/about";
@@ -16,6 +17,9 @@ import Cart from "@/pages/cart";
 import Checkout from "@/pages/checkout";
 import ThankYou from "@/pages/thank-you";
 import Privacy from "@/pages/privacy";
+import Terms from "@/pages/terms";
+import ShippingPolicy from "@/pages/shipping-policy";
+import CancellationRefund from "@/pages/cancellation-refund";
 
 function Router() {
   return (
@@ -31,6 +35,9 @@ function Router() {
         <Route path="/checkout" component={Checkout} />
         <Route path="/thank-you/:orderId?" component={ThankYou} />
         <Route path="/privacy" component={Privacy} />
+        <Route path="/terms" component={Terms} />
+        <Route path="/shipping-policy" component={ShippingPolicy} />
+        <Route path="/cancellation-refund" component={CancellationRefund} />
         <Route component={NotFound} />
       </Switch>
     </Layout>
@@ -43,6 +50,7 @@ function App() {
       <TooltipProvider>
         <CartProvider>
           <Toaster />
+          <ScrollToTop />
           <Router />
         </CartProvider>
       </TooltipProvider>

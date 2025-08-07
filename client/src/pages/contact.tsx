@@ -89,7 +89,7 @@ export default function Contact() {
             <h1 className="text-5xl md:text-6xl font-serif font-bold text-warm-ivory mt-4 mb-6">
               Contact Us
             </h1>
-            <p className="text-xl text-warm-ivory/80 max-w-3xl mx-auto leading-relaxed">
+            <p className="text-xl text-white/90 max-w-3xl mx-auto leading-relaxed [text-shadow:0_1px_2px_rgba(0,0,0,0.3)]">
               Ready to place an order or have questions? We're here to help with all your premium cashew needs.
             </p>
           </div>
@@ -112,8 +112,9 @@ export default function Contact() {
                   <div>
                     <h3 className="font-semibold text-midnight mb-2 text-lg">India Headquarters</h3>
                     <p className="text-stone-gray leading-relaxed">
-                      123 Industrial Estate, Kollam<br />
-                      Kerala, India - 691001
+                      No: 46, Iyanar Koil Street<br />
+                      Sivalingapuram<br />
+                      Ariyankuppam, Pondicherry - 605007
                     </p>
                   </div>
                 </div>
@@ -123,11 +124,9 @@ export default function Contact() {
                     <Phone className="h-6 w-6 text-midnight" />
                   </div>
                   <div>
-                    <h3 className="font-semibold text-midnight mb-2 text-lg">Phone Numbers</h3>
+                    <h3 className="font-semibold text-midnight mb-2 text-lg">Contact Number</h3>
                     <p className="text-stone-gray leading-relaxed">
-                      Main: +91 474 2345678<br />
-                      Mobile: +91 9876 543210<br />
-                      Export Desk: +91 474 2345679
+                      +91 72002 30057
                     </p>
                   </div>
                 </div>
@@ -137,11 +136,9 @@ export default function Contact() {
                     <Mail className="h-6 w-6 text-midnight" />
                   </div>
                   <div>
-                    <h3 className="font-semibold text-midnight mb-2 text-lg">Email Addresses</h3>
+                    <h3 className="font-semibold text-midnight mb-2 text-lg">Email Address</h3>
                     <p className="text-stone-gray leading-relaxed">
-                      General: info@rscashews.com<br />
-                      Export: export@rscashews.com<br />
-                      Sales: sales@rscashews.com
+                      info@rsenterprises.online
                     </p>
                   </div>
                 </div>
@@ -294,7 +291,7 @@ export default function Contact() {
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <div className="text-center mb-12 fade-in">
             <h2 className="text-3xl font-serif font-bold text-midnight mb-4">Find Us</h2>
-            <p className="text-stone-gray">Located in the heart of Kerala's cashew processing region</p>
+            <p className="text-stone-gray">Located in the heart of Pondicherry's cashew processing region</p>
           </div>
           
           <div className="fade-in">
@@ -302,7 +299,7 @@ export default function Contact() {
               <div className="text-center">
                 <MapPin className="h-12 w-12 text-muted-gold mx-auto mb-4" />
                 <h3 className="font-serif font-semibold text-xl text-midnight mb-2">Our Location</h3>
-                <p className="text-stone-gray">123 Industrial Estate, Kollam, Kerala, India</p>
+                <p className="text-stone-gray">No: 46, Iyanar Koil Street, Sivalingapuram,<br />Ariyankuppam, Pondicherry - 605007</p>
                 <p className="text-stone-gray text-sm mt-2">Interactive map integration available</p>
               </div>
             </div>
@@ -318,7 +315,7 @@ export default function Contact() {
               <div className="bg-warm-ivory/10 rounded-xl p-8 mb-6">
                 <Phone className="h-12 w-12 text-muted-gold mx-auto mb-4" />
                 <h3 className="font-serif font-semibold text-xl text-warm-ivory mb-4">Quick Response</h3>
-                <p className="text-warm-ivory/80">We respond to all inquiries within 4 business hours during office time.</p>
+                <p className="text-warm-ivory">We respond to all inquiries within 4 business hours during office time.</p>
               </div>
             </div>
 
@@ -326,7 +323,7 @@ export default function Contact() {
               <div className="bg-warm-ivory/10 rounded-xl p-8 mb-6">
                 <Mail className="h-12 w-12 text-muted-gold mx-auto mb-4" />
                 <h3 className="font-serif font-semibold text-xl text-warm-ivory mb-4">Expert Consultation</h3>
-                <p className="text-warm-ivory/80">Our cashew experts are available for product consultation and custom solutions.</p>
+                <p className="text-warm-ivory">Our cashew experts are available for product consultation and custom solutions.</p>
               </div>
             </div>
 
@@ -334,7 +331,7 @@ export default function Contact() {
               <div className="bg-warm-ivory/10 rounded-xl p-8 mb-6">
                 <MapPin className="h-12 w-12 text-muted-gold mx-auto mb-4" />
                 <h3 className="font-serif font-semibold text-xl text-warm-ivory mb-4">Visit Our Facility</h3>
-                <p className="text-warm-ivory/80">Schedule a visit to see our state-of-the-art processing facility firsthand.</p>
+                <p className="text-warm-ivory">Schedule a visit to see our state-of-the-art processing facility firsthand.</p>
               </div>
             </div>
           </div>

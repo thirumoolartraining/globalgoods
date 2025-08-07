@@ -4,7 +4,9 @@ import { Separator } from "@/components/ui/separator";
 import { useCart } from "@/hooks/use-cart";
 import { formatPrice } from "@/lib/products";
 import { Link } from "wouter";
-import { Minus, Plus, Trash2, ShoppingCart, ArrowLeft } from "lucide-react";
+import { Minus, Plus, Trash2, ShoppingCart, ArrowLeft, AlertCircle } from "lucide-react";
+import { MINIMUM_ORDER_QUANTITY, QUANTITY_INCREMENT, getNextValidQuantity } from "@/lib/constants";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 
 export default function Cart() {
   const { items, totalPrice, updateQuantity, removeItem } = useCart();
@@ -81,11 +83,13 @@ export default function Cart() {
                     <div key={item.id}>
                       {index > 0 && <Separator />}
                       <div className="flex items-center space-x-6 py-4" data-testid={`cart-item-${item.id}`}>
-                        <img 
-                          src={item.image}
-                          alt={item.name}
-                          className="w-24 h-24 object-cover rounded-lg shadow-md"
-                        />
+                        <div className="w-24 h-24 overflow-hidden rounded-lg shadow-md">
+                          <img 
+                            src={item.image}
+                            alt={item.name}
+                            className="w-full h-full object-cover"
+                          />
+                        </div>
                         
                         <div className="flex-1">
                           <h3 className="font-serif font-semibold text-xl text-midnight mb-2">
@@ -96,17 +100,30 @@ export default function Cart() {
                           </p>
                           
                           {/* Quantity Controls */}
-                          <div className="flex items-center space-x-4">
-                            <span className="text-sm font-semibold text-midnight uppercase tracking-wide">
-                              Quantity:
-                            </span>
-                            <div className="flex items-center border border-stone-gray/20 rounded">
+                          <div className="space-y-2">
+                            <div className="flex items-center space-x-2">
+                              <span className="text-sm font-semibold text-midnight uppercase tracking-wide">
+                                Quantity (kg):
+                              </span>
+                              <TooltipProvider>
+                                <Tooltip>
+                                  <TooltipTrigger asChild>
+                                    <AlertCircle className="h-4 w-4 text-stone-400 hover:text-midnight cursor-help" />
+                                  </TooltipTrigger>
+                                  <TooltipContent className="max-w-[300px]">
+                                    <p>Minimum order quantity: {MINIMUM_ORDER_QUANTITY}kg</p>
+                                    <p>Order in increments of {QUANTITY_INCREMENT}kg</p>
+                                  </TooltipContent>
+                                </Tooltip>
+                              </TooltipProvider>
+                            </div>
+                            <div className="flex items-center border border-stone-gray/20 rounded w-fit">
                               <Button
                                 variant="ghost"
                                 size="icon"
-                                className="h-10 w-10"
-                                onClick={() => updateQuantity(item.id, item.quantity - 1)}
-                                disabled={item.quantity <= 1}
+                                className="h-10 w-10 hover:bg-stone-100"
+                                onClick={() => updateQuantity(item.id, getNextValidQuantity(item.quantity, -1))}
+                                disabled={item.quantity <= MINIMUM_ORDER_QUANTITY}
                                 data-testid={`decrease-quantity-${item.id}`}
                               >
                                 <Minus className="h-4 w-4" />
@@ -120,8 +137,8 @@ export default function Cart() {
                               <Button
                                 variant="ghost"
                                 size="icon"
-                                className="h-10 w-10"
-                                onClick={() => updateQuantity(item.id, item.quantity + 1)}
+                                className="h-10 w-10 hover:bg-stone-100"
+                                onClick={() => updateQuantity(item.id, getNextValidQuantity(item.quantity, 1))}
                                 data-testid={`increase-quantity-${item.id}`}
                               >
                                 <Plus className="h-4 w-4" />

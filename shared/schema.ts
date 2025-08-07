@@ -17,6 +17,7 @@ export const products = pgTable("products", {
   category: text("category").notNull(),
   weight: text("weight").notNull(),
   image: text("image").notNull(),
+  images: text("images").array().default([]),
   inStock: boolean("in_stock").default(true),
   isOrganic: boolean("is_organic").default(false),
   grade: text("grade"),
@@ -72,7 +73,11 @@ export const insertInquirySchema = createInsertSchema(inquiries).omit({
 
 export type User = typeof users.$inferSelect;
 export type InsertUser = z.infer<typeof insertUserSchema>;
-export type Product = typeof products.$inferSelect;
+// Extend the base product type to include the images array
+export type BaseProduct = typeof products.$inferSelect;
+export interface Product extends BaseProduct {
+  images: string[];
+}
 export type InsertProduct = z.infer<typeof insertProductSchema>;
 export type Order = typeof orders.$inferSelect;
 export type InsertOrder = z.infer<typeof insertOrderSchema>;

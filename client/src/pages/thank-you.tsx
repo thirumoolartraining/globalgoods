@@ -148,11 +148,13 @@ export default function ThankYou() {
                       <div className="space-y-4">
                         {orderItems.map((item: any, index: number) => (
                           <div key={index} className="flex items-center space-x-4 p-4 bg-warm-ivory rounded-lg" data-testid={`order-item-${index}`}>
-                            <img 
-                              src={item.image}
-                              alt={item.name}
-                              className="w-16 h-16 object-cover rounded-lg"
-                            />
+                            <div className="w-16 h-16 overflow-hidden rounded-lg">
+                              <img 
+                                src={item.image}
+                                alt={item.name}
+                                className="w-full h-full object-cover"
+                              />
+                            </div>
                             <div className="flex-1">
                               <h4 className="font-semibold text-midnight">{item.name}</h4>
                               <p className="text-stone-gray">Quantity: {item.quantity}</p>
@@ -263,11 +265,11 @@ export default function ThankYou() {
                   <div className="space-y-2">
                     <div className="flex items-center space-x-2">
                       <Phone className="h-4 w-4 text-muted-gold" />
-                      <span className="text-sm">+91 474 2345678</span>
+                      <span className="text-sm">+91 72002 30057</span>
                     </div>
                     <div className="flex items-center space-x-2">
                       <Mail className="h-4 w-4 text-muted-gold" />
-                      <span className="text-sm">support@rscashews.com</span>
+                      <span className="text-sm">info@rsenterprises.online</span>
                     </div>
                   </div>
                   <Link href="/contact">

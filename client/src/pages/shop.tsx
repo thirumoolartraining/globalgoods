@@ -61,7 +61,7 @@ export default function Shop() {
           <h1 className="text-4xl md:text-5xl font-serif font-bold text-warm-ivory mt-4 mb-6">
             Shop Premium Cashews
           </h1>
-          <p className="text-xl text-warm-ivory/80 max-w-3xl mx-auto">
+          <p className="text-xl text-white/90 max-w-3xl mx-auto [text-shadow:0_1px_2px_rgba(0,0,0,0.3)]">
             Browse our complete range of premium cashew products, from raw kernels to gourmet preparations.
           </p>
         </div>

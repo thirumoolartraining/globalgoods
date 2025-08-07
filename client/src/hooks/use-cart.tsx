@@ -1,5 +1,11 @@
-import { useState, useEffect, createContext, useContext, ReactNode } from "react";
+import { useState, useEffect, createContext, useContext, ReactNode, useCallback } from "react";
 import { Product } from "@shared/schema";
+import { 
+  MINIMUM_ORDER_QUANTITY, 
+  QUANTITY_INCREMENT, 
+  roundToNearestIncrement,
+  getNextValidQuantity 
+} from "@/lib/constants";
 
 export interface CartItem {
   id: string;
@@ -44,14 +50,18 @@ export function CartProvider({ children }: { children: ReactNode }) {
     localStorage.setItem("rsCart", JSON.stringify(items));
   }, [items]);
 
-  const addItem = (product: Product, quantity = 1) => {
+  const addItem = useCallback((product: Product, quantity = MINIMUM_ORDER_QUANTITY) => {
+    // Ensure quantity meets MOQ and increment requirements
+    const validQuantity = roundToNearestIncrement(quantity);
+    
     setItems(prevItems => {
       const existingItem = prevItems.find(item => item.id === product.id);
       
       if (existingItem) {
+        const newQuantity = roundToNearestIncrement(existingItem.quantity + validQuantity);
         return prevItems.map(item =>
           item.id === product.id
-            ? { ...item, quantity: item.quantity + quantity }
+            ? { ...item, quantity: newQuantity }
             : item
         );
       } else {
@@ -60,30 +70,34 @@ export function CartProvider({ children }: { children: ReactNode }) {
           name: product.name,
           price: product.price,
           image: product.image,
-          quantity
+          quantity: validQuantity
         }];
       }
     });
-  };
+  }, []);
 
   const removeItem = (productId: string) => {
     setItems(prevItems => prevItems.filter(item => item.id !== productId));
   };
 
-  const updateQuantity = (productId: string, quantity: number) => {
-    if (quantity <= 0) {
+  const updateQuantity = useCallback((productId: string, newQuantity: number) => {
+    if (newQuantity < MINIMUM_ORDER_QUANTITY) {
+      // If trying to go below MOQ, remove the item
       removeItem(productId);
       return;
     }
 
+    // Round to nearest valid increment
+    const validQuantity = roundToNearestIncrement(newQuantity);
+    
     setItems(prevItems =>
       prevItems.map(item =>
         item.id === productId
-          ? { ...item, quantity }
+          ? { ...item, quantity: validQuantity }
           : item
       )
     );
-  };
+  }, [removeItem]);
 
   const clearCart = () => {
     setItems([]);

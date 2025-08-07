@@ -37,10 +37,10 @@ export default function About() {
           <div className="fade-in">
             <span className="text-muted-gold font-semibold uppercase tracking-wider text-sm">Our Story</span>
             <h1 className="text-5xl md:text-6xl font-serif font-bold text-warm-ivory mt-4 mb-6">
-              Excellence Since 1987
+              Excellence Since 2017
             </h1>
-            <p className="text-xl text-warm-ivory/80 max-w-3xl mx-auto leading-relaxed">
-              Three generations of dedication to quality, sustainability, and innovation in cashew processing and export.
+            <p className="text-xl text-white/90 max-w-3xl mx-auto leading-relaxed [text-shadow:0_1px_2px_rgba(0,0,0,0.3)]">
+              Dedicated to excellence in quality, sustainability, and innovation in cashew processing and export.
             </p>
           </div>
         </div>
@@ -79,9 +79,9 @@ export default function About() {
             </div>
             <div className="fade-in">
               <img 
-                src="https://images.unsplash.com/photo-1560472354-b33ff0c44a43?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" 
-                alt="Professional team in processing facility" 
-                className="rounded-xl shadow-2xl image-hover-zoom w-full h-auto"
+                src="/images/about/mission/our-mission.png" 
+                alt="Our mission at RS Enterprises" 
+                className="rounded-xl shadow-2xl image-hover-zoom w-full h-auto aspect-[3/2] object-cover"
               />
             </div>
           </div>
@@ -101,34 +101,34 @@ export default function About() {
           <div className="space-y-12">
             {[
               {
-                year: "1987",
+                year: "2017",
                 title: "Foundation",
                 description: "RS Enterprises was founded with a vision to bring premium quality cashews to the global market.",
-                image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                image: "/images/about/journey/foundation.png"
               },
               {
-                year: "1995",
+                year: "2018",
                 title: "First Export",
-                description: "Began international operations with our first export shipment to Europe, marking the start of our global journey.",
-                image: "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                description: "Within our first year, we began international operations with our first export shipment, marking the start of our global journey.",
+                image: "/images/about/journey/first-export.png"
               },
               {
-                year: "2005",
+                year: "2020",
                 title: "Organic Certification",
                 description: "Achieved organic certification, becoming pioneers in sustainable cashew farming and processing.",
-                image: "https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                image: "/images/about/journey/organic-cert.png"
               },
               {
-                year: "2015",
+                year: "2023",
                 title: "Global Expansion",
-                description: "Expanded operations to serve 25+ countries with state-of-the-art processing facilities.",
-                image: "https://images.unsplash.com/photo-1556075798-4825dfaaf498?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                description: "Expanded operations to serve multiple countries with state-of-the-art processing facilities.",
+                image: "/images/about/journey/global-expansion.png"
               },
               {
                 year: "2024",
                 title: "Future Vision",
                 description: "Continuing innovation with sustainable practices and technology-driven quality assurance.",
-                image: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                image: "/images/about/journey/future-vision.png"
               }
             ].map((milestone, index) => (
               <div 
@@ -152,7 +152,7 @@ export default function About() {
                   <img 
                     src={milestone.image}
                     alt={milestone.title}
-                    className="rounded-xl shadow-xl w-full h-80 object-cover image-hover-zoom"
+                    className="rounded-xl shadow-xl w-full h-auto aspect-[3/2] object-cover image-hover-zoom"
                   />
                 </div>
               </div>
@@ -161,58 +161,7 @@ export default function About() {
         </div>
       </section>
 
-      {/* Team Section */}
-      <section className="py-24 lg:py-32 bg-midnight">
-        <div className="max-w-7xl mx-auto px-6 lg:px-8">
-          <div className="text-center mb-16 fade-in">
-            <span className="text-muted-gold font-semibold uppercase tracking-wider text-sm">Leadership</span>
-            <h2 className="text-4xl md:text-5xl font-serif font-bold text-warm-ivory mt-4 mb-6">
-              Our Expert Team
-            </h2>
-            <p className="text-xl text-warm-ivory/80 max-w-3xl mx-auto">
-              Led by industry veterans with decades of experience in cashew processing and international trade.
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-3 gap-8">
-            {[
-              {
-                name: "Rajesh Sharma",
-                role: "Founder & CEO",
-                experience: "35+ years",
-                image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80"
-              },
-              {
-                name: "Priya Menon",
-                role: "Head of Quality Assurance",
-                experience: "20+ years",
-                image: "https://images.unsplash.com/photo-1580489944761-15a19d654956?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80"
-              },
-              {
-                name: "Arjun Nair",
-                role: "Export Director",
-                experience: "18+ years",
-                image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80"
-              }
-            ].map((member, index) => (
-              <Card key={index} className="bg-warm-ivory/10 border border-warm-ivory/20 text-center fade-in">
-                <CardContent className="p-8">
-                  <img 
-                    src={member.image}
-                    alt={member.name}
-                    className="w-32 h-32 rounded-full mx-auto mb-6 object-cover"
-                  />
-                  <h3 className="text-xl font-serif font-semibold text-warm-ivory mb-2">{member.name}</h3>
-                  <p className="text-muted-gold mb-2">{member.role}</p>
-                  <p className="text-warm-ivory/80 text-sm">{member.experience} experience</p>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Values Section */}
+{/* Values Section */}
       <section className="py-24 lg:py-32 bg-cream-white">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <div className="text-center mb-16 fade-in">

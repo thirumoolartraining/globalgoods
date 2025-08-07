@@ -3,68 +3,48 @@ import { useQuery } from "@tanstack/react-query";
 import { Product } from "@shared/schema";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Card, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { useCart } from "@/hooks/use-cart";
 import { formatPrice } from "@/lib/products";
-import { useState } from "react";
-import { Minus, Plus, Shield, Truck, Award, Globe } from "lucide-react";
+import { useState, useCallback, useEffect } from "react";
+import { Minus, Plus, Shield, Truck, Award, AlertCircle } from "lucide-react";
+import { ImageGallery } from "@/components/image-gallery";
 import { Link } from "wouter";
+import { MINIMUM_ORDER_QUANTITY, QUANTITY_INCREMENT, getNextValidQuantity } from "@/lib/constants";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 
-export default function ProductPage() {
-  const { id } = useParams() as { id: string };
-  const [quantity, setQuantity] = useState(1);
+// Extend the base Product type with frontend-specific properties
+interface ExtendedProduct extends Product {
+  features?: string[];
+}
+
+// Create a separate component for the product content to ensure hooks are called consistently
+function ProductContent({ product, allProducts }: { product: ExtendedProduct; allProducts: ExtendedProduct[] }) {
+  const [quantity, setQuantity] = useState(MINIMUM_ORDER_QUANTITY);
   const [isAdding, setIsAdding] = useState(false);
   const { addItem } = useCart();
+  const [showQuantityError, setShowQuantityError] = useState(false);
 
-  const { data: product, isLoading, error } = useQuery<Product>({
-    queryKey: ["/api/products", id],
-  });
-
-  const { data: allProducts = [] } = useQuery<Product[]>({
-    queryKey: ["/api/products"],
-  });
-
-  if (isLoading) {
-    return (
-      <div className="min-h-screen bg-warm-ivory pt-16">
-        <div className="max-w-7xl mx-auto px-6 lg:px-8 py-24">
-          <div className="text-center">
-            <h1 className="text-4xl font-serif font-bold text-midnight mb-4">Loading Product...</h1>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  if (error || !product) {
-    return (
-      <div className="min-h-screen bg-warm-ivory pt-16">
-        <div className="max-w-7xl mx-auto px-6 lg:px-8 py-24">
-          <div className="text-center">
-            <h1 className="text-4xl font-serif font-bold text-midnight mb-4">Product Not Found</h1>
-            <p className="text-stone-gray mb-6">The product you're looking for doesn't exist.</p>
-            <Link href="/shop">
-              <Button>Back to Shop</Button>
-            </Link>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  const handleAddToCart = () => {
+  const handleAddToCart = useCallback(() => {
     setIsAdding(true);
     addItem(product, quantity);
     
     setTimeout(() => {
       setIsAdding(false);
     }, 1000);
-  };
+  }, [addItem, product, quantity]);
 
-  const updateQuantity = (change: number) => {
-    setQuantity(Math.max(1, quantity + change));
-  };
+  const updateQuantity = useCallback((change: 1 | -1) => {
+    setQuantity(prev => {
+      const newQuantity = getNextValidQuantity(prev, change);
+      return newQuantity;
+    });
+  }, []);
+
+  // Validate quantity when it changes
+  useEffect(() => {
+    setShowQuantityError(quantity < MINIMUM_ORDER_QUANTITY);
+  }, [quantity]);
 
   const relatedProducts = allProducts
     .filter(p => p.id !== product.id && p.category === product.category)
@@ -83,20 +63,18 @@ export default function ProductPage() {
       <section className="py-24">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <div className="grid lg:grid-cols-2 gap-12">
-            {/* Product Image */}
-            <div className="relative">
-              <img 
-                src={product.image}
-                alt={product.name}
-                className="w-full h-96 lg:h-[600px] object-cover rounded-xl shadow-2xl"
-                data-testid="product-image"
-              />
-              {getBadgeText() && (
-                <Badge className="absolute top-6 right-6 text-lg px-4 py-2">
-                  {getBadgeText()}
-                </Badge>
-              )}
-            </div>
+              {/* Product Image Gallery */}
+              <div className="relative">
+                <ImageGallery 
+                  images={product.images || [product.image]} 
+                  className="w-full"
+                />
+                {getBadgeText() && (
+                  <Badge className="absolute top-6 right-6 text-lg px-4 py-2 z-10">
+                    {getBadgeText()}
+                  </Badge>
+                )}
+              </div>
 
             {/* Product Info */}
             <div className="space-y-6">
@@ -139,24 +117,53 @@ export default function ProductPage() {
 
               {/* Quantity and Add to Cart */}
               <div className="space-y-4">
-                <div className="flex items-center space-x-4">
-                  <span className="font-semibold text-midnight">Quantity:</span>
-                  <div className="flex items-center border border-stone-gray/20 rounded">
+                <div className="space-y-2">
+                  <div className="flex items-center space-x-2">
+                    <span className="font-semibold text-midnight">Quantity (kg):</span>
+                    <TooltipProvider>
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <AlertCircle className="h-4 w-4 text-stone-400 hover:text-midnight cursor-help" />
+                        </TooltipTrigger>
+                        <TooltipContent className="max-w-[300px]">
+                          <p>Minimum order quantity: {MINIMUM_ORDER_QUANTITY}kg</p>
+                          <p>Order in increments of {QUANTITY_INCREMENT}kg</p>
+                        </TooltipContent>
+                      </Tooltip>
+                    </TooltipProvider>
+                    {showQuantityError && (
+                      <span className="text-sm text-red-600">
+                        Min {MINIMUM_ORDER_QUANTITY}kg
+                      </span>
+                    )}
+                  </div>
+                  <div className={`flex items-center border rounded ${
+                    showQuantityError ? 'border-red-500' : 'border-stone-gray/20'
+                  }`}>
                     <Button
                       variant="ghost"
                       size="icon"
                       onClick={() => updateQuantity(-1)}
-                      disabled={quantity <= 1}
+                      disabled={quantity <= MINIMUM_ORDER_QUANTITY}
                       data-testid="decrease-quantity"
+                      className="hover:bg-stone-100"
                     >
                       <Minus className="h-4 w-4" />
                     </Button>
-                    <span className="px-4 py-2 font-semibold" data-testid="quantity-display">{quantity}</span>
+                    <span 
+                      className={`px-4 py-2 font-semibold min-w-[60px] text-center ${
+                        showQuantityError ? 'text-red-600' : ''
+                      }`} 
+                      data-testid="quantity-display"
+                    >
+                      {quantity}
+                    </span>
                     <Button
                       variant="ghost"
                       size="icon"
                       onClick={() => updateQuantity(1)}
                       data-testid="increase-quantity"
+                      className="hover:bg-stone-100"
                     >
                       <Plus className="h-4 w-4" />
                     </Button>
@@ -167,15 +174,23 @@ export default function ProductPage() {
                   <Button
                     size="lg"
                     onClick={handleAddToCart}
-                    disabled={isAdding || !product.inStock}
+                    disabled={isAdding || !product.inStock || showQuantityError}
                     className={`w-full font-semibold uppercase tracking-wide ${
                       isAdding 
                         ? "bg-green-600 text-white" 
-                        : "bg-muted-gold text-midnight hover:bg-muted-gold/90"
+                        : showQuantityError
+                          ? "bg-gray-300 text-gray-500 cursor-not-allowed"
+                          : "bg-muted-gold text-midnight hover:bg-muted-gold/90"
                     }`}
                     data-testid="add-to-cart-button"
                   >
-                    {isAdding ? "Added to Cart!" : product.inStock ? "Add to Cart" : "Out of Stock"}
+                    {isAdding 
+                      ? "Added to Cart!" 
+                      : showQuantityError 
+                        ? `Minimum ${MINIMUM_ORDER_QUANTITY}kg`
+                        : product.inStock 
+                          ? `Add ${quantity}kg to Cart` 
+                          : "Out of Stock"}
                   </Button>
 
                   <Button
@@ -194,23 +209,31 @@ export default function ProductPage() {
               {/* Product Features */}
               <div className="space-y-4">
                 <h3 className="font-serif font-semibold text-xl text-midnight">Product Features</h3>
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="flex items-center space-x-2">
-                    <Shield className="h-5 w-5 text-muted-gold" />
-                    <span className="text-sm text-stone-gray">Quality Guaranteed</span>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <Truck className="h-5 w-5 text-muted-gold" />
-                    <span className="text-sm text-stone-gray">Fast Shipping</span>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <Award className="h-5 w-5 text-muted-gold" />
-                    <span className="text-sm text-stone-gray">Premium Grade</span>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <Globe className="h-5 w-5 text-muted-gold" />
-                    <span className="text-sm text-stone-gray">Export Available</span>
-                  </div>
+                <ul className="space-y-2">
+                  {product.features?.map((feature: string, index: number) => (
+                    <li key={index} className="flex items-start">
+                      <span className="text-muted-gold mr-2">•</span>
+                      <span className="text-stone-gray">{feature}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              <Separator />
+
+              {/* Shipping & Guarantee */}
+              <div className="grid grid-cols-3 gap-4 pt-4">
+                <div className="text-center">
+                  <Truck className="h-8 w-8 mx-auto mb-2 text-muted-gold" />
+                  <p className="text-sm text-stone-gray">Free Shipping on orders over $50</p>
+                </div>
+                <div className="text-center">
+                  <Shield className="h-8 w-8 mx-auto mb-2 text-muted-gold" />
+                  <p className="text-sm text-stone-gray">Quality Guarantee</p>
+                </div>
+                <div className="text-center">
+                  <Award className="h-8 w-8 mx-auto mb-2 text-muted-gold" />
+                  <p className="text-sm text-stone-gray">Premium Quality</p>
                 </div>
               </div>
             </div>
@@ -218,67 +241,31 @@ export default function ProductPage() {
         </div>
       </section>
 
-      {/* Trust Badges */}
-      <section className="py-16 bg-cream-white">
-        <div className="max-w-7xl mx-auto px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-serif font-bold text-midnight mb-4">Quality Certifications</h2>
-            <p className="text-stone-gray">Trusted by global standards and regulatory bodies</p>
-          </div>
-          
-          <div className="grid md:grid-cols-4 gap-8">
-            {[
-              { icon: "🏆", title: "ISO 22000", subtitle: "Food Safety Management" },
-              { icon: "🌱", title: "FSSAI", subtitle: "Food Safety Standards" },
-              { icon: "🌍", title: "APEDA", subtitle: "Export Certification" },
-              { icon: "🌿", title: "Organic", subtitle: "Certified Organic" }
-            ].map((cert, index) => (
-              <Card key={index} className="text-center bg-warm-ivory border-0 shadow-lg">
-                <CardContent className="p-6">
-                  <div className="text-3xl mb-3">{cert.icon}</div>
-                  <h3 className="font-semibold text-midnight mb-1">{cert.title}</h3>
-                  <p className="text-stone-gray text-sm">{cert.subtitle}</p>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </div>
-      </section>
-
       {/* Related Products */}
       {relatedProducts.length > 0 && (
-        <section className="py-16 bg-midnight">
+        <section className="py-16 bg-stone-50">
           <div className="max-w-7xl mx-auto px-6 lg:px-8">
-            <div className="text-center mb-12">
-              <h2 className="text-3xl font-serif font-bold text-warm-ivory mb-4">Related Products</h2>
-              <p className="text-warm-ivory/80">More products from the same category</p>
-            </div>
-            
-            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+            <h2 className="text-3xl font-serif font-bold text-midnight mb-8">You May Also Like</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
               {relatedProducts.map((relatedProduct) => (
-                <Card key={relatedProduct.id} className="bg-cream-white overflow-hidden shadow-lg">
+                <div key={relatedProduct.id} className="bg-white rounded-xl shadow-md overflow-hidden">
                   <Link href={`/product/${relatedProduct.id}`}>
                     <img 
-                      src={relatedProduct.image}
-                      alt={relatedProduct.name}
-                      className="w-full h-48 object-cover cursor-pointer hover:scale-105 transition-transform"
+                      src={relatedProduct.image} 
+                      alt={relatedProduct.name} 
+                      className="w-full h-48 object-cover hover:opacity-90 transition-opacity"
                     />
                   </Link>
-                  <CardContent className="p-4">
+                  <div className="p-4">
+                    <h3 className="font-semibold text-lg text-midnight mb-1">{relatedProduct.name}</h3>
+                    <p className="text-muted-gold font-medium mb-2">{formatPrice(relatedProduct.price)}/kg</p>
                     <Link href={`/product/${relatedProduct.id}`}>
-                      <h3 className="font-serif font-semibold text-lg text-midnight mb-2 hover:text-muted-gold transition-colors cursor-pointer">
-                        {relatedProduct.name}
-                      </h3>
+                      <Button variant="outline" size="sm" className="w-full">
+                        View Details
+                      </Button>
                     </Link>
-                    <p className="text-stone-gray text-sm mb-3 line-clamp-2">{relatedProduct.description}</p>
-                    <div className="flex justify-between items-center">
-                      <span className="font-semibold text-midnight">{formatPrice(relatedProduct.price)}/kg</span>
-                      <Link href={`/product/${relatedProduct.id}`}>
-                        <Button size="sm" variant="outline">View</Button>
-                      </Link>
-                    </div>
-                  </CardContent>
-                </Card>
+                  </div>
+                </div>
               ))}
             </div>
           </div>
@@ -286,4 +273,62 @@ export default function ProductPage() {
       )}
     </div>
   );
+}
+
+export default function ProductPage() {
+  const { id } = useParams() as { id: string };
+  
+  // Only fetch product data if we have an ID
+  const { data: product, isLoading, error } = useQuery<Product>({
+    queryKey: [`/api/products/${id}`],
+    enabled: !!id,
+  });
+
+  // Fetch all products for related items
+  const { data: allProducts = [] } = useQuery<Product[]>({
+    queryKey: ["/api/products"],
+    enabled: !!id,
+  });
+
+  // Show loading state
+  if (isLoading || !id) {
+    return (
+      <div className="min-h-screen bg-warm-ivory pt-16">
+        <div className="max-w-7xl mx-auto px-6 lg:px-8 py-24">
+          <div className="text-center">
+            <h1 className="text-4xl font-serif font-bold text-midnight mb-4">
+              {!id ? 'Product ID not found' : 'Loading Product...'}
+            </h1>
+            {!id && (
+              <Link href="/shop" className="text-muted-gold hover:underline mt-4 inline-block">
+                Back to Shop
+              </Link>
+            )}
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // Show error state
+  if (error || !product) {
+    return (
+      <div className="min-h-screen bg-warm-ivory pt-16">
+        <div className="max-w-7xl mx-auto px-6 lg:px-8 py-24">
+          <div className="text-center">
+            <h1 className="text-4xl font-serif font-bold text-midnight mb-4">Product Not Found</h1>
+            <p className="text-stone-gray mb-6">The product you're looking for doesn't exist.</p>
+            <Link href="/shop">
+              <Button>Back to Shop</Button>
+            </Link>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // All the state and handlers are now in the ProductContent component
+
+  // Render the ProductContent component with the fetched data
+  return <ProductContent product={product} allProducts={allProducts} />;
 }

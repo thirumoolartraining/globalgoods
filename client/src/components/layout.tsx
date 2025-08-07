@@ -30,12 +30,15 @@ export function Layout({ children }: LayoutProps) {
   return (
     <>
       {/* Navigation */}
-      <nav className="fixed w-full z-50 bg-midnight/95 backdrop-blur-sm border-b border-muted-gold/20">
+      <nav className="fixed w-full z-50 bg-midnight border-b border-muted-gold/20">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <div className="flex justify-between items-center py-4">
             <Link href="/" className="flex items-center">
-              <h1 className="text-2xl font-serif font-bold text-warm-ivory">RS Enterprises</h1>
-              <span className="ml-3 text-muted-gold text-sm uppercase tracking-wide">Premium Cashews</span>
+              <img 
+                src="/images/logo/logo.png" 
+                alt="RS Enterprises Logo" 
+                className="h-12 w-auto"
+              />
             </Link>
             
             <div className="hidden md:flex items-center space-x-8">
@@ -116,17 +119,23 @@ export function Layout({ children }: LayoutProps) {
       </main>
 
       {/* Footer */}
-      <footer className="bg-midnight py-16">
+      <footer className="bg-midnight py-16 text-white/90 [text-shadow:0_1px_1px_rgba(0,0,0,0.3)]">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <div className="grid md:grid-cols-4 gap-8 mb-12">
             <div>
-              <h3 className="text-2xl font-serif font-bold text-warm-ivory mb-4">RS Enterprises</h3>
-              <p className="text-warm-ivory/80 mb-6">Premium cashew nuts for discerning customers worldwide. Quality, sustainability, and excellence in every kernel.</p>
+              <Link href="/" className="inline-block mb-4">
+                <img 
+                  src="/images/logo/logo.png" 
+                  alt="RS Enterprises Logo" 
+                  className="h-10 w-auto"
+                />
+              </Link>
+              <p className="mb-6">Premium cashew nuts for discerning customers worldwide. Quality, sustainability, and excellence in every kernel.</p>
             </div>
 
             <div>
-              <h4 className="font-serif font-semibold text-warm-ivory mb-4">Quick Links</h4>
-              <ul className="space-y-2 text-warm-ivory/80">
+              <h4 className="font-serif font-semibold text-white mb-4">Quick Links</h4>
+              <ul className="space-y-2">
                 {navLinks.map((link) => (
                   <li key={link.href}>
                     <Link href={link.href} className="hover:text-muted-gold transition-colors">
@@ -138,8 +147,8 @@ export function Layout({ children }: LayoutProps) {
             </div>
 
             <div>
-              <h4 className="font-serif font-semibold text-warm-ivory mb-4">Products</h4>
-              <ul className="space-y-2 text-warm-ivory/80">
+              <h4 className="font-serif font-semibold text-white mb-4">Products</h4>
+              <ul className="space-y-2">
                 <li><Link href="/shop" className="hover:text-muted-gold transition-colors">Raw Cashews</Link></li>
                 <li><Link href="/shop" className="hover:text-muted-gold transition-colors">Roasted & Salted</Link></li>
                 <li><Link href="/shop" className="hover:text-muted-gold transition-colors">Organic Cashews</Link></li>
@@ -149,23 +158,24 @@ export function Layout({ children }: LayoutProps) {
             </div>
 
             <div>
-              <h4 className="font-serif font-semibold text-warm-ivory mb-4">Contact Info</h4>
-              <div className="space-y-2 text-warm-ivory/80">
-                <p>123 Industrial Estate<br />Kollam, Kerala, India</p>
-                <p>Phone: +91 474 2345678</p>
-                <p>Email: info@rscashews.com</p>
+              <h4 className="font-serif font-semibold text-white mb-4">Contact Info</h4>
+              <div className="space-y-2">
+                <p>No: 46, Iyanar Koil Street<br />Sivalingapuram<br />Ariyankuppam, Pondicherry - 605007</p>
+                <p>Phone: +91 72002 30057</p>
+                <p>Email: info@rsenterprises.online</p>
               </div>
             </div>
           </div>
 
           <div className="section-divider mb-8"></div>
           
-          <div className="flex flex-col md:flex-row justify-between items-center text-warm-ivory/60 text-sm">
+          <div className="flex flex-col md:flex-row justify-between items-center text-white/80 text-sm">
             <p>&copy; 2024 RS Enterprises. All rights reserved.</p>
-            <div className="flex space-x-6 mt-4 md:mt-0">
+            <div className="flex flex-wrap gap-4 justify-center md:justify-end mt-4 md:mt-0">
               <Link href="/privacy" className="hover:text-muted-gold transition-colors">Privacy Policy</Link>
-              <a href="#" className="hover:text-muted-gold transition-colors">Terms of Service</a>
-              <a href="#" className="hover:text-muted-gold transition-colors">Shipping Policy</a>
+              <Link href="/terms" className="hover:text-muted-gold transition-colors">Terms of Service</Link>
+              <Link href="/shipping-policy" className="hover:text-muted-gold transition-colors">Shipping Policy</Link>
+              <Link href="/cancellation-refund" className="hover:text-muted-gold transition-colors">Cancellation & Refund</Link>
             </div>
           </div>
         </div>

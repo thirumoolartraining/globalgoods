@@ -55,9 +55,9 @@ export default function Home() {
               Premium Cashews<br />
               <span className="text-muted-gold">Globally Sourced</span>
             </h1>
-            <p className="text-xl md:text-2xl text-warm-ivory/90 mb-8 max-w-3xl mx-auto leading-relaxed">
+            <p className="text-xl md:text-2xl font-medium text-warm-ivory mb-8 max-w-3xl mx-auto leading-relaxed drop-shadow-[0_2px_4px_rgba(0,0,0,0.5)]">
               Experience the finest quality cashew nuts, meticulously processed and exported worldwide. 
-              From farm to table, we deliver excellence in every kernel.
+              <span className="block mt-2">From farm to table, we deliver excellence in every kernel.</span>
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
               <Link href="/shop">
@@ -94,7 +94,7 @@ export default function Home() {
                 Three Generations of Excellence
               </h2>
               <p className="text-lg leading-relaxed mb-6">
-                Founded in 1987, RS Enterprises has been at the forefront of premium cashew processing and export. 
+                Founded in 2017, RS Enterprises has been at the forefront of premium cashew processing and export. 
                 Our commitment to quality, sustainability, and innovation has made us a trusted partner for 
                 discerning customers across 25 countries.
               </p>
@@ -104,7 +104,7 @@ export default function Home() {
               </p>
               <div className="grid grid-cols-3 gap-8">
                 <div className="text-center">
-                  <div className="text-3xl font-serif font-bold text-muted-gold">35+</div>
+                  <div className="text-3xl font-serif font-bold text-muted-gold">8+</div>
                   <div className="text-sm uppercase tracking-wide text-stone-gray">Years</div>
                 </div>
                 <div className="text-center">
@@ -119,9 +119,9 @@ export default function Home() {
             </div>
             <div className="fade-in">
               <img 
-                src="https://images.unsplash.com/photo-1581922819941-6ab31ab79afc?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" 
+                src="https://images.unsplash.com/photo-1581922819941-6ab31ab79afc?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=533&fit=crop&q=80" 
                 alt="Modern cashew processing facility" 
-                className="rounded-xl shadow-2xl image-hover-zoom w-full h-auto"
+                className="rounded-xl shadow-2xl image-hover-zoom w-full h-auto aspect-[3/2] object-cover"
               />
             </div>
           </div>
@@ -164,46 +164,14 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Certifications */}
-      <section className="py-24 lg:py-32 bg-warm-ivory">
-        <div className="max-w-7xl mx-auto px-6 lg:px-8">
-          <div className="text-center mb-16 fade-in">
-            <span className="text-muted-gold font-semibold uppercase tracking-wider text-sm">Quality Assurance</span>
-            <h2 className="text-4xl md:text-5xl font-serif font-bold text-midnight mt-4 mb-6">
-              Global Certifications
-            </h2>
-            <p className="text-xl text-stone-gray max-w-3xl mx-auto">
-              Trusted by international standards and regulatory bodies worldwide
-            </p>
-          </div>
-          
-          <div className="grid md:grid-cols-4 gap-8">
-            {[
-              { icon: "🏆", title: "ISO 22000", subtitle: "Food Safety Management" },
-              { icon: "🌱", title: "FSSAI", subtitle: "Food Safety Standards" },
-              { icon: "🌍", title: "APEDA", subtitle: "Export Certification" },
-              { icon: "🌿", title: "Organic", subtitle: "Certified Organic" }
-            ].map((cert, index) => (
-              <Card key={index} className="text-center bg-cream-white border-0 shadow-lg fade-in">
-                <CardContent className="p-8">
-                  <div className="text-4xl mb-4">{cert.icon}</div>
-                  <h3 className="font-serif font-semibold text-xl text-midnight mb-2">{cert.title}</h3>
-                  <p className="text-stone-gray text-sm">{cert.subtitle}</p>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </div>
-      </section>
-
       {/* CTA Section */}
       <section className="py-24 lg:py-32 bg-midnight">
         <div className="max-w-4xl mx-auto px-6 lg:px-8 text-center">
           <div className="fade-in">
-            <h2 className="text-4xl md:text-5xl font-serif font-bold text-warm-ivory mb-6">
+            <h2 className="text-4xl md:text-5xl font-serif font-bold text-white mb-6 [text-shadow:0_2px_4px_rgba(0,0,0,0.3)]">
               Ready to Experience Premium Quality?
             </h2>
-            <p className="text-xl text-warm-ivory/80 mb-8 max-w-2xl mx-auto">
+            <p className="text-xl text-white/95 mb-8 max-w-2xl mx-auto [text-shadow:0_1px_2px_rgba(0,0,0,0.3)]">
               Join thousands of satisfied customers worldwide who trust RS Enterprises for their cashew needs.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Simple Image Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        .test { margin: 20px 0; padding: 10px; border: 1px solid #ccc; }
+        .success { color: green; }
+        .error { color: red; }
+    </style>
+</head>
+<body>
+    <h1>Image Path Test</h1>
+    
+    <div class="test">
+        <h3>Test 1: Direct Image</h3>
+        <img src="/images/products/cashew-butter/1.jpg" 
+             alt="Test Image" 
+             onload="document.getElementById('result1').className='success'"
+             onerror="document.getElementById('result1').className='error'">
+        <p id="result1">Loading...</p>
+        <p>Path: <code>/images/products/cashew-butter/1.jpg</code></p>
+    </div>
+    
+    <div class="test">
+        <h3>Test 2: Alternative Path</h3>
+        <img src="./images/products/cashew-butter/1.jpg" 
+             alt="Test Image" 
+             onload="document.getElementById('result2').className='success'"
+             onerror="document.getElementById('result2').className='error'">
+        <p id="result2">Loading...</p>
+        <p>Path: <code>./images/products/cashew-butter/1.jpg</code></p>
+    </div>
+    
+    <div class="test">
+        <h3>Test 3: Full URL</h3>
+        <img id="test3" 
+             alt="Test Image" 
+             onload="document.getElementById('result3').className='success'"
+             onerror="document.getElementById('result3').className='error'">
+        <p id="result3">Loading...</p>
+        <p>Path: <code id="fullPath"></code></p>
+    </div>
+    
+    <script>
+        // Set the full URL for test 3
+        const fullPath = window.location.origin + '/images/products/cashew-butter/1.jpg';
+        document.getElementById('test3').src = fullPath;
+        document.getElementById('fullPath').textContent = fullPath;
+        
+        // Log to console for debugging
+        console.log('Testing image at:', fullPath);
+    </script>
+</body>
+</html>

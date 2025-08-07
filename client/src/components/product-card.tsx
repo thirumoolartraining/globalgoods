@@ -28,7 +28,9 @@ export function ProductCard({ product }: ProductCardProps) {
   const getBadgeVariant = (category: string) => {
     switch (category) {
       case "organic": return "default";
-      case "premium": return "secondary";
+      case "premium": 
+      case "roasted": // For Roasted & Salted Cashews
+        return "secondary";
       case "flavored": return "outline";
       default: return "outline";
     }
@@ -42,13 +44,13 @@ export function ProductCard({ product }: ProductCardProps) {
   };
 
   return (
-    <Card className="card-hover bg-cream-white overflow-hidden shadow-lg" data-testid={`product-card-${product.id}`}>
-      <div className="relative overflow-hidden">
-        <Link href={`/product/${product.id}`}>
+    <Card className="card-hover bg-cream-white overflow-hidden shadow-lg h-full flex flex-col" data-testid={`product-card-${product.id}`}>
+      <div className="relative overflow-hidden aspect-square">
+        <Link href={`/product/${product.id}`} className="block w-full h-full">
           <img 
             src={product.image} 
             alt={product.name} 
-            className="w-full h-64 object-cover image-hover-zoom cursor-pointer"
+            className="w-full h-full object-cover image-hover-zoom cursor-pointer"
           />
         </Link>
         {getBadgeText() && (
@@ -60,31 +62,33 @@ export function ProductCard({ product }: ProductCardProps) {
           </Badge>
         )}
       </div>
-      <CardContent className="p-6">
+      <CardContent className="p-6 flex-grow flex flex-col">
         <Link href={`/product/${product.id}`}>
           <h3 className="font-serif font-semibold text-xl text-midnight mb-2 hover:text-muted-gold transition-colors cursor-pointer">
             {product.name}
           </h3>
         </Link>
-        <p className="text-stone-gray mb-4 line-clamp-2">{product.description}</p>
-        <div className="flex justify-between items-center mb-4">
-          <span className="text-2xl font-semibold text-midnight">
-            {formatPrice(product.price)}/kg
-          </span>
-          <span className="text-sm text-stone-gray">{product.weight}</span>
+        <p className="text-stone-gray mb-4 line-clamp-2 flex-grow">{product.description}</p>
+        <div className="mt-auto">
+          <div className="flex justify-between items-center mb-4">
+            <span className="text-2xl font-semibold text-midnight">
+              {formatPrice(product.price)}/kg
+            </span>
+            <span className="text-sm text-stone-gray">{product.weight}</span>
+          </div>
+          <Button 
+            onClick={handleAddToCart}
+            disabled={isAdding || !product.inStock}
+            className={`w-full font-semibold uppercase tracking-wide transition-colors ${
+              isAdding 
+                ? "bg-green-600 text-white" 
+                : "bg-muted-gold text-midnight hover:bg-muted-gold/90"
+            }`}
+            data-testid={`add-to-cart-${product.id}`}
+          >
+            {isAdding ? "Added!" : product.inStock ? "Add to Cart" : "Out of Stock"}
+          </Button>
         </div>
-        <Button 
-          onClick={handleAddToCart}
-          disabled={isAdding || !product.inStock}
-          className={`w-full font-semibold uppercase tracking-wide transition-colors ${
-            isAdding 
-              ? "bg-green-600 text-white" 
-              : "bg-muted-gold text-midnight hover:bg-muted-gold/90"
-          }`}
-          data-testid={`add-to-cart-${product.id}`}
-        >
-          {isAdding ? "Added!" : product.inStock ? "Add to Cart" : "Out of Stock"}
-        </Button>
       </CardContent>
     </Card>
   );

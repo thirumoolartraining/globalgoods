@@ -25,11 +25,13 @@ export function CartSidebar() {
               <div className="flex-1 overflow-y-auto space-y-4">
                 {items.map((item) => (
                   <div key={item.id} className="flex items-center space-x-4 py-4 border-b border-stone-gray/20" data-testid={`cart-item-${item.id}`}>
-                    <img 
-                      src={item.image} 
-                      alt={item.name} 
-                      className="w-16 h-16 object-cover rounded"
-                    />
+                    <div className="w-16 h-16 overflow-hidden rounded">
+                      <img 
+                        src={item.image} 
+                        alt={item.name} 
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
                     <div className="flex-1">
                       <h4 className="font-semibold text-midnight">{item.name}</h4>
                       <p className="text-stone-gray">{formatPrice(item.price)}/kg</p>

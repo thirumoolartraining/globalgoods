@@ -38,6 +38,7 @@ export class MemStorage implements IStorage {
   }
 
   private initializeProducts() {
+    // Ensure all product objects have a valid images array
     const sampleProducts: Product[] = [
       {
         id: "raw-w320",
@@ -45,8 +46,14 @@ export class MemStorage implements IStorage {
         description: "Premium grade raw cashews, perfect for snacking and cooking. These whole cashews are carefully selected for their superior quality and consistency.",
         price: "1200.00",
         category: "raw",
-        weight: "500g - 25kg",
-        image: "https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+        weight: "25kg to 250kg",
+        image: "/images/products/raw-w320/1.png",
+        images: [
+          "/images/products/raw-w320/1.png",
+          "/images/products/raw-w320/2.png",
+          "/images/products/raw-w320/3.png",
+          "/images/products/raw-w320/4.png"
+        ],
         inStock: true,
         isOrganic: false,
         grade: "W320",
@@ -58,8 +65,14 @@ export class MemStorage implements IStorage {
         description: "Perfectly roasted with a touch of sea salt for enhanced flavor. Our signature roasting process brings out the natural sweetness.",
         price: "1400.00",
         category: "roasted",
-        weight: "250g - 10kg",
-        image: "https://images.unsplash.com/photo-1553909985-e6cd5c3e4b82?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+        weight: "25kg to 250kg",
+        image: "/images/products/roasted-w240/1.png",
+        images: [
+          "/images/products/roasted-w240/1.png",
+          "/images/products/roasted-w240/2.png",
+          "/images/products/roasted-w240/3.png",
+          "/images/products/roasted-w240/4.png"
+        ],
         inStock: true,
         isOrganic: false,
         grade: "W240",
@@ -71,8 +84,14 @@ export class MemStorage implements IStorage {
         description: "Certified organic cashews grown without synthetic pesticides. Sustainably sourced from certified organic farms.",
         price: "1600.00",
         category: "organic",
-        weight: "500g - 20kg",
-        image: "https://images.unsplash.com/photo-1599599810769-bcde5a160d4e?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+        weight: "25kg to 250kg",
+        image: "/images/products/organic-w320/1.png",
+        images: [
+          "/images/products/organic-w320/1.png",
+          "/images/products/organic-w320/2.png",
+          "/images/products/organic-w320/3.png",
+          "/images/products/organic-w320/4.png"
+        ],
         inStock: true,
         isOrganic: true,
         grade: "W320",
@@ -81,11 +100,17 @@ export class MemStorage implements IStorage {
       {
         id: "pieces",
         name: "Cashew Pieces",
-        description: "Premium broken cashews perfect for cooking and baking. Ideal for recipes requiring smaller pieces.",
-        price: "900.00",
+        description: "Premium cashew pieces, perfect for baking and cooking. These pieces maintain the same great taste and quality as our whole cashews.",
+        price: "1100.00",
         category: "pieces",
-        weight: "1kg - 50kg",
-        image: "https://images.unsplash.com/photo-1506976785307-8732e854ad03?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+        weight: "25kg to 250kg",
+        image: "/images/products/cashew-pieces/1.png",
+        images: [
+          "/images/products/cashew-pieces/1.png",
+          "/images/products/cashew-pieces/2.png",
+          "/images/products/cashew-pieces/3.png",
+          "/images/products/cashew-pieces/4.png"
+        ],
         inStock: true,
         isOrganic: false,
         grade: "Pieces",
@@ -94,11 +119,17 @@ export class MemStorage implements IStorage {
       {
         id: "honey-roasted",
         name: "Honey Roasted Cashews",
-        description: "Sweet and savory honey-glazed cashews. A perfect blend of natural honey and premium cashews.",
-        price: "1800.00",
+        description: "Sweet and savory honey roasted cashews. The perfect balance of sweet and salty flavors.",
+        price: "1500.00",
         category: "flavored",
-        weight: "200g - 5kg",
-        image: "https://images.unsplash.com/photo-1582362133738-e0770c080db1?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+        weight: "25kg to 250kg",
+        image: "/images/products/honey-roasted/1.png",
+        images: [
+          "/images/products/honey-roasted/1.png",
+          "/images/products/honey-roasted/2.png",
+          "/images/products/honey-roasted/3.png",
+          "/images/products/honey-roasted/4.png"
+        ],
         inStock: true,
         isOrganic: false,
         grade: "W240",
@@ -107,11 +138,17 @@ export class MemStorage implements IStorage {
       {
         id: "spiced",
         name: "Spiced Cashews",
-        description: "Aromatic blend of traditional Indian spices. A unique combination of flavors that awakens the palate.",
-        price: "1500.00",
+        description: "Aromatic and flavorful spiced cashews with a hint of heat. Perfect for those who enjoy bold flavors.",
+        price: "1450.00",
         category: "flavored",
-        weight: "250g - 8kg",
-        image: "https://images.unsplash.com/photo-1596040033229-a9821ebd058d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+        weight: "25kg to 250kg",
+        image: "/images/products/spiced/1.png",
+        images: [
+          "/images/products/spiced/1.png",
+          "/images/products/spiced/2.png",
+          "/images/products/spiced/3.png",
+          "/images/products/spiced/4.png"
+        ],
         inStock: true,
         isOrganic: false,
         grade: "W280",
@@ -123,8 +160,14 @@ export class MemStorage implements IStorage {
         description: "Extra large premium cashews, perfect for gifting. The finest grade with exceptional size and quality.",
         price: "2200.00",
         category: "premium",
-        weight: "500g - 15kg",
-        image: "https://images.unsplash.com/photo-1584464491033-06628f3a6b7b?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+        weight: "25kg to 250kg",
+        image: "/images/products/premium-w240/1.png",
+        images: [
+          "/images/products/premium-w240/1.png",
+          "/images/products/premium-w240/2.png",
+          "/images/products/premium-w240/3.png",
+          "/images/products/premium-w240/4.png"
+        ],
         inStock: true,
         isOrganic: false,
         grade: "W240",
@@ -133,11 +176,17 @@ export class MemStorage implements IStorage {
       {
         id: "butter",
         name: "Cashew Butter",
-        description: "Smooth, creamy butter made from pure cashews. No additives, just natural cashew goodness.",
-        price: "1200.00",
-        category: "processed",
-        weight: "350g jar",
-        image: "https://images.unsplash.com/photo-1571115764595-644a1f56a55c?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+        description: "Creamy, delicious cashew butter made from 100% premium cashews. No added oils or preservatives.",
+        price: "1800.00",
+        category: "butter",
+        weight: "25kg to 250kg",
+        image: "/images/products/cashew-butter/1.png",
+        images: [
+          "/images/products/cashew-butter/1.png",
+          "/images/products/cashew-butter/2.png",
+          "/images/products/cashew-butter/3.png",
+          "/images/products/cashew-butter/4.png"
+        ],
         inStock: true,
         isOrganic: false,
         grade: "Premium",
@@ -185,14 +234,19 @@ export class MemStorage implements IStorage {
 
   async createProduct(insertProduct: InsertProduct): Promise<Product> {
     const id = randomUUID();
+    // Ensure images is always an array, defaulting to empty array if not provided
+    const images = insertProduct.images ?? [];
+    
     const product: Product = { 
       ...insertProduct, 
       id,
+      images, // This ensures images is always an array
       inStock: insertProduct.inStock ?? true,
       isOrganic: insertProduct.isOrganic ?? false,
       grade: insertProduct.grade ?? null,
       tags: insertProduct.tags ?? null
     };
+    
     this.products.set(id, product);
     return product;
   }

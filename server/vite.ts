@@ -68,18 +68,54 @@ export async function setupVite(app: Express, server: Server) {
 }
 
 export function serveStatic(app: Express) {
-  const distPath = path.resolve(import.meta.dirname, "public");
-
-  if (!fs.existsSync(distPath)) {
-    throw new Error(
-      `Could not find the build directory: ${distPath}, make sure to build the client first`,
-    );
+  // Path to the public directory in the project root
+  const publicPath = path.resolve(import.meta.dirname, '..', 'public');
+  
+  // Log the public path for debugging
+  console.log(`Serving static files from: ${publicPath}`);
+  
+  // Check if the public directory exists
+  if (!fs.existsSync(publicPath)) {
+    console.warn(`Warning: Public directory not found at: ${publicPath}`);
   }
 
-  app.use(express.static(distPath));
+  // Simple static file serving - match the working test server
+  app.use(express.static(publicPath));
+  
+  // Serve images from the public directory with a specific route
+  app.use('/images', express.static(path.join(publicPath, 'images'), {
+    maxAge: '1y',
+    immutable: true
+  }));
+  
+  // Log all requests for debugging
+  app.use((req, res, next) => {
+    console.log(`[${new Date().toISOString()}] ${req.method} ${req.path}`);
+    next();
+  });
+  
+  // Simple test endpoint to verify file paths
+  app.get('/api/test-path', (req, res) => {
+    const imagePath = path.join(publicPath, 'images', 'products', 'cashew-butter', '1.jpg');
+    const exists = fs.existsSync(imagePath);
+    
+    res.json({
+      success: exists,
+      message: exists ? 'Image found' : 'Image not found',
+      path: imagePath,
+      url: '/images/products/cashew-butter/1.jpg',
+      files: fs.existsSync(path.dirname(imagePath)) 
+        ? fs.readdirSync(path.dirname(imagePath))
+        : []
+    });
+  });
 
-  // fall through to index.html if the file doesn't exist
-  app.use("*", (_req, res) => {
-    res.sendFile(path.resolve(distPath, "index.html"));
+  // Fall through to index.html for client-side routing
+  app.get('*', (req, res) => {
+    const indexPath = path.join(publicPath, 'index.html');
+    if (fs.existsSync(indexPath)) {
+      return res.sendFile(indexPath);
+    }
+    res.status(404).send('Not Found');
   });
 }

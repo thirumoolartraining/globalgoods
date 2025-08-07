@@ -91,23 +91,10 @@ export default function Export() {
             <h1 className="text-5xl md:text-6xl font-serif font-bold text-warm-ivory mt-4 mb-6">
               We Ship Worldwide
             </h1>
-            <p className="text-xl text-warm-ivory/80 max-w-3xl mx-auto leading-relaxed">
+            <p className="text-xl text-white/90 max-w-3xl mx-auto leading-relaxed [text-shadow:0_1px_2px_rgba(0,0,0,0.3)]">
               Trusted export partner for premium cashew nuts across 25+ countries with comprehensive 
               logistics support and international certifications.
             </p>
-          </div>
-        </div>
-      </section>
-
-      {/* World Map Visual */}
-      <section className="py-16 bg-warm-ivory">
-        <div className="max-w-7xl mx-auto px-6 lg:px-8">
-          <div className="fade-in">
-            <img 
-              src="https://images.unsplash.com/photo-1556075798-4825dfaaf498?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80" 
-              alt="Global trade map showing international connections" 
-              className="w-full h-96 object-cover rounded-xl shadow-2xl"
-            />
           </div>
         </div>
       </section>
@@ -169,7 +156,7 @@ export default function Export() {
               <h2 className="text-4xl md:text-5xl font-serif font-bold text-warm-ivory mt-4 mb-6">
                 Serving 25+ Countries
               </h2>
-              <p className="text-lg text-warm-ivory/80 leading-relaxed mb-8">
+              <p className="text-lg text-white/90 leading-relaxed mb-8 [text-shadow:0_1px_2px_rgba(0,0,0,0.3)]">
                 Our premium cashews reach customers across Asia, Europe, North America, and Australia. 
                 With established distribution networks and reliable logistics partners, we ensure your 
                 orders arrive fresh and on time, anywhere in the world.
@@ -178,82 +165,29 @@ export default function Export() {
               <div className="grid grid-cols-2 gap-6">
                 <div className="text-center p-6 bg-warm-ivory/10 rounded-xl">
                   <div className="text-3xl font-serif font-bold text-muted-gold mb-2">25+</div>
-                  <div className="text-sm uppercase tracking-wide text-warm-ivory/80">Countries Served</div>
+                  <div className="text-sm uppercase tracking-wide text-white/90 [text-shadow:0_1px_1px_rgba(0,0,0,0.3)]">Countries Served</div>
                 </div>
                 <div className="text-center p-6 bg-warm-ivory/10 rounded-xl">
                   <div className="text-3xl font-serif font-bold text-muted-gold mb-2">500+</div>
-                  <div className="text-sm uppercase tracking-wide text-warm-ivory/80">Export Orders</div>
+                  <div className="text-sm uppercase tracking-wide text-white/90 [text-shadow:0_1px_1px_rgba(0,0,0,0.3)]">Export Orders</div>
                 </div>
                 <div className="text-center p-6 bg-warm-ivory/10 rounded-xl">
                   <div className="text-3xl font-serif font-bold text-muted-gold mb-2">99.5%</div>
-                  <div className="text-sm uppercase tracking-wide text-warm-ivory/80">On-time Delivery</div>
+                  <div className="text-sm uppercase tracking-wide text-white/90 [text-shadow:0_1px_1px_rgba(0,0,0,0.3)]">On-time Delivery</div>
                 </div>
                 <div className="text-center p-6 bg-warm-ivory/10 rounded-xl">
                   <div className="text-3xl font-serif font-bold text-muted-gold mb-2">48h</div>
-                  <div className="text-sm uppercase tracking-wide text-warm-ivory/80">Response Time</div>
+                  <div className="text-sm uppercase tracking-wide text-white/90 [text-shadow:0_1px_1px_rgba(0,0,0,0.3)]">Response Time</div>
                 </div>
               </div>
             </div>
             <div className="fade-in">
               <img 
-                src="https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" 
-                alt="International shipping and logistics" 
-                className="rounded-xl shadow-2xl w-full h-auto"
+                src="/images/export/global-reach.png" 
+                alt="Global reach of our export operations" 
+                className="rounded-xl shadow-2xl w-full h-auto aspect-[3/2] object-cover"
               />
             </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Certifications */}
-      <section className="py-24 bg-warm-ivory">
-        <div className="max-w-7xl mx-auto px-6 lg:px-8">
-          <div className="text-center mb-16 fade-in">
-            <span className="text-muted-gold font-semibold uppercase tracking-wider text-sm">Quality Assurance</span>
-            <h2 className="text-4xl md:text-5xl font-serif font-bold text-midnight mt-4 mb-6">
-              International Certifications
-            </h2>
-            <p className="text-xl text-stone-gray max-w-3xl mx-auto">
-              Our products meet the highest international standards and regulatory requirements.
-            </p>
-          </div>
-          
-          <div className="grid md:grid-cols-4 gap-8">
-            {[
-              { 
-                icon: "🏆", 
-                title: "ISO 22000", 
-                subtitle: "Food Safety Management System",
-                description: "International standard for food safety management systems covering the entire food chain."
-              },
-              { 
-                icon: "🌱", 
-                title: "FSSAI", 
-                subtitle: "Food Safety and Standards Authority",
-                description: "Indian regulatory body ensuring food safety and hygiene standards."
-              },
-              { 
-                icon: "🌍", 
-                title: "APEDA", 
-                subtitle: "Agricultural and Processed Food Products Export",
-                description: "Government body promoting export of agricultural products from India."
-              },
-              { 
-                icon: "🌿", 
-                title: "Organic Certified", 
-                subtitle: "Certified Organic Products",
-                description: "International organic certification ensuring sustainable farming practices."
-              }
-            ].map((cert, index) => (
-              <Card key={index} className="text-center bg-cream-white border-0 shadow-lg fade-in">
-                <CardContent className="p-8">
-                  <div className="text-4xl mb-4">{cert.icon}</div>
-                  <h3 className="font-serif font-semibold text-xl text-midnight mb-2">{cert.title}</h3>
-                  <p className="text-muted-gold font-semibold text-sm mb-3">{cert.subtitle}</p>
-                  <p className="text-stone-gray text-sm leading-relaxed">{cert.description}</p>
-                </CardContent>
-              </Card>
-            ))}
           </div>
         </div>
       </section>
@@ -266,7 +200,7 @@ export default function Export() {
             <h2 className="text-4xl md:text-5xl font-serif font-bold text-warm-ivory mt-4 mb-6">
               Request Export Quote
             </h2>
-            <p className="text-xl text-warm-ivory/80 max-w-2xl mx-auto">
+            <p className="text-xl text-white/90 max-w-2xl mx-auto [text-shadow:0_1px_2px_rgba(0,0,0,0.3)]">
               Ready to start importing premium cashews? Fill out the form below and we'll get back to you within 24 hours.
             </p>
           </div>

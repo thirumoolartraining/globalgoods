@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Path Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        .test-container {
+            margin: 20px 0;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+        }
+        .success {
+            color: green;
+        }
+        .error {
+            color: red;
+        }
+        img {
+            max-width: 100%;
+            height: auto;
+            margin-top: 10px;
+            border: 1px solid #eee;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Image Path Tester</h1>
+    <p>This page tests if your image is accessible at the expected path.</p>
+    
+    <div class="test-container">
+        <h2>Test 1: Direct Image Path</h2>
+        <p>Testing: <code>/images/products/cashew-butter/1.jpg</code></p>
+        <div id="test1">
+            <p>Loading test...</p>
+        </div>
+        <img id="testImage1" alt="Test Image 1" style="display: none;">
+    </div>
+
+    <div class="test-container">
+        <h2>Test 2: Using Next.js Image Component</h2>
+        <p>Testing with Next.js Image component (if applicable)</p>
+        <div id="test2">
+            <p>Loading test...</p>
+        </div>
+        <div id="nextImageContainer"></div>
+    </div>
+
+    <script>
+        // Test 1: Basic image load
+        const img1 = document.getElementById('testImage1');
+        const test1Div = document.getElementById('test1');
+        
+        img1.onload = function() {
+            test1Div.innerHTML = '<p class="success">✅ Image loaded successfully!</p>';
+            img1.style.display = 'block';
+        };
+        
+        img1.onerror = function() {
+            test1Div.innerHTML = `
+                <p class="error">❌ Failed to load image at: <code>${img1.src}</code></p>
+                <p>Check the following:</p>
+                <ul>
+                    <li>Is the file in the correct location? (public/images/products/cashew-butter/1.jpg)</li>
+                    <li>Is the filename exactly matching? (case-sensitive)</li>
+                    <li>Does the file have read permissions?</li>
+                </ul>
+            `;
+        };
+        
+        // Set the source last to trigger the load
+        img1.src = '/images/products/cashew-butter/1.jpg';
+        
+        // Test 2: Check if Next.js is available and test with it
+        if (typeof window !== 'undefined' && window.next && window.next.router) {
+            import('next/image').then(({ default: Image }) => {
+                const container = document.getElementById('nextImageContainer');
+                const test2Div = document.getElementById('test2');
+                
+                try {
+                    const img = new Image();
+                    img.src = '/images/products/cashew-butter/1.jpg';
+                    img.alt = 'Test Image';
+                    img.width = 400;
+                    img.height = 300;
+                    img.onload = () => {
+                        test2Div.innerHTML = '<p class="success">✅ Next.js Image component works!</p>';
+                        container.appendChild(img);
+                    };
+                    img.onerror = () => {
+                        test2Div.innerHTML = '<p class="error">❌ Next.js Image component failed to load</p>';
+                    };
+                } catch (e) {
+                    test2Div.innerHTML = `<p class="error">❌ Error with Next.js Image: ${e.message}</p>`;
+                }
+            }).catch(() => {
+                document.getElementById('test2').innerHTML = 
+                    '<p>Next.js Image component not available (this is fine if not using Next.js)</p>';
+            });
+        } else {
+            document.getElementById('test2').innerHTML = 
+                '<p>Next.js not detected (this is fine if not using Next.js)</p>';
+        }
+    </script>
+</body>
+</html>

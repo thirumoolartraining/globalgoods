@@ -1,10 +1,33 @@
 import express, { type Request, Response, NextFunction } from "express";
 import { registerRoutes } from "./routes";
 import { setupVite, serveStatic, log } from "./vite";
+import path from "path";
+import fs from "fs";
 
 const app = express();
+
+// 1. First, set up static file serving before any other middleware
+const publicPath = path.resolve(import.meta.dirname, '..', 'public');
+console.log(`[Server] Serving static files from: ${publicPath}`);
+
+// Serve static files from the public directory
+app.use(express.static(publicPath));
+
+// Serve images with a specific route
+app.use('/images', express.static(path.join(publicPath, 'images'), {
+  maxAge: '1y',
+  immutable: true
+}));
+
+// 2. Then add body parsers
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+
+// 3. Log all requests for debugging
+app.use((req, res, next) => {
+  console.log(`[${new Date().toISOString()}] ${req.method} ${req.path}`);
+  next();
+});
 
 app.use((req, res, next) => {
   const start = Date.now();
@@ -37,6 +60,21 @@ app.use((req, res, next) => {
 });
 
 (async () => {
+  // Add a test endpoint to verify file paths
+  app.get('/api/test-path', (req, res) => {
+    const publicPath = path.resolve(import.meta.dirname, '..', 'public');
+    const imagePath = path.join(publicPath, 'images', 'products', 'cashew-butter', '1.jpg');
+  
+    res.json({
+      exists: fs.existsSync(imagePath),
+      publicPath,
+      imagePath,
+      cwd: process.cwd(),
+      __dirname: import.meta.dirname,
+      files: fs.readdirSync(path.join(publicPath, 'images', 'products', 'cashew-butter'))
+    });
+  });
+
   const server = await registerRoutes(app);
 
   app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
@@ -63,8 +101,8 @@ app.use((req, res, next) => {
   const port = parseInt(process.env.PORT || '5000', 10);
   server.listen({
     port,
-    host: "0.0.0.0",
-    reusePort: true,
+    host: "127.0.0.1",
+    reusePort: false,
   }, () => {
     log(`serving on port ${port}`);
   });

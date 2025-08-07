@@ -2,52 +2,25 @@
   "version": 2,
   "builds": [
     {
+      "src": "dist/server/index.js",
+      "use": "@vercel/node"
+    },
+    {
       "src": "package.json",
       "use": "@vercel/static-build",
       "config": {
         "distDir": "dist/public"
       }
-    },
-    {
-      "src": "dist/server/index.js",
-      "use": "@vercel/node",
-      "config": {
-        "includeFiles": ["dist/server/**", "dist/public/**"]
-      }
     }
   ],
-  "rewrites": [
+  "routes": [
     {
-      "source": "/api/(.*)",
-      "destination": "/api/$1"
+      "src": "/api/(.*)",
+      "dest": "/dist/server/index.js"
     },
     {
-      "source": "/(.*\\.(?:ico|png|jpg|jpeg|svg|css|js|json|txt|webmanifest|xml))",
-      "destination": "/$1"
-    },
-    {
-      "source": "/(.*)",
-      "destination": "/index.html"
-    }
-  ],
-  "headers": [
-    {
-      "source": "/(.*\\.(?:ico|png|jpg|jpeg|svg|css|js|json|txt|webmanifest|xml))",
-      "headers": [
-        {
-          "key": "Cache-Control",
-          "value": "public, max-age=31536000, immutable"
-        }
-      ]
-    },
-    {
-      "source": "/api/(.*)",
-      "headers": [
-        {
-          "key": "Cache-Control",
-          "value": "no-cache, no-store, must-revalidate"
-        }
-      ]
+      "src": "/(.*)",
+      "dest": "/$1"
     }
   ]
 }

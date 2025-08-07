@@ -24,7 +24,7 @@ export default defineConfig({
     },
   },
   root: path.resolve(import.meta.dirname, "client"),
-  base: process.env.NODE_ENV === 'production' ? '/public/' : '/',
+  base: process.env.NODE_ENV === 'production' ? '/' : '/',
   publicDir: path.resolve(import.meta.dirname, 'public'),
   build: {
     outDir: path.resolve(import.meta.dirname, "dist/public"),

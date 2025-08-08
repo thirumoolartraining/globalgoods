@@ -37,7 +37,7 @@ const checkoutFormSchema = orderSchema.extend({
 type CheckoutFormData = z.infer<typeof checkoutFormSchema>;
 
 export default function Checkout() {
-  const [, setLocation] = useLocation();
+  const [, navigate] = useLocation();
   const { items, totalPrice, clearCart, updateQuantity } = useCart();
   const { toast } = useToast();
   const [paymentMethod, setPaymentMethod] = useState<"card" | "bank" | "cod">("card");
@@ -68,26 +68,53 @@ export default function Checkout() {
 
   const orderMutation = useMutation<{ id: string }, Error, Order>({
     mutationFn: async (orderData) => {
-      // In a real app, this would be an API call to your backend
-      return new Promise<{ id: string }>((resolve) => {
-        setTimeout(() => {
-          console.log("Order submitted:", orderData);
-          resolve({ id: orderData.id || `order_${Date.now()}` });
-        }, 1000); // Simulate network delay
-      });
+      console.log("Starting order submission...");
+      try {
+        // In a real app, this would be an API call to your backend
+        const result = await new Promise<{ id: string }>((resolve, reject) => {
+          try {
+            console.log("Processing order data:", orderData);
+            // Simulate API call with timeout
+            setTimeout(() => {
+              const orderId = orderData.id || `order_${Date.now()}`;
+              console.log("Order processed with ID:", orderId);
+              resolve({ id: orderId });
+            }, 1000);
+          } catch (error) {
+            console.error("Error in order processing:", error);
+            reject(error);
+          }
+        });
+        return result;
+      } catch (error) {
+        console.error("Mutation function error:", error);
+        throw error;
+      }
     },
     onSuccess: (order: { id: string }) => {
-      // Clear the cart
-      clearCart();
-      
-      // Show success message
-      toast({
-        title: "Order Placed Successfully!",
-        description: `Your order #${order.id} has been received.`,
-      });
-      
-      // Redirect to thank you page
-      setLocation(`/thank-you/${order.id}`);
+      console.log("Order submission successful, order ID:", order.id);
+      try {
+        // Clear the cart
+        clearCart();
+        
+        // Show success message
+        toast({
+          title: "Order Placed Successfully!",
+          description: `Your order #${order.id} has been received.`,
+        });
+        
+        console.log("Attempting to navigate to thank you page...");
+        // Redirect to thank you page
+        navigate(`/thank-you/${order.id}`, { replace: true });
+        console.log("Navigation should have occurred by now");
+      } catch (error) {
+        console.error("Error in onSuccess handler:", error);
+        toast({
+          title: "Navigation Error",
+          description: "Your order was placed but there was an issue with the confirmation page. Please note your order number: " + order.id,
+          variant: "destructive",
+        });
+      }
     },
     onError: (error) => {
       console.error("Order submission error:", error);
@@ -194,20 +221,7 @@ export default function Checkout() {
       console.log('Order data prepared:', orderData);
       
       // Submit the order
-      orderMutation.mutate(orderData, {
-        onSuccess: (result) => {
-          console.log('Order submission successful:', result);
-          // The actual redirection happens in the orderMutation's onSuccess
-        },
-        onError: (error) => {
-          console.error('Order submission error:', error);
-          toast({
-            title: "Order Failed",
-            description: "There was an error processing your order. Please try again or contact support.",
-            variant: "destructive",
-          });
-        }
-      });
+      orderMutation.mutate(orderData);
       
     } catch (error) {
       console.error('Error in form submission:', error);
@@ -545,9 +559,9 @@ export default function Checkout() {
                           variant="outline"
                           size="sm"
                           className="text-red-700 border-red-300 hover:bg-red-50 hover:text-red-800"
-                          onClick={() => setLocation('/cart')}
+                          onClick={() => navigate('/cart')}
                         >
-                          Update Cart
+                          Back to Cart
                         </Button>
                       </div>
                     ) : (

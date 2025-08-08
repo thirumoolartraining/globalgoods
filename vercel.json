@@ -3,13 +3,25 @@
   "builds": [
     {
       "src": "package.json",
-      "use": "@vercel/static-build",
-      "config": {
-        "distDir": "dist/public"
-      }
+      "use": "@vitejs/plugin-react",
+      "config": {}
     }
   ],
   "routes": [
+    {
+      "src": "/_next/static/(.*)",
+      "dest": "/_next/static/$1",
+      "headers": {
+        "cache-control": "public, max-age=31536000, immutable"
+      }
+    },
+    {
+      "src": "/assets/(.*)",
+      "dest": "/assets/$1",
+      "headers": {
+        "cache-control": "public, max-age=31536000, immutable"
+      }
+    },
     {
       "src": "/(.*\\.(?:json|ico|png|jpg|jpeg|gif|svg|webp|woff|woff2|ttf|eot))",
       "dest": "/$1",
@@ -22,6 +34,8 @@
       "dest": "/index.html"
     }
   ],
+  "framework": "vite",
+  "outputDirectory": "dist",
   "cleanUrls": true,
   "trailingSlash": false
 }

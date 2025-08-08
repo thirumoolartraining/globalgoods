@@ -5,13 +5,10 @@
       "src": "package.json",
       "use": "@vercel/static-build",
       "config": {
-        "distPath": "dist/public",
-        "buildCommand": "npm run build"
+        "distDir": "dist"
       }
     }
   ],
-  "buildCommand": "npm run build",
-  "outputDirectory": "dist/public",
   "routes": [
     {
       "src": "/assets/(.*)",

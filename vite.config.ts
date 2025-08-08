@@ -44,8 +44,8 @@ export default defineConfig({
     sourcemap: true,
     // Ensure assets are properly hashed for cache busting
     manifest: true,
-    // Enable minification
-    minify: 'terser',
+    // Enable minification with ESBuild (faster and included with Vite)
+    minify: 'esbuild',
     // Ensure proper chunk splitting
     chunkSizeWarningLimit: 1000,
     // Rollup options

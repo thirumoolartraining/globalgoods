@@ -9,11 +9,11 @@ import { useEffect, useRef } from "react";
 
 export default function Home() {
   const { data: products = [] } = useQuery<Product[]>({
-    queryKey: ["/api/products"],
+    queryKey: ["products"],
   });
 
   // Featured products (first 4)
-  const featuredProducts = products.slice(0, 4);
+  const featuredProducts = products?.length ? products.slice(0, 4) : [];
 
   // Intersection Observer for fade-in animations
   const observerRef = useRef<IntersectionObserver>();

@@ -280,13 +280,13 @@ export default function ProductPage() {
   
   // Only fetch product data if we have an ID
   const { data: product, isLoading, error } = useQuery<Product>({
-    queryKey: [`/api/products/${id}`],
+    queryKey: [`products/${id}`],
     enabled: !!id,
   });
 
   // Fetch all products for related items
   const { data: allProducts = [] } = useQuery<Product[]>({
-    queryKey: ["/api/products"],
+    queryKey: ["products"],
     enabled: !!id,
   });
 

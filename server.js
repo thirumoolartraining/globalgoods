@@ -1,26 +1,31 @@
 const express = require('express');
-const { createServer } = require('http');
-const { join } = require('path');
+const { join, resolve } = require('path');
 const { parse } = require('url');
-const next = require('next');
 
-const dev = process.env.NODE_ENV !== 'production';
-const app = next({ dev });
-const handle = app.getRequestHandler();
+const app = express();
+const port = process.env.PORT || 3000;
 
-app.prepare().then(() => {
-  const server = express();
+// Serve static files from the Vite output directory
+const staticPath = resolve(__dirname, 'dist/public');
+app.use(express.static(staticPath, {
+  etag: true,
+  maxAge: '1y',
+  immutable: true
+}));
 
-  // Serve static files from the dist directory
-  server.use(express.static(join(__dirname, 'dist')));
+// Handle client-side routing - return index.html for all non-asset routes
+app.get('*', (req, res) => {
+  // If the request is for an asset that doesn't exist, return 404
+  if (req.path.match(/\.(js|css|jpg|jpeg|png|gif|ico|svg|woff|woff2|ttf|eot)$/)) {
+    return res.status(404).send('Not found');
+  }
+  
+  // Otherwise serve the index.html for client-side routing
+  res.sendFile(join(staticPath, 'index.html'));
+});
 
-  // Handle all other routes
-  server.all('*', (req, res) => {
-    return handle(req, res);
-  });
-
-  const port = process.env.PORT || 3000;
-  server.listen(port, () => {
-    console.log(`> Ready on http://localhost:${port}`);
-  });
+// Start the server
+app.listen(port, () => {
+  console.log(`Server is running on http://localhost:${port}`);
+  console.log(`Serving static files from: ${staticPath}`);
 });

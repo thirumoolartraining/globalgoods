@@ -12,6 +12,9 @@
     "check": "tsc",
     "vercel-build": "npm install --no-package-lock && npm run build"
   },
+  "engines": {
+    "node": ">=14.0.0"
+  },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",
     "@radix-ui/react-accordion": "^1.2.4",

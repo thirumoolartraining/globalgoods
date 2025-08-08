@@ -9,6 +9,11 @@
       }
     }
   ],
+  "rewrites": [
+    { "source": "/thank-you/:orderId", "destination": "/thank-you/[orderId]" },
+    { "source": "/product/:id", "destination": "/product/[:id]" },
+    { "source": "/(.*)", "destination": "/index.html" }
+  ],
   "routes": [
     {
       "src": "/assets/(.*)",
@@ -28,10 +33,6 @@
         "cache-control": "public, max-age=86400"
       },
       "dest": "/$1"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "/index.html"
     }
   ]
 }

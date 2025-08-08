@@ -23,11 +23,32 @@
       "dest": "/api/$1"
     },
     {
-      "src": "/(.*)",
-      "dest": "/$1",
+      "src": "^/static/(.*)",
+      "headers": {
+        "cache-control": "public, max-age=31536000, immutable"
+      },
+      "dest": "/static/$1"
+    },
+    {
+      "src": "^/favicon.ico",
+      "dest": "/favicon.ico"
+    },
+    {
+      "src": "^/assets/(.*)",
+      "dest": "/assets/$1"
+    },
+    {
+      "src": "^/(.*)",
+      "dest": "/index.html",
       "headers": {
         "Cache-Control": "public, max-age=0, must-revalidate"
       }
+    }
+  ],
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
     }
   ]
 }

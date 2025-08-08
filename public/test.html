@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Static File Test</title>
+  <style>
+    body { font-family: Arial, sans-serif; max-width: 800px; margin: 0 auto; padding: 20px; }
+    .test { margin: 20px 0; padding: 20px; border: 1px solid #ddd; border-radius: 4px; }
+    .success { color: green; }
+    .error { color: red; }
+    img { max-width: 100%; margin: 10px 0; border: 1px solid #eee; }
+  </style>
+</head>
+<body>
+  <h1>Static File Test</h1>
+  
+  <div class="test">
+    <h2>1. Test Image Loading</h2>
+    <div id="image-test">
+      <p>Loading test image...</p>
+      <img id="test-image" src="/images/test-image.jpg" alt="Test Image" onload="document.getElementById('image-result').textContent = '✅ Image loaded successfully'; document.getElementById('image-result').className = 'success';" onerror="document.getElementById('image-result').textContent = '❌ Failed to load image: ' + this.src; document.getElementById('image-result').className = 'error';">
+      <p id="image-result" class="">Testing...</p>
+    </div>
+  </div>
+
+  <div class="test">
+    <h2>2. Test API Endpoint</h2>
+    <div id="api-test">
+      <p>Testing API endpoint...</p>
+      <pre id="api-result">Loading...</pre>
+    </div>
+  </div>
+
+  <div class="test">
+    <h2>3. Test Environment</h2>
+    <div id="env-test">
+      <pre id="env-result">Loading environment variables...</pre>
+    </div>
+  </div>
+
+  <script>
+    // Test API endpoint
+    fetch('/api/products')
+      .then(response => response.json())
+      .then(data => {
+        document.getElementById('api-result').textContent = '✅ API Response: ' + JSON.stringify(data, null, 2);
+        document.getElementById('api-result').className = 'success';
+      })
+      .catch(error => {
+        document.getElementById('api-result').textContent = '❌ API Error: ' + error.message;
+        document.getElementById('api-result').className = 'error';
+      });
+
+    // Show environment variables
+    fetch('/api/env')
+      .then(response => response.json())
+      .then(env => {
+        document.getElementById('env-result').textContent = 'Environment Variables:\n' + 
+          Object.entries(env)
+            .filter(([key]) => key.startsWith('VERCEL_') || key === 'NODE_ENV')
+            .map(([key, value]) => `${key}=${value}`)
+            .join('\n');
+      })
+      .catch(() => {
+        document.getElementById('env-result').textContent = 'Could not load environment variables';
+      });
+  </script>
+</body>
+</html>

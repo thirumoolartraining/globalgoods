@@ -3,8 +3,12 @@ import { createServer, type Server } from "http";
 import { storage } from "./storage";
 import { insertOrderSchema, insertInquirySchema } from "@shared/schema";
 import { z } from "zod";
+import envRouter from "./routes/env";
 
 export async function registerRoutes(app: Express): Promise<Server> {
+  // Environment test route (for debugging)
+  app.use('/api', envRouter);
+  
   // Products API
   app.get("/api/products", async (req, res) => {
     const requestId = Math.random().toString(36).substring(2, 9);

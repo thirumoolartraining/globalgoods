@@ -1,6 +1,6 @@
 // API base URL - handles both development and production environments
 const API_BASE_URL = import.meta.env.DEV 
-  ? 'http://localhost:5000/api' 
+  ? 'http://localhost:5001/api'  // Updated port to 5001 to match Express server
   : '/api';
 
 /**
@@ -23,9 +23,12 @@ async function apiRequest<T = any>(
   try {
     const response = await fetch(url, {
       method,
-      headers,
+      headers: {
+        ...headers,
+        'Accept': 'application/json',
+      },
       body: data ? JSON.stringify(data) : undefined,
-      credentials: 'include',
+      credentials: import.meta.env.DEV ? 'include' : 'same-origin',
     });
 
     if (!response.ok) {

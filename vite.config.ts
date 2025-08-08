@@ -1,64 +1,47 @@
-import { defineConfig } from "vite";
-import react from "@vitejs/plugin-react";
-import path from "path";
+import { defineConfig } from 'vite'
+import react from '@vitejs/plugin-react'
+import { resolve } from 'path'
 
 export default defineConfig({
-  plugins: [
-    react()
-  ],
-  resolve: {
-    alias: [
-      {
-        find: "@",
-        replacement: path.resolve(import.meta.dirname, "client", "src"),
-      },
-      {
-        find: "@shared",
-        replacement: path.resolve(import.meta.dirname, "shared"),
-      },
-      {
-        find: "@assets",
-        replacement: path.resolve(import.meta.dirname, "attached_assets"),
-      },
-      {
-        find: "shared",
-        replacement: path.resolve(import.meta.dirname, "shared"),
-      },
-    ],
-  },
-  // Root points to the client directory
-  root: path.resolve(import.meta.dirname, "client"),
-  // Base URL for production and development
-  base: '/',
-  // Public directory for static assets
-  publicDir: path.resolve(import.meta.dirname, 'public'),
+  plugins: [react()],
+  
   // Build configuration
   build: {
-    // Output directory for the built files
-    outDir: path.resolve(import.meta.dirname, "dist/public"),
-    // Clean the output directory before building
+    outDir: 'dist/public', // Match your current build output
     emptyOutDir: true,
-    // Directory for assets relative to outDir
-    assetsDir: 'assets',
-    // Generate source maps for better debugging
-    sourcemap: true,
-    // Rollup options
+    sourcemap: false, // Disable for production
+    minify: 'terser', // Explicit minification
     rollupOptions: {
-      // Output configuration
       output: {
-        // Naming pattern for assets
-        assetFileNames: 'assets/[name]-[hash][extname]',
-        // Naming pattern for chunks
-        chunkFileNames: 'assets/[name]-[hash].js',
-        // Naming pattern for entry chunks
-        entryFileNames: 'assets/[name]-[hash].js',
-      },
-    },
+        manualChunks: {
+          vendor: ['react', 'react-dom'],
+          router: ['wouter'],
+          forms: ['react-hook-form', 'zod'],
+          query: ['@tanstack/react-query']
+        }
+      }
+    }
   },
+
+  // Base URL configuration for Vercel
+  base: '/',
+
+  // Development server
   server: {
-    fs: {
-      strict: true,
-      deny: ["**/.*"],
-    },
+    port: 3000,
+    host: true
   },
-});
+
+  // Path resolution
+  resolve: {
+    alias: {
+      '@': resolve(__dirname, './src')
+    }
+  },
+
+  // Preview configuration (matches production)
+  preview: {
+    port: 3000,
+    host: true
+  }
+})

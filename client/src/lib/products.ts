@@ -1,4 +1,4 @@
-import { Product } from "@shared/schema";
+import { Product } from "@shared/types";
 
 export const PRODUCT_CATEGORIES = [
   { value: "all", label: "All Categories" },
@@ -51,21 +51,18 @@ export function filterProducts(
 
   // Filter by price range
   if (filters.priceRange && filters.priceRange !== "all") {
-    const price = parseFloat(filters.priceRange);
     if (filters.priceRange === "0-1000") {
-      filtered = filtered.filter(product => parseFloat(product.price) < 1000);
+      filtered = filtered.filter(product => product.price < 1000);
     } else if (filters.priceRange === "1000-1500") {
       filtered = filtered.filter(product => {
-        const p = parseFloat(product.price);
-        return p >= 1000 && p <= 1500;
+        return product.price >= 1000 && product.price <= 1500;
       });
     } else if (filters.priceRange === "1500-2000") {
       filtered = filtered.filter(product => {
-        const p = parseFloat(product.price);
-        return p >= 1500 && p <= 2000;
+        return product.price >= 1500 && product.price <= 2000;
       });
     } else if (filters.priceRange === "2000+") {
-      filtered = filtered.filter(product => parseFloat(product.price) > 2000);
+      filtered = filtered.filter(product => product.price > 2000);
     }
   }
 
@@ -73,10 +70,10 @@ export function filterProducts(
   if (filters.sortBy) {
     switch (filters.sortBy) {
       case "price-low":
-        filtered.sort((a, b) => parseFloat(a.price) - parseFloat(b.price));
+        filtered.sort((a, b) => a.price - b.price);
         break;
       case "price-high":
-        filtered.sort((a, b) => parseFloat(b.price) - parseFloat(a.price));
+        filtered.sort((a, b) => b.price - a.price);
         break;
       case "newest":
         // For demo purposes, reverse order

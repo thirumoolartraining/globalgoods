@@ -1,39 +1,56 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import path from "path";
-import runtimeErrorOverlay from "@replit/vite-plugin-runtime-error-modal";
 
 export default defineConfig({
   plugins: [
-    react(),
-    runtimeErrorOverlay(),
-    ...(process.env.NODE_ENV !== "production" &&
-    process.env.REPL_ID !== undefined
-      ? [
-          await import("@replit/vite-plugin-cartographer").then((m) =>
-            m.cartographer(),
-          ),
-        ]
-      : []),
+    react()
   ],
   resolve: {
-    alias: {
-      "@": path.resolve(import.meta.dirname, "client", "src"),
-      "@shared": path.resolve(import.meta.dirname, "shared"),
-      "@assets": path.resolve(import.meta.dirname, "attached_assets"),
-    },
+    alias: [
+      {
+        find: "@",
+        replacement: path.resolve(import.meta.dirname, "client", "src"),
+      },
+      {
+        find: "@shared",
+        replacement: path.resolve(import.meta.dirname, "shared"),
+      },
+      {
+        find: "@assets",
+        replacement: path.resolve(import.meta.dirname, "attached_assets"),
+      },
+      {
+        find: "shared",
+        replacement: path.resolve(import.meta.dirname, "shared"),
+      },
+    ],
   },
+  // Root points to the client directory
   root: path.resolve(import.meta.dirname, "client"),
-  base: process.env.NODE_ENV === 'production' ? '/' : '/',
+  // Base URL for production and development
+  base: '/',
+  // Public directory for static assets
   publicDir: path.resolve(import.meta.dirname, 'public'),
+  // Build configuration
   build: {
+    // Output directory for the built files
     outDir: path.resolve(import.meta.dirname, "dist/public"),
+    // Clean the output directory before building
     emptyOutDir: true,
+    // Directory for assets relative to outDir
     assetsDir: 'assets',
+    // Generate source maps for better debugging
+    sourcemap: true,
+    // Rollup options
     rollupOptions: {
+      // Output configuration
       output: {
+        // Naming pattern for assets
         assetFileNames: 'assets/[name]-[hash][extname]',
+        // Naming pattern for chunks
         chunkFileNames: 'assets/[name]-[hash].js',
+        // Naming pattern for entry chunks
         entryFileNames: 'assets/[name]-[hash].js',
       },
     },

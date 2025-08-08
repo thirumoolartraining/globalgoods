@@ -1,82 +1,71 @@
-// API base URL - handles both development and production environments
-const API_BASE_URL = import.meta.env.DEV 
-  ? 'http://localhost:5001/api'  // Updated port to 5001 to match Express server
-  : '/api';
+import type { Product } from "@shared/types";
+
+// Cache for products to avoid multiple fetches
+let productsCache: Product[] | null = null;
 
 /**
- * Makes an API request with proper error handling
+ * Fetches data from static JSON files
  */
-async function apiRequest<T = any>(
-  endpoint: string,
-  method: string = 'GET',
-  data?: unknown
-): Promise<T> {
-  const url = endpoint.startsWith('http') ? endpoint : `${API_BASE_URL}${endpoint}`;
-  
-  console.log(`[API] ${method} ${url}`, { data });
-  
-  const headers: HeadersInit = {};
-  if (data) {
-    headers['Content-Type'] = 'application/json';
+async function fetchStaticData<T>(endpoint: string): Promise<T> {
+  // Handle individual product requests (e.g., products/raw-w320)
+  if (endpoint.startsWith('products/') && endpoint !== 'products') {
+    const productId = endpoint.split('/')[1];
+    await new Promise(resolve => setTimeout(resolve, 0)); // Ensure we don't block the main thread
+    
+    try {
+      // Always fetch fresh products to ensure we have the latest data
+      const products = await fetchStaticData<Product[]>('products');
+      const product = products.find(p => p.id === productId);
+      
+      if (!product) {
+        throw new Error(`Product with ID ${productId} not found`);
+      }
+      
+      return product as unknown as T;
+    } catch (error) {
+      console.error('Failed to fetch product:', error);
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+      throw new Error(`Failed to load product: ${errorMessage}`);
+    }
   }
-
+  
+  // Handle regular data fetching
+  const path = endpoint.startsWith('/') ? endpoint.slice(1) : endpoint;
+  const url = `/data/${path}.json`;
+  
+  console.log(`[Static Data] Fetching ${url}`);
+  
   try {
     const response = await fetch(url, {
-      method,
       headers: {
-        ...headers,
         'Accept': 'application/json',
+        'Cache-Control': 'public, max-age=3600'
       },
-      body: data ? JSON.stringify(data) : undefined,
-      credentials: import.meta.env.DEV ? 'include' : 'same-origin',
     });
 
     if (!response.ok) {
-      let errorData;
-      try {
-        errorData = await response.json();
-      } catch (e) {
-        errorData = await response.text();
-      }
-      
-      console.error(`[API Error] ${response.status} ${response.statusText}`, {
-        url,
-        status: response.status,
-        statusText: response.statusText,
-        errorData,
-      });
-      
-      const error = new Error(
-        errorData?.message || errorData || 'API request failed'
-      );
-      (error as any).status = response.status;
-      (error as any).data = errorData;
-      throw error;
+      throw new Error(`Failed to load ${endpoint}: ${response.statusText}`);
     }
-
-    // Handle empty responses
-    const contentType = response.headers.get('content-type');
-    if (!contentType || !contentType.includes('application/json')) {
-      return null as T;
+    
+    const data = await response.json();
+    
+    // Cache products if we're fetching the products list
+    if (endpoint === 'products') {
+      productsCache = data as Product[];
     }
-
-    return await response.json();
+    
+    return data;
   } catch (error) {
-    console.error('[API Request Error]', {
-      url,
-      method,
-      error: error instanceof Error ? error.message : 'Unknown error',
-    });
+    console.error(`[Static Data Error] Failed to fetch ${endpoint}:`, error);
     throw error;
   }
 }
 
-// Helper methods for common HTTP methods
+// Helper methods for common data fetching
 export const api = {
-  get: <T = any>(endpoint: string) => apiRequest<T>(endpoint, 'GET'),
-  post: <T = any>(endpoint: string, data?: unknown) =>
-    apiRequest<T>(endpoint, 'POST', data),
-  put: <T = any>(endpoint: string, data?: unknown) =>
-    apiRequest<T>(endpoint, 'PUT', data),
-  delete: <T = any>(endpoint: string) => apiRequest<T>(endpoint, 'DELETE'),
+  get: <T = any>(endpoint: string) => fetchStaticData<T>(endpoint),
+  // These methods are kept for compatibility but will throw errors if used
+  post: async () => { throw new Error('POST not supported in static mode'); },
+  put: async () => { throw new Error('PUT not supported in static mode'); },
+  delete: async () => { throw new Error('DELETE not supported in static mode'); },
 };

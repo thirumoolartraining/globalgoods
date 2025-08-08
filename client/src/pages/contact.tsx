@@ -1,21 +1,23 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { Label } from "@/components/ui/label";
+import { FormField } from "@/components/ui/form-field";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
 import { api } from "@/lib/api";
-const { request: apiRequest } = api;
-import { insertInquirySchema, InsertInquiry } from "@shared/schema";
+import { inquirySchema } from "@shared/types";
 import { useToast } from "@/hooks/use-toast";
 import { z } from "zod";
 import { MapPin, Phone, Mail, Clock, Facebook, Linkedin, Instagram } from "lucide-react";
 import { useEffect, useRef } from "react";
 
-const contactInquirySchema = insertInquirySchema.extend({
+// Extend the base inquiry schema with contact-specific fields
+const contactInquirySchema = inquirySchema.extend({
   type: z.literal("contact"),
+  // Add any additional fields specific to contact form
+  subject: z.string().optional(),
+  company: z.string().optional(),
+  country: z.string().optional(),
 });
 
 type ContactInquiryData = z.infer<typeof contactInquirySchema>;
@@ -37,29 +39,29 @@ export default function Contact() {
     },
   });
 
-  const inquiryMutation = useMutation({
-    mutationFn: async (data: ContactInquiryData) => {
-      const response = await apiRequest("POST", "/api/inquiries", data);
-      return response.json();
-    },
-    onSuccess: () => {
-      toast({
-        title: "Message Sent",
-        description: "Thank you for your message. We'll get back to you soon.",
-      });
-      form.reset();
-    },
-    onError: () => {
-      toast({
-        title: "Error",
-        description: "Failed to send message. Please try again.",
-        variant: "destructive",
-      });
-    },
-  });
-
-  const onSubmit = (data: ContactInquiryData) => {
-    inquiryMutation.mutate(data);
+  const handleSubmit = (data: ContactInquiryData) => {
+    // Create email body with form data
+    const subject = encodeURIComponent(data.subject || 'Contact Form Submission');
+    const body = encodeURIComponent(
+      `Name: ${data.name}\n` +
+      `Email: ${data.email}\n` +
+      `Phone: ${data.phone || 'Not provided'}\n` +
+      `Company: ${data.company || 'Not provided'}\n` +
+      `Country: ${data.country || 'Not provided'}\n\n` +
+      `Message:\n${data.message}`
+    );
+    
+    // Open default email client with pre-filled email
+    window.location.href = `mailto:contact@rsenterprises.com?subject=${subject}&body=${body}`;
+    
+    // Show success message
+    toast({
+      title: "Message Ready",
+      description: "Your email client should open with a pre-filled message. Please send it to contact us.",
+    });
+    
+    // Reset form
+    form.reset();
   };
 
   useEffect(() => {
@@ -194,90 +196,62 @@ export default function Contact() {
                 <CardContent className="p-8">
                   <h3 className="text-2xl font-serif font-semibold text-midnight mb-6">Send us a Message</h3>
                   
-                  <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+                  <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-6">
                     <div className="grid md:grid-cols-2 gap-6">
-                      <div className="space-y-2">
-                        <Label htmlFor="name" className="text-sm font-semibold text-midnight uppercase tracking-wide">
-                          Name *
-                        </Label>
-                        <Input
-                          id="name"
-                          {...form.register("name")}
-                          className="border-stone-gray/20 focus:ring-muted-gold focus:border-muted-gold"
-                          data-testid="contact-name-input"
-                        />
-                        {form.formState.errors.name && (
-                          <p className="text-red-500 text-sm">{form.formState.errors.name.message}</p>
-                        )}
-                      </div>
-
-                      <div className="space-y-2">
-                        <Label htmlFor="email" className="text-sm font-semibold text-midnight uppercase tracking-wide">
-                          Email *
-                        </Label>
-                        <Input
-                          id="email"
-                          type="email"
-                          {...form.register("email")}
-                          className="border-stone-gray/20 focus:ring-muted-gold focus:border-muted-gold"
-                          data-testid="contact-email-input"
-                        />
-                        {form.formState.errors.email && (
-                          <p className="text-red-500 text-sm">{form.formState.errors.email.message}</p>
-                        )}
-                      </div>
-                    </div>
-
-                    <div className="grid md:grid-cols-2 gap-6">
-                      <div className="space-y-2">
-                        <Label htmlFor="company" className="text-sm font-semibold text-midnight uppercase tracking-wide">
-                          Company
-                        </Label>
-                        <Input
-                          id="company"
-                          {...form.register("company")}
-                          className="border-stone-gray/20 focus:ring-muted-gold focus:border-muted-gold"
-                          data-testid="contact-company-input"
-                        />
-                      </div>
-
-                      <div className="space-y-2">
-                        <Label htmlFor="subject" className="text-sm font-semibold text-midnight uppercase tracking-wide">
-                          Subject
-                        </Label>
-                        <Input
-                          id="subject"
-                          {...form.register("subject")}
-                          className="border-stone-gray/20 focus:ring-muted-gold focus:border-muted-gold"
-                          data-testid="contact-subject-input"
-                        />
-                      </div>
-                    </div>
-
-                    <div className="space-y-2">
-                      <Label htmlFor="message" className="text-sm font-semibold text-midnight uppercase tracking-wide">
-                        Message *
-                      </Label>
-                      <Textarea
-                        id="message"
-                        {...form.register("message")}
-                        rows={6}
-                        placeholder="Tell us about your requirements, questions, or how we can help you..."
+                      <FormField
+                        label="Name"
+                        {...form.register("name")}
+                        error={form.formState.errors.name?.message}
+                        required
                         className="border-stone-gray/20 focus:ring-muted-gold focus:border-muted-gold"
-                        data-testid="contact-message-textarea"
+                        data-testid="contact-name-input"
                       />
-                      {form.formState.errors.message && (
-                        <p className="text-red-500 text-sm">{form.formState.errors.message.message}</p>
-                      )}
+
+                      <FormField
+                        label="Email"
+                        type="email"
+                        {...form.register("email")}
+                        error={form.formState.errors.email?.message}
+                        required
+                        className="border-stone-gray/20 focus:ring-muted-gold focus:border-muted-gold"
+                        data-testid="contact-email-input"
+                      />
                     </div>
+
+                    <div className="grid md:grid-cols-2 gap-6">
+                      <FormField
+                        label="Company"
+                        {...form.register("company")}
+                        className="border-stone-gray/20 focus:ring-muted-gold focus:border-muted-gold"
+                        data-testid="contact-company-input"
+                      />
+
+                      <FormField
+                        label="Subject"
+                        {...form.register("subject")}
+                        className="border-stone-gray/20 focus:ring-muted-gold focus:border-muted-gold"
+                        data-testid="contact-subject-input"
+                      />
+                    </div>
+
+                    <FormField.Textarea
+                      as="textarea"
+                      label="Message"
+                      placeholder="Tell us about your requirements, questions, or how we can help you..."
+                      rows={6}
+                      error={form.formState.errors.message?.message}
+                      required
+                      className="border-stone-gray/20 focus:ring-muted-gold focus:border-muted-gold"
+                      data-testid="contact-message-textarea"
+                      {...form.register("message")}
+                    />
 
                     <Button
                       type="submit"
-                      disabled={inquiryMutation.isPending}
                       className="w-full bg-muted-gold text-midnight py-3 font-semibold uppercase tracking-wide hover:bg-muted-gold/90 transition-colors"
                       data-testid="contact-submit-button"
                     >
-                      {inquiryMutation.isPending ? "Sending..." : "Send Message"}
+                      Send Message
                     </Button>
                   </form>
                 </CardContent>

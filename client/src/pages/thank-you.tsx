@@ -4,7 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { useParams } from "wouter";
 import { useQuery } from "@tanstack/react-query";
-import { Order } from "@shared/schema";
+import { Order } from "@shared/types";
 import { formatPrice } from "@/lib/products";
 import { Link } from "wouter";
 import { CheckCircle, Package, Truck, Mail, Phone, Download } from "lucide-react";
@@ -71,7 +71,8 @@ export default function ThankYou() {
     );
   }
 
-  const orderItems = JSON.parse(order.items);
+  // Order items are already in the correct format
+  const orderItems = order.items;
 
   return (
     <div className="min-h-screen bg-warm-ivory">
@@ -83,15 +84,26 @@ export default function ThankYou() {
               <CheckCircle className="h-12 w-12 text-white" />
             </div>
             <h1 className="text-5xl md:text-6xl font-serif font-bold text-warm-ivory mb-6">
-              Thank You!
+              Thank You for Your Order!
             </h1>
-            <p className="text-xl text-warm-ivory/80 max-w-2xl mx-auto leading-relaxed mb-8">
-              Your order has been successfully placed. We appreciate your trust in RS Enterprises 
-              for your premium cashew needs.
+            <div className="bg-warm-ivory/10 backdrop-blur-sm rounded-lg p-6 max-w-2xl mx-auto mb-8">
+              <p className="text-xl text-warm-ivory leading-relaxed mb-4">
+                Your order has been received and is being processed.
+              </p>
+              <p className="text-lg text-warm-ivory/90 leading-relaxed">
+                Order ID: <span className="font-semibold">#{order.id.slice(0, 8).toUpperCase()}</span>
+              </p>
+            </div>
+            <p className="text-xl text-warm-ivory/80 max-w-2xl mx-auto leading-relaxed mt-8">
+              Our team will get back to you shortly with order confirmation and shipping details.
             </p>
-            <Badge variant="secondary" className="bg-muted-gold text-midnight px-6 py-2 text-lg font-semibold">
-              Order #{order.id.slice(0, 8).toUpperCase()}
-            </Badge>
+            <div className="mt-8">
+              <Link href="/">
+                <Button className="bg-muted-gold text-midnight hover:bg-muted-gold/90 px-8 py-6 text-lg font-semibold">
+                  Return to Home
+                </Button>
+              </Link>
+            </div>
           </div>
         </div>
       </section>
@@ -146,23 +158,19 @@ export default function ThankYou() {
                     <div>
                       <h3 className="font-semibold text-midnight mb-4 text-lg">Ordered Items</h3>
                       <div className="space-y-4">
-                        {orderItems.map((item: any, index: number) => (
+                        {orderItems.map((item, index: number) => (
                           <div key={index} className="flex items-center space-x-4 p-4 bg-warm-ivory rounded-lg" data-testid={`order-item-${index}`}>
-                            <div className="w-16 h-16 overflow-hidden rounded-lg">
-                              <img 
-                                src={item.image}
-                                alt={item.name}
-                                className="w-full h-full object-cover"
-                              />
+                            <div className="w-16 h-16 flex items-center justify-center bg-gray-100 rounded-lg">
+                              <Package className="h-8 w-8 text-gray-400" />
                             </div>
                             <div className="flex-1">
-                              <h4 className="font-semibold text-midnight">{item.name}</h4>
+                              <h4 className="font-semibold text-midnight">Product ID: {item.productId}</h4>
                               <p className="text-stone-gray">Quantity: {item.quantity}</p>
-                              <p className="text-stone-gray">{formatPrice(item.price)}/kg</p>
+                              <p className="text-stone-gray">{formatPrice(item.price)} each</p>
                             </div>
                             <div className="text-right">
                               <p className="font-semibold text-midnight">
-                                {formatPrice(parseFloat(item.price) * item.quantity)}
+                                {formatPrice(item.price * item.quantity)}
                               </p>
                             </div>
                           </div>
@@ -175,19 +183,18 @@ export default function ThankYou() {
                     {/* Customer & Shipping Info */}
                     <div className="grid md:grid-cols-2 gap-6">
                       <div>
-                        <h3 className="font-semibold text-midnight mb-4 text-lg">Customer Information</h3>
+                        <h3 className="font-semibold text-midnight mb-4 text-lg">Order Information</h3>
                         <div className="space-y-2 text-stone-gray">
-                          <p><strong>Name:</strong> {order.customerName}</p>
-                          <p><strong>Email:</strong> {order.customerEmail}</p>
-                          {order.customerPhone && <p><strong>Phone:</strong> {order.customerPhone}</p>}
+                          <p><strong>Order ID:</strong> {order.id}</p>
+                          <p><strong>Status:</strong> {order.status}</p>
+                          <p><strong>Payment Status:</strong> {order.paymentStatus}</p>
                         </div>
                       </div>
                       <div>
-                        <h3 className="font-semibold text-midnight mb-4 text-lg">Shipping Address</h3>
+                        <h3 className="font-semibold text-midnight mb-4 text-lg">Shipping Information</h3>
                         <div className="text-stone-gray">
                           <p>{order.shippingAddress}</p>
-                          <p>{order.city}, {order.state} {order.postalCode}</p>
-                          <p>{order.country}</p>
+                          <p>Payment Method: {order.paymentMethod}</p>
                         </div>
                       </div>
                     </div>

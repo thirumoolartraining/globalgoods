@@ -149,7 +149,7 @@ export default function Cart() {
                         
                         <div className="text-right">
                           <div className="text-2xl font-semibold text-midnight mb-4" data-testid={`item-total-${item.id}`}>
-                            {formatPrice(parseFloat(item.price) * item.quantity)}
+                            {formatPrice(Number(item.price) * item.quantity)}
                           </div>
                           <Button
                             variant="ghost"

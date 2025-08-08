@@ -1,0 +1,152 @@
+[
+  {
+    "id": "raw-w320",
+    "name": "Raw W320 Cashew Nuts",
+    "description": "Premium quality raw W320 cashew nuts, carefully selected and processed to maintain maximum freshness and natural flavor.",
+    "price": 1750.00,
+    "category": "raw",
+    "weight": "25kg",
+    "weightOptions": ["25kg", "50kg", "100kg", "250kg"],
+    "image": "/images/products/raw-w320/1.png",
+    "images": [
+      "/images/products/raw-w320/1.png",
+      "/images/products/raw-w320/2.png",
+      "/images/products/raw-w320/3.png",
+      "/images/products/raw-w320/4.png"
+    ],
+    "stock": 100,
+    "isFeatured": true,
+    "isArchived": false,
+    "grade": "W320"
+  },
+  {
+    "id": "roasted-w240",
+    "name": "Roasted W240 Cashew Nuts",
+    "description": "Delicious roasted W240 cashew nuts, lightly salted to enhance the natural buttery flavor.",
+    "price": 1950.00,
+    "category": "roasted",
+    "weight": "25kg",
+    "weightOptions": ["25kg", "50kg", "100kg", "250kg"],
+    "image": "/images/products/roasted-w240/1.png",
+    "images": [
+      "/images/products/roasted-w240/1.png",
+      "/images/products/roasted-w240/2.png",
+      "/images/products/roasted-w240/3.png",
+      "/images/products/roasted-w240/4.png"
+    ],
+    "stock": 85,
+    "isFeatured": true,
+    "isArchived": false,
+    "grade": "W240"
+  },
+  {
+    "id": "organic-w320",
+    "name": "Organic W320 Cashew Nuts",
+    "description": "Certified organic W320 cashew nuts, grown without synthetic pesticides or fertilizers.",
+    "price": 2250.00,
+    "category": "organic",
+    "weight": "25kg",
+    "weightOptions": ["25kg", "50kg", "100kg", "250kg"],
+    "image": "/images/products/organic-w320/1.png",
+    "images": [
+      "/images/products/organic-w320/1.png",
+      "/images/products/organic-w320/2.png",
+      "/images/products/organic-w320/3.png",
+      "/images/products/organic-w320/4.png"
+    ],
+    "stock": 75,
+    "isFeatured": true,
+    "isArchived": false,
+    "grade": "W320"
+  },
+  {
+    "id": "cashew-pieces",
+    "name": "Cashew Pieces",
+    "description": "Premium cashew pieces, perfect for cooking, baking, or snacking.",
+    "price": 1250.00,
+    "category": "pieces",
+    "weight": "25kg",
+    "weightOptions": ["25kg", "50kg", "100kg", "250kg"],
+    "image": "/images/products/cashew-pieces/1.png",
+    "images": [
+      "/images/products/cashew-pieces/1.png",
+      "/images/products/cashew-pieces/2.png",
+      "/images/products/cashew-pieces/3.png",
+      "/images/products/cashew-pieces/4.png"
+    ],
+    "stock": 120,
+    "isFeatured": false,
+    "isArchived": false
+  },
+  {
+    "id": "honey-roasted",
+    "name": "Honey Roasted Cashews",
+    "description": "Crunchy roasted cashews coated in a sweet honey glaze with a hint of sea salt.",
+    "price": 3250.00,
+    "category": "flavored",
+    "weight": "25kg",
+    "weightOptions": ["25kg", "50kg", "100kg", "250kg"],
+    "image": "/images/products/honey-roasted/1.png",
+    "images": [
+      "/images/products/honey-roasted/1.png",
+      "/images/products/honey-roasted/2.png",
+      "/images/products/honey-roasted/3.png",
+      "/images/products/honey-roasted/4.png"
+    ],
+    "stock": 60,
+    "isFeatured": true,
+    "isArchived": false
+  },
+  {
+    "id": "spiced",
+    "name": "Spiced Cashews",
+    "description": "Delicious roasted cashews with a perfect blend of spices for a flavorful snack.",
+    "price": 2950.00,
+    "category": "flavored",
+    "weight": "25kg",
+    "weightOptions": ["25kg", "50kg", "100kg", "250kg"],
+    "image": "/images/products/spiced/1.png",
+    "images": [
+      "/images/products/spiced/1.png",
+      "/images/products/spiced/2.png",
+      "/images/products/spiced/3.png",
+      "/images/products/spiced/4.png"
+    ],
+    "stock": 65,
+    "isFeatured": true,
+    "isArchived": false
+  },
+  {
+    "id": "premium-w240",
+    "name": "Premium W240 Cashew Nuts",
+    "description": "Hand-selected premium W240 cashew nuts, known for their large size and superior quality.",
+    "price": 2500.00,
+    "category": "premium",
+    "weight": "25kg",
+    "weightOptions": ["25kg", "50kg", "100kg", "250kg"],
+    "image": "/images/products/premium-w240/1.png",
+    "images": [
+      "/images/products/premium-w240/1.png"
+    ],
+    "stock": 50,
+    "isFeatured": true,
+    "isArchived": false,
+    "grade": "W240"
+  },
+  {
+    "id": "cashew-butter",
+    "name": "Creamy Cashew Butter",
+    "description": "Smooth and creamy cashew butter made from 100% roasted cashews, no additives or preservatives.",
+    "price": 3500.00,
+    "category": "processed",
+    "weight": "25kg",
+    "weightOptions": ["25kg", "50kg", "100kg", "250kg"],
+    "image": "/images/products/cashew-butter/1.png",
+    "images": [
+      "/images/products/cashew-butter/1.png"
+    ],
+    "stock": 90,
+    "isFeatured": false,
+    "isArchived": false
+  }
+]

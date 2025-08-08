@@ -1,7 +1,7 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Product } from "@shared/schema";
+import { Product } from "@shared/types";
 import { formatPrice } from "@/lib/products";
 import { useCart } from "@/hooks/use-cart";
 import { Link } from "wouter";
@@ -37,9 +37,8 @@ export function ProductCard({ product }: ProductCardProps) {
   };
 
   const getBadgeText = () => {
-    if (product.isOrganic) return "Organic";
+    if (product.isFeatured) return "Featured";
     if (product.category === "premium") return "Premium";
-    if (product.tags?.includes("popular")) return "Popular";
     return null;
   };
 
@@ -78,7 +77,7 @@ export function ProductCard({ product }: ProductCardProps) {
           </div>
           <Button 
             onClick={handleAddToCart}
-            disabled={isAdding || !product.inStock}
+            disabled={isAdding || product.stock <= 0}
             className={`w-full font-semibold uppercase tracking-wide transition-colors ${
               isAdding 
                 ? "bg-green-600 text-white" 
@@ -86,7 +85,7 @@ export function ProductCard({ product }: ProductCardProps) {
             }`}
             data-testid={`add-to-cart-${product.id}`}
           >
-            {isAdding ? "Added!" : product.inStock ? "Add to Cart" : "Out of Stock"}
+            {isAdding ? "Added!" : product.stock > 0 ? "Add to Cart" : "Out of Stock"}
           </Button>
         </div>
       </CardContent>

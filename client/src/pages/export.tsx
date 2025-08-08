@@ -8,16 +8,17 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
 import { api } from "@/lib/api";
-const { request: apiRequest } = api;
-import { insertInquirySchema, InsertInquiry } from "@shared/schema";
+import { inquirySchema } from "@shared/types";
 import { useToast } from "@/hooks/use-toast";
 import { z } from "zod";
 import { useEffect, useRef } from "react";
 
-const exportInquirySchema = insertInquirySchema.extend({
+const exportInquirySchema = inquirySchema.extend({
   type: z.literal("export"),
   company: z.string().min(1, "Company name is required"),
   country: z.string().min(1, "Country is required"),
+  subject: z.string().optional(),
+  message: z.string().min(1, "Message is required"),
 });
 
 type ExportInquiryData = z.infer<typeof exportInquirySchema>;
@@ -41,8 +42,9 @@ export default function Export() {
 
   const inquiryMutation = useMutation({
     mutationFn: async (data: ExportInquiryData) => {
-      const response = await apiRequest("POST", "/api/inquiries", data);
-      return response.json();
+      // For now, just log the data since we don't have a backend
+      console.log("Export inquiry data:", data);
+      return { success: true };
     },
     onSuccess: () => {
       toast({

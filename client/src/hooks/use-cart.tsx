@@ -1,5 +1,5 @@
 import { useState, useEffect, createContext, useContext, ReactNode, useCallback } from "react";
-import { Product } from "@shared/schema";
+import { Product } from "@shared/types";
 import { 
   MINIMUM_ORDER_QUANTITY, 
   QUANTITY_INCREMENT, 
@@ -10,7 +10,7 @@ import {
 export interface CartItem {
   id: string;
   name: string;
-  price: string;
+  price: number;
   image: string;
   quantity: number;
 }
@@ -104,7 +104,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
   };
 
   const totalItems = items.reduce((sum, item) => sum + item.quantity, 0);
-  const totalPrice = items.reduce((sum, item) => sum + (parseFloat(item.price) * item.quantity), 0);
+  const totalPrice = items.reduce((sum, item) => sum + (item.price * item.quantity), 0);
 
   return (
     <CartContext.Provider value={{

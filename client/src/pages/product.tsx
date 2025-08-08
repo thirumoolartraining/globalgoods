@@ -1,6 +1,6 @@
 import { useParams } from "wouter";
 import { useQuery } from "@tanstack/react-query";
-import { Product } from "@shared/schema";
+import { Product } from "@shared/types";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
@@ -16,6 +16,10 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/comp
 // Extend the base Product type with frontend-specific properties
 interface ExtendedProduct extends Product {
   features?: string[];
+  inStock?: boolean;
+  isOrganic?: boolean;
+  grade?: string;
+  tags?: string[];
 }
 
 // Create a separate component for the product content to ensure hooks are called consistently
@@ -26,13 +30,22 @@ function ProductContent({ product, allProducts }: { product: ExtendedProduct; al
   const [showQuantityError, setShowQuantityError] = useState(false);
 
   const handleAddToCart = useCallback(() => {
-    setIsAdding(true);
-    addItem(product, quantity);
+    if (showQuantityError) return;
     
+    setIsAdding(true);
+    
+    // Add item to cart
+    addItem({
+      ...product,
+      // Ensure price is a number
+      price: Number(product.price)
+    }, quantity);
+    
+    // Show success feedback
     setTimeout(() => {
       setIsAdding(false);
     }, 1000);
-  }, [addItem, product, quantity]);
+  }, [addItem, product, quantity, showQuantityError]);
 
   const updateQuantity = useCallback((change: 1 | -1) => {
     setQuantity(prev => {
@@ -107,8 +120,8 @@ function ProductContent({ product, allProducts }: { product: ExtendedProduct; al
                 </div>
                 <div className="flex items-center justify-between">
                   <span className="font-semibold text-midnight">Availability:</span>
-                  <span className={`font-semibold ${product.inStock ? "text-green-600" : "text-red-600"}`}>
-                    {product.inStock ? "In Stock" : "Out of Stock"}
+                  <span className="font-semibold text-green-600">
+                    In Stock
                   </span>
                 </div>
               </div>
@@ -174,7 +187,7 @@ function ProductContent({ product, allProducts }: { product: ExtendedProduct; al
                   <Button
                     size="lg"
                     onClick={handleAddToCart}
-                    disabled={isAdding || !product.inStock || showQuantityError}
+                    disabled={isAdding || showQuantityError}
                     className={`w-full font-semibold uppercase tracking-wide ${
                       isAdding 
                         ? "bg-green-600 text-white" 
@@ -188,9 +201,7 @@ function ProductContent({ product, allProducts }: { product: ExtendedProduct; al
                       ? "Added to Cart!" 
                       : showQuantityError 
                         ? `Minimum ${MINIMUM_ORDER_QUANTITY}kg`
-                        : product.inStock 
-                          ? `Add ${quantity}kg to Cart` 
-                          : "Out of Stock"}
+                        : `Add ${quantity}kg to Cart`}
                   </Button>
 
                   <Button
@@ -278,49 +289,67 @@ function ProductContent({ product, allProducts }: { product: ExtendedProduct; al
 export default function ProductPage() {
   const { id } = useParams() as { id: string };
   
-  // Only fetch product data if we have an ID
-  const { data: product, isLoading, error } = useQuery<Product>({
-    queryKey: [`products/${id}`],
-    enabled: !!id,
-  });
-
-  // Fetch all products for related items
-  const { data: allProducts = [] } = useQuery<Product[]>({
+  // Fetch all products
+  const { data: allProducts = [], isLoading, error } = useQuery<Product[]>({
     queryKey: ["products"],
     enabled: !!id,
   });
 
+  // Find the specific product from the allProducts array
+  const product = allProducts.find(p => p.id === id);
+
   // Show loading state
-  if (isLoading || !id) {
+  if (isLoading) {
     return (
       <div className="min-h-screen bg-warm-ivory pt-16">
         <div className="max-w-7xl mx-auto px-6 lg:px-8 py-24">
           <div className="text-center">
             <h1 className="text-4xl font-serif font-bold text-midnight mb-4">
-              {!id ? 'Product ID not found' : 'Loading Product...'}
+              Loading Product...
             </h1>
-            {!id && (
-              <Link href="/shop" className="text-muted-gold hover:underline mt-4 inline-block">
-                Back to Shop
-              </Link>
-            )}
           </div>
         </div>
       </div>
     );
   }
 
-  // Show error state
-  if (error || !product) {
+  // Handle missing ID or product not found
+  if (!id || !product) {
     return (
       <div className="min-h-screen bg-warm-ivory pt-16">
         <div className="max-w-7xl mx-auto px-6 lg:px-8 py-24">
           <div className="text-center">
-            <h1 className="text-4xl font-serif font-bold text-midnight mb-4">Product Not Found</h1>
-            <p className="text-stone-gray mb-6">The product you're looking for doesn't exist.</p>
-            <Link href="/shop">
+            <h1 className="text-4xl font-serif font-bold text-midnight mb-4">
+              {!id ? 'Product ID not found' : 'Product Not Found'}
+            </h1>
+            <p className="text-stone-gray mb-6">
+              {!id 
+                ? 'No product ID was provided.' 
+                : 'The product you\'re looking for doesn\'t exist or has been removed.'}
+            </p>
+            <Link href="/shop" className="inline-block">
               <Button>Back to Shop</Button>
             </Link>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // Show error state if there was an API error
+  if (error) {
+    return (
+      <div className="min-h-screen bg-warm-ivory pt-16">
+        <div className="max-w-7xl mx-auto px-6 lg:px-8 py-24">
+          <div className="text-center">
+            <h1 className="text-4xl font-serif font-bold text-midnight mb-4">Error Loading Product</h1>
+            <p className="text-stone-gray mb-6">There was a problem loading the product. Please try again later.</p>
+            <div className="space-x-4">
+              <Button onClick={() => window.location.reload()} variant="outline">Try Again</Button>
+              <Link href="/shop">
+                <Button>Back to Shop</Button>
+              </Link>
+            </div>
           </div>
         </div>
       </div>

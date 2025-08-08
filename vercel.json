@@ -16,7 +16,6 @@
       }
     }
   ],
-  "includeFiles": ["scripts/**"],
   "routes": [
     {
       "src": "/assets/(.*)",

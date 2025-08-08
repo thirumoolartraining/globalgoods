@@ -8,7 +8,9 @@
     "clean": "rimraf dist",
     "build:client": "vite build",
     "copy:assets": "node --experimental-vm-modules scripts/copy-assets.js",
+    "prebuild": "npm run copy:scripts",
     "build": "npm run clean && npm run build:client && npm run copy:assets",
+    "copy:scripts": "cpx \"scripts/**/*\" dist/scripts",
     "preview": "vite preview --port 3001",
     "check": "tsc",
     "vercel-build": "npm install --no-package-lock && npm run build"
@@ -82,6 +84,7 @@
     "@vitejs/plugin-react": "^4.3.2",
     "autoprefixer": "^10.4.21",
     "concurrently": "^8.2.2",
+    "cpx": "^1.5.0",
     "cross-env": "^7.0.3",
     "postcss": "^8.5.6",
     "prettier": "^3.2.5",

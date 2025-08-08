@@ -7,8 +7,16 @@
       "config": {
         "distDir": "dist"
       }
+    },
+    {
+      "src": "scripts/copy-assets.js",
+      "use": "@vercel/static-build",
+      "config": {
+        "distDir": "dist"
+      }
     }
   ],
+  "includeFiles": ["scripts/**"],
   "routes": [
     {
       "src": "/assets/(.*)",

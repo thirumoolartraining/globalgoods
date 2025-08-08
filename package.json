@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "vite --port 3000",
     "clean": "rimraf dist",
+    "prepare": "npm run build:shared",
     "build:shared": "cd shared && npm install && tsc -p tsconfig.json",
     "build:client": "vite build",
     "copy:assets": "node --experimental-vm-modules scripts/copy-assets.js",

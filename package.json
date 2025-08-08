@@ -7,10 +7,7 @@
     "dev": "vite --port 3000",
     "clean": "rimraf dist",
     "build:client": "vite build",
-    "copy:assets": "node --experimental-vm-modules scripts/copy-assets.js",
-    "prebuild": "npm run copy:scripts",
-    "build": "npm run clean && npm run build:client && npm run copy:assets",
-    "copy:scripts": "cpx \"scripts/**/*\" dist/scripts",
+    "build": "npm run clean && npm run build:client",
     "preview": "vite preview --port 3001",
     "check": "tsc",
     "vercel-build": "npm install --no-package-lock && npm run build"

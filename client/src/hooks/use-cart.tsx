@@ -1,5 +1,5 @@
 import { useState, useEffect, createContext, useContext, ReactNode, useCallback } from "react";
-import { Product } from "@shared/types";
+import { Product } from "@/lib/types";
 import { 
   MINIMUM_ORDER_QUANTITY, 
   QUANTITY_INCREMENT, 

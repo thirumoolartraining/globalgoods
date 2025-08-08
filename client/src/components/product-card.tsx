@@ -1,7 +1,7 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Product } from "@shared/types";
+import { Product } from "@/lib/types";
 import { formatPrice } from "@/lib/products";
 import { useCart } from "@/hooks/use-cart";
 import { Link } from "wouter";

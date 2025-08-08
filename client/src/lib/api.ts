@@ -1,4 +1,4 @@
-import type { Product } from "@shared/types";
+import type { Product } from "@/lib/types";
 
 // Cache for products to avoid multiple fetches
 let productsCache: Product[] | null = null;

@@ -4,7 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { ProductCard } from "@/components/product-card";
 import { Link } from "wouter";
 import { useQuery } from "@tanstack/react-query";
-import { Product } from "@shared/types";
+import { Product } from "@/lib/types";
 import { useEffect, useRef } from "react";
 
 export default function Home() {

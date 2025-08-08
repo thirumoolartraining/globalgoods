@@ -1,4 +1,4 @@
-import { Product } from "@shared/types";
+import { Product } from "@/lib/types";
 
 export const PRODUCT_CATEGORIES = [
   { value: "all", label: "All Categories" },

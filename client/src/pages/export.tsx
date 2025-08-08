@@ -8,7 +8,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
 import { api } from "@/lib/api";
-import { inquirySchema } from "@shared/types";
+import { inquirySchema } from "@/lib/types";
 import { useToast } from "@/hooks/use-toast";
 import { z } from "zod";
 import { useEffect, useRef } from "react";

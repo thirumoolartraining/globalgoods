@@ -4,7 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { useParams } from "wouter";
 import { useQuery } from "@tanstack/react-query";
-import { Order } from "@shared/types";
+import { Order } from "@/lib/types";
 import { formatPrice } from "@/lib/products";
 import { Link } from "wouter";
 import { CheckCircle, Package, Truck, Mail, Phone, Download } from "lucide-react";

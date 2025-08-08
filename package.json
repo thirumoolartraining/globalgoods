@@ -6,12 +6,9 @@
   "scripts": {
     "dev": "vite --port 3000",
     "clean": "rimraf dist",
-    "prebuild": "npm run build:shared",
-    "build:shared": "cd shared && tsc -p tsconfig.json",
     "build:client": "vite build",
     "copy:assets": "node --experimental-vm-modules scripts/copy-assets.js",
     "build": "npm run clean && npm run build:client && npm run copy:assets",
-    "prepare": "npm run build:shared",
     "preview": "vite preview --port 3001",
     "check": "tsc",
     "vercel-build": "npm install --no-package-lock && npm run build"

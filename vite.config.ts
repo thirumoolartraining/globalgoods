@@ -1,16 +1,11 @@
-import { defineConfig, loadEnv } from "vite";
+import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import tsconfigPaths from "vite-tsconfig-paths";
 
 // https://vitejs.dev/config/
-export default defineConfig(({ mode }) => {
-  // Load env file based on `mode` in the current directory.
-  const env = loadEnv(mode, process.cwd(), '');
-  
-  return {
+export default defineConfig({
   root: "client",
   plugins: [react(), tsconfigPaths()],
-  // publicDir is relative to root ("client")
   publicDir: "public",
   css: { postcss: "./postcss.config.cjs" },
   build: {
@@ -18,28 +13,10 @@ export default defineConfig(({ mode }) => {
     emptyOutDir: true,
     assetsDir: "assets",
     sourcemap: true,
-    manifest: true,
-    rollupOptions: {
-      output: {
-        assetFileNames: (assetInfo) => {
-          const name = assetInfo.name || 'asset';
-          const info = name.split('.');
-          const ext = info[info.length - 1];
-          if (ext === 'css') {
-            return 'assets/css/[name]-[hash][extname]';
-          }
-          return 'assets/[name]-[hash][extname]';
-        },
-        chunkFileNames: 'assets/js/[name]-[hash].js',
-        entryFileNames: 'assets/js/[name]-[hash].js'
-      }
-    }
+    manifest: true
   },
-  optimizeDeps: {
-    include: ['react', 'react-dom', 'react-dom/client'],
-  },
-  base: env.VITE_APP_BASE_URL || '/',
+  base: "/",
   define: {
     'process.env': {}
   }
-}});
+});

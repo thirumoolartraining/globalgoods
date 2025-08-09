@@ -13,9 +13,32 @@ export default defineConfig({
     emptyOutDir: true,
     assetsDir: "assets",
     sourcemap: true,
-    manifest: true
+    manifest: true,
+    rollupOptions: {
+      output: {
+        entryFileNames: 'assets/js/[name]-[hash].js',
+        chunkFileNames: 'assets/js/[name]-[hash].js',
+        assetFileNames: (assetInfo) => {
+          const name = assetInfo.name || 'asset';
+          const info = name.split('.');
+          const ext = info[info.length - 1];
+          if (ext === 'css') {
+            return 'assets/css/[name]-[hash][extname]';
+          }
+          return 'assets/[name]-[hash][extname]';
+        }
+      }
+    }
   },
-  base: "/",
+  base: '/',
+  server: {
+    port: 3000,
+    strictPort: true
+  },
+  preview: {
+    port: 3001,
+    strictPort: true
+  },
   define: {
     'process.env': {}
   }

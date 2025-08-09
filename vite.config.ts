@@ -9,11 +9,11 @@ export default defineConfig({
     react(),
     tsconfigPaths(),
   ],
-  // Set root to project root where index.html is located
-  root: __dirname,
+  // Set root to client directory where index.html is located
+  root: path.resolve(__dirname, 'client'),
   base: '/',
   // Explicitly set the public directory
-  publicDir: path.resolve(__dirname, 'public'),
+  publicDir: path.resolve(__dirname, 'client/public'),
   server: {
     port: 3000,
     host: '127.0.0.1',
@@ -41,22 +41,26 @@ export default defineConfig({
   build: {
     outDir: path.resolve(__dirname, 'dist'),
     emptyOutDir: true,
+    assetsDir: 'assets',
     sourcemap: true,
     rollupOptions: {
-      input: path.resolve(__dirname, 'index.html'),
+      input: path.resolve(__dirname, 'client/index.html'),
       output: {
         entryFileNames: 'assets/[name]-[hash].js',
         chunkFileNames: 'assets/[name]-[hash].js',
         assetFileNames: (assetInfo) => {
-          // Keep index.html at the root of the dist directory
-          if (assetInfo.name === 'index.html') {
-            return '[name][extname]';
+          const info = assetInfo.name?.split('.');
+          const ext = info?.[info.length - 1] || '';
+          if (ext === 'css') {
+            return 'assets/css/[name]-[hash][extname]';
           }
-          // Put other assets in the assets directory
+          if (['png', 'jpg', 'jpeg', 'gif', 'svg', 'webp', 'ico'].includes(ext)) {
+            return 'assets/images/[name]-[hash][extname]';
+          }
           return 'assets/[name]-[hash][extname]';
         }
       }
-    }
+    },
   },
 
   optimizeDeps: {

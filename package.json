@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "vite",
     "clean": "rimraf dist",
-    "build": "npm run clean && vite build && node scripts/check-assets.js",
+    "build": "npm run clean && vite build && node scripts/check-assets.cjs",
     "preview": "vite preview --port 3001",
     "check": "tsc",
     "vercel-build": "npm install --no-package-lock && npm run build"

@@ -8,6 +8,7 @@
 !vite.config.ts
 !server/**/*
 !client/**/*
+!scripts/check-assets.cjs
 # Block root /public directory
 /public
 !client/public/**/*

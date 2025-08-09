@@ -6,10 +6,12 @@
   "scripts": {
     "dev": "vite",
     "clean": "rimraf dist",
-    "build": "npm run clean && vite build && node scripts/check-assets.cjs",
+    "build": "npm run clean && vite build",
     "preview": "vite preview --port 3001",
     "check": "tsc",
-    "vercel-build": "npm install --no-package-lock && npm run build"
+    "vercel-build": "npm install --no-package-lock && npm run build",
+    "verify:css": "node scripts/print-css-sizes.cjs",
+    "build:verify": "npm run build && npm run verify:css"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",

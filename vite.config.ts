@@ -6,22 +6,21 @@ import tsconfigPaths from "vite-tsconfig-paths";
 export default defineConfig({
   root: "client",
   plugins: [react(), tsconfigPaths()],
-  publicDir: "client/public",
+  // publicDir is relative to root ("client")
+  publicDir: "public",
   build: {
     outDir: "../dist",
     emptyOutDir: true,
     assetsDir: "assets",
     sourcemap: true,
     rollupOptions: {
-      input: "client/index.html",
       output: {
-        entryFileNames: "assets/[name]-[hash].js",
+        assetFileNames: "assets/[name]-[hash][extname]",
         chunkFileNames: "assets/[name]-[hash].js",
-        assetFileNames: "assets/[name]-[hash][extname]"
+        entryFileNames: "assets/[name]-[hash].js"
       }
     }
   },
-
   optimizeDeps: {
     include: ['react', 'react-dom', 'react-dom/client'],
   },

@@ -10,8 +10,10 @@ let productsCache: Product[] | null = null;
  */
 export function staticUrl(path: string): string {
   if (!path) return "/";
-  if (/^https?:\/\//i.test(path)) return path;
-  return path.startsWith("/") ? path : `/${path.replace(/^\.?\//, "")}`;
+  if (/^https?:\/\//i.test(path)) return path; // absolute URLs untouched
+  const clean = path.replace(/^\/+/, "");      // drop leading slashes
+  const joined = "/" + clean;                  // ensure exactly one leading slash
+  return joined.replace(/\/\/+/g, "/");       // collapse accidental "//" (safe for non-http paths)
 }
 
 export async function getProducts() {
@@ -23,7 +25,7 @@ export async function getProducts() {
       "content-type": "application/json" 
     } 
   });
-  if (!r.ok) throw new Error(`Failed ${url}: ${r.status} ${r.statusText}`);
+  if (!r.ok) throw new Error(`Failed to load ${url}: ${r.status} ${r.statusText}`);
   return r.json();
 }
 

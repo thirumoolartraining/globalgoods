@@ -23,8 +23,12 @@ export default defineConfig({
           if (ext === 'css') {
             return 'assets/css/[name]-[hash][extname]';
           }
-          if (['png', 'jpg', 'jpeg', 'gif', 'svg', 'webp', 'ico'].includes(ext)) {
+          if (['png', 'jpg', 'jpeg', 'gif', 'svg', 'webp'].includes(ext)) {
             return 'assets/images/[name]-[hash][extname]';
+          }
+          // Don't process favicon.ico - it will be copied directly from public dir
+          if (ext === 'ico' && assetInfo.name === 'favicon.ico') {
+            return '[name][extname]';
           }
           return 'assets/[name]-[hash][extname]';
         }

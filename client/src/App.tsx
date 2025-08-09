@@ -21,24 +21,46 @@ import Terms from "@/pages/terms";
 import ShippingPolicy from "@/pages/shipping-policy";
 import CancellationRefund from "@/pages/cancellation-refund";
 
+function DebugRoute({ path, component: Component, ...props }: any) {
+  console.log(`DebugRoute: Checking path ${path}`);
+  return (
+    <Route path={path} {...props}>
+      {(params: any) => {
+        console.log(`DebugRoute: Matched ${path} with params`, params);
+        return <Component {...params} />;
+      }}
+    </Route>
+  );
+}
+
 function Router() {
+  console.log('Router rendering, current path:', window.location.pathname);
+  
   return (
     <Layout>
       <Switch>
-        <Route path="/" component={Home} />
-        <Route path="/about" component={About} />
-        <Route path="/shop" component={Shop} />
-        <Route path="/product/:id" component={Product} />
-        <Route path="/export" component={Export} />
-        <Route path="/contact" component={Contact} />
-        <Route path="/cart" component={Cart} />
-        <Route path="/checkout" component={Checkout} />
-        <Route path="/thank-you/:orderId?" component={ThankYou} />
-        <Route path="/privacy" component={Privacy} />
-        <Route path="/terms" component={Terms} />
-        <Route path="/shipping-policy" component={ShippingPolicy} />
-        <Route path="/cancellation-refund" component={CancellationRefund} />
-        <Route component={NotFound} />
+        <Route path="/test-route">
+          <div>Test Route Works!</div>
+        </Route>
+        <DebugRoute path="/" component={Home} />
+        <DebugRoute path="/about" component={About} />
+        <DebugRoute path="/shop" component={Shop} />
+        <DebugRoute path="/product/:id" component={Product} />
+        <DebugRoute path="/export" component={Export} />
+        <DebugRoute path="/contact" component={Contact} />
+        <DebugRoute path="/cart" component={Cart} />
+        <DebugRoute path="/checkout" component={Checkout} />
+        <DebugRoute path="/thank-you/:orderId?" component={ThankYou} />
+        <DebugRoute path="/privacy" component={Privacy} />
+        <DebugRoute path="/terms" component={Terms} />
+        <DebugRoute path="/shipping-policy" component={ShippingPolicy} />
+        <DebugRoute path="/cancellation-refund" component={CancellationRefund} />
+        <Route>
+          {() => {
+            console.log('No route matched, showing NotFound');
+            return <NotFound />;
+          }}
+        </Route>
       </Switch>
     </Layout>
   );

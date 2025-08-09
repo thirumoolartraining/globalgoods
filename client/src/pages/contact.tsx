@@ -23,6 +23,7 @@ const contactInquirySchema = inquirySchema.extend({
 type ContactInquiryData = z.infer<typeof contactInquirySchema>;
 
 export default function Contact() {
+  console.log('Contact component is rendering');
   const { toast } = useToast();
   const observerRef = useRef<IntersectionObserver>();
 

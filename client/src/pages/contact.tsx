@@ -1,6 +1,8 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { FormField } from "@/components/ui/form-field";
+import { Form, FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
@@ -197,64 +199,113 @@ export default function Contact() {
                 <CardContent className="p-8">
                   <h3 className="text-2xl font-serif font-semibold text-midnight mb-6">Send us a Message</h3>
                   
-                  <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-6">
-                    <div className="grid md:grid-cols-2 gap-6">
+                  <Form {...form}>
+                    <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-6">
+                      <div className="grid md:grid-cols-2 gap-6">
+                        <FormField
+                          control={form.control}
+                          name="name"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel>Name</FormLabel>
+                              <FormControl>
+                                <Input 
+                                  placeholder="Your name"
+                                  className="border-stone-gray/20 focus:ring-muted-gold focus:border-muted-gold"
+                                  data-testid="contact-name-input"
+                                  {...field}
+                                />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                        <FormField
+                          control={form.control}
+                          name="email"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel>Email</FormLabel>
+                              <FormControl>
+                                <Input 
+                                  type="email" 
+                                  placeholder="your.email@example.com"
+                                  className="border-stone-gray/20 focus:ring-muted-gold focus:border-muted-gold"
+                                  data-testid="contact-email-input"
+                                  {...field}
+                                />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                      </div>
+                      <div className="grid md:grid-cols-2 gap-6">
+                        <FormField
+                          control={form.control}
+                          name="company"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel>Company</FormLabel>
+                              <FormControl>
+                                <Input 
+                                  placeholder="Your company (optional)"
+                                  className="border-stone-gray/20 focus:ring-muted-gold focus:border-muted-gold"
+                                  data-testid="contact-company-input"
+                                  {...field}
+                                />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                        <FormField
+                          control={form.control}
+                          name="subject"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel>Subject</FormLabel>
+                              <FormControl>
+                                <Input 
+                                  placeholder="How can we help?"
+                                  className="border-stone-gray/20 focus:ring-muted-gold focus:border-muted-gold"
+                                  data-testid="contact-subject-input"
+                                  {...field}
+                                />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                      </div>
                       <FormField
-                        label="Name"
-                        {...form.register("name")}
-                        error={form.formState.errors.name?.message}
-                        required
-                        className="border-stone-gray/20 focus:ring-muted-gold focus:border-muted-gold"
-                        data-testid="contact-name-input"
+                        control={form.control}
+                        name="message"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Message</FormLabel>
+                            <FormControl>
+                              <Textarea
+                                rows={6}
+                                placeholder="Tell us about your requirements, questions, or how we can help you..."
+                                className="border-stone-gray/20 focus:ring-muted-gold focus:border-muted-gold"
+                                data-testid="contact-message-textarea"
+                                {...field}
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
                       />
-
-                      <FormField
-                        label="Email"
-                        type="email"
-                        {...form.register("email")}
-                        error={form.formState.errors.email?.message}
-                        required
-                        className="border-stone-gray/20 focus:ring-muted-gold focus:border-muted-gold"
-                        data-testid="contact-email-input"
-                      />
-                    </div>
-
-                    <div className="grid md:grid-cols-2 gap-6">
-                      <FormField
-                        label="Company"
-                        {...form.register("company")}
-                        className="border-stone-gray/20 focus:ring-muted-gold focus:border-muted-gold"
-                        data-testid="contact-company-input"
-                      />
-
-                      <FormField
-                        label="Subject"
-                        {...form.register("subject")}
-                        className="border-stone-gray/20 focus:ring-muted-gold focus:border-muted-gold"
-                        data-testid="contact-subject-input"
-                      />
-                    </div>
-
-                    <FormField.Textarea
-                      as="textarea"
-                      label="Message"
-                      placeholder="Tell us about your requirements, questions, or how we can help you..."
-                      rows={6}
-                      error={form.formState.errors.message?.message}
-                      required
-                      className="border-stone-gray/20 focus:ring-muted-gold focus:border-muted-gold"
-                      data-testid="contact-message-textarea"
-                      {...form.register("message")}
-                    />
-
-                    <Button
-                      type="submit"
-                      className="w-full bg-muted-gold text-midnight py-3 font-semibold uppercase tracking-wide hover:bg-muted-gold/90 transition-colors"
-                      data-testid="contact-submit-button"
-                    >
-                      Send Message
-                    </Button>
-                  </form>
+                      <Button
+                        type="submit"
+                        className="w-full bg-muted-gold text-midnight py-3 font-semibold uppercase tracking-wide hover:bg-muted-gold/90 transition-colors"
+                        data-testid="contact-submit-button"
+                      >
+                        Send Message
+                      </Button>
+                    </form>
+                  </Form>
                 </CardContent>
               </Card>
             </div>

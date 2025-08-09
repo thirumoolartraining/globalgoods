@@ -6,6 +6,7 @@ import { formatPrice } from "@/lib/products";
 import { useCart } from "@/hooks/use-cart";
 import { Link } from "wouter";
 import { useState } from "react";
+import { staticUrl } from "@/lib/api";
 
 interface ProductCardProps {
   product: Product;
@@ -47,9 +48,14 @@ export function ProductCard({ product }: ProductCardProps) {
       <div className="relative overflow-hidden aspect-square">
         <Link href={`/product/${product.id}`} className="block w-full h-full">
           <img 
-            src={product.image} 
+            src={staticUrl(product.image || "/images/fallback.jpg")}
             alt={product.name} 
             className="w-full h-full object-cover image-hover-zoom cursor-pointer"
+            onError={(e) => {
+              // Fallback to a default image if the main image fails to load
+              const target = e.target as HTMLImageElement;
+              target.src = staticUrl("/images/fallback.jpg");
+            }}
           />
         </Link>
         {getBadgeText() && (

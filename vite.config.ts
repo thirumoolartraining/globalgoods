@@ -17,23 +17,9 @@ export default defineConfig({
       output: {
         entryFileNames: "assets/[name]-[hash].js",
         chunkFileNames: "assets/[name]-[hash].js",
-        assetFileNames: (assetInfo) => {
-          const info = assetInfo.name?.split('.');
-          const ext = info?.[info.length - 1] || '';
-          if (ext === 'css') {
-            return 'assets/css/[name]-[hash][extname]';
-          }
-          if (['png', 'jpg', 'jpeg', 'gif', 'svg', 'webp'].includes(ext)) {
-            return 'assets/images/[name]-[hash][extname]';
-          }
-          // Don't process favicon.ico - it will be copied directly from public dir
-          if (ext === 'ico' && assetInfo.name === 'favicon.ico') {
-            return '[name][extname]';
-          }
-          return 'assets/[name]-[hash][extname]';
-        }
+        assetFileNames: "assets/[name]-[hash][extname]"
       }
-    },
+    }
   },
 
   optimizeDeps: {

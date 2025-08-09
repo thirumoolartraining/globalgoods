@@ -10,73 +10,57 @@ let productsCache: Product[] | null = null;
  */
 export function staticUrl(path: string): string {
   if (!path) return "/";
-  
-  // Already an absolute URL, return as-is
   if (/^https?:\/\//i.test(path)) return path;
-  
-  // Already site-absolute path, ensure it starts with exactly one slash
-  if (path.startsWith("/")) return `/${path.replace(/^\/+/, '')}`;
-  
-  // Relative path, normalize to site-absolute
-  return `/${path.replace(/^\.?\//, '')}`;
+  return path.startsWith("/") ? path : `/${path.replace(/^\.?\//, "")}`;
 }
 
-/**
- * Fetches data from static JSON files
- */
+export async function getProducts() {
+  const url = staticUrl("data/products.json");
+  console.log("[fetch products.json]", url);
+  const r = await fetch(url, { 
+    headers: { 
+      "accept": "application/json",
+      "content-type": "application/json" 
+    } 
+  });
+  if (!r.ok) throw new Error(`Failed ${url}: ${r.status} ${r.statusText}`);
+  return r.json();
+}
+
+// Keep the existing API interface for compatibility
 async function fetchStaticData<T>(endpoint: string): Promise<T> {
-  // Handle individual product requests (e.g., products/raw-w320)
-  if (endpoint.startsWith('products/') && endpoint !== 'products') {
-    const productId = endpoint.split('/')[1];
-    
-    try {
-      // Always fetch fresh products to ensure we have the latest data
-      const products = await fetchStaticData<Product[]>('products');
-      const product = products.find(p => p.id === productId);
-      
-      if (!product) {
-        throw new Error(`Product with ID ${productId} not found`);
-      }
-      
-      return product as unknown as T;
-    } catch (error) {
-      console.error('Failed to fetch product:', error);
-      const errorMessage = error instanceof Error ? error.message : 'Unknown error';
-      throw new Error(`Failed to load product: ${errorMessage}`);
-    }
+  if (endpoint === 'products') {
+    return getProducts() as unknown as T;
   }
   
-  // Handle regular data fetching
+  if (endpoint.startsWith('products/')) {
+    const products = await getProducts();
+    const productId = endpoint.split('/')[1];
+    const product = products.find((p: Product) => p.id === productId);
+    
+    if (!product) {
+      throw new Error(`Product with ID ${productId} not found`);
+    }
+    
+    return product as unknown as T;
+  }
+  
   const path = endpoint.endsWith('.json') ? endpoint : `${endpoint}.json`;
   const url = staticUrl(`data/${path}`);
   
-  console.log(`[Static Data] Fetching ${url}`);
+  console.log(`[fetch] ${url}`);
+  const response = await fetch(url, {
+    headers: {
+      'accept': 'application/json',
+      'content-type': 'application/json'
+    }
+  });
   
-  try {
-    const response = await fetch(url, {
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-        'Cache-Control': 'public, max-age=3600'
-      },
-    });
-
-    if (!response.ok) {
-      throw new Error(`Failed to load ${endpoint}: ${response.statusText} (${response.status})`);
-    }
-    
-    const data = await response.json();
-    
-    // Cache products if we're fetching the products list
-    if (endpoint === 'products') {
-      productsCache = data as Product[];
-    }
-    
-    return data;
-  } catch (error) {
-    console.error(`[Static Data Error] Failed to fetch ${endpoint}:`, error);
-    throw new Error(`Failed to load ${endpoint}: ${error instanceof Error ? error.message : 'Unknown error'}`);
+  if (!response.ok) {
+    throw new Error(`Failed to load ${endpoint}: ${response.statusText} (${response.status})`);
   }
+  
+  return response.json();
 }
 
 // Helper methods for common data fetching

@@ -1,6 +1,7 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { useEffect, useRef } from "react";
+import { staticUrl } from "@/lib/api";
 
 export default function About() {
   const observerRef = useRef<IntersectionObserver>();
@@ -30,7 +31,7 @@ export default function About() {
         <div 
           className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-20"
           style={{
-            backgroundImage: "url('https://images.unsplash.com/photo-1581922819941-6ab31ab79afc?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80')"
+            backgroundImage: `url('${staticUrl("/images/about/hero-bg.jpg")}')`
           }}
         />
         <div className="relative z-10 max-w-4xl mx-auto px-6 lg:px-8 text-center">
@@ -79,9 +80,13 @@ export default function About() {
             </div>
             <div className="fade-in">
               <img 
-                src="/images/about/mission/our-mission.png" 
+                src={staticUrl("/images/about/mission/our-mission.png")}
                 alt="Our mission at RS Enterprises" 
                 className="rounded-xl shadow-2xl image-hover-zoom w-full h-auto aspect-[3/2] object-cover"
+                onError={(e) => {
+                  const target = e.target as HTMLImageElement;
+                  target.src = staticUrl("/images/fallback.jpg");
+                }}
               />
             </div>
           </div>

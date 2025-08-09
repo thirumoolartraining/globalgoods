@@ -8,7 +8,9 @@
 !vite.config.ts
 !server/**/*
 !client/**/*
-!public/**/*
+# Block root /public directory
+/public
+!client/public/**/*
 !dist/**/*
 !vercel.json
 

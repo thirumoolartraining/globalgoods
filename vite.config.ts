@@ -8,6 +8,7 @@ export default defineConfig({
   plugins: [react(), tsconfigPaths()],
   // publicDir is relative to root ("client")
   publicDir: "public",
+  css: { postcss: "./postcss.config.cjs" },
   build: {
     outDir: "../dist",
     emptyOutDir: true,

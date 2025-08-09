@@ -19,9 +19,4 @@ echo "\n=== Build Output ==="
 echo "Contents of dist directory:"
 ls -la dist || echo "dist directory not found"
 
-if [ -d "dist/public" ]; then
-  echo "\nContents of dist/public:"
-  ls -la dist/public
-fi
-
 echo "\n=== Build Complete ==="

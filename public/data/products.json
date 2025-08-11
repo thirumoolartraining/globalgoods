@@ -126,7 +126,10 @@
     "weightOptions": ["25kg", "50kg", "100kg", "250kg"],
     "image": "/images/products/premium-w240/1.png",
     "images": [
-      "/images/products/premium-w240/1.png"
+      "/images/products/premium-w240/1.png",
+      "/images/products/premium-w240/2.png",
+      "/images/products/premium-w240/3.png",
+      "/images/products/premium-w240/4.png"
     ],
     "stock": 50,
     "isFeatured": true,
@@ -143,7 +146,10 @@
     "weightOptions": ["25kg", "50kg", "100kg", "250kg"],
     "image": "/images/products/cashew-butter/1.png",
     "images": [
-      "/images/products/cashew-butter/1.png"
+      "/images/products/cashew-butter/1.png",
+      "/images/products/cashew-butter/2.png",
+      "/images/products/cashew-butter/3.png",
+      "/images/products/cashew-butter/4.png"
     ],
     "stock": 90,
     "isFeatured": false,

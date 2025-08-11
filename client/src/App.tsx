@@ -20,6 +20,7 @@ import Privacy from "@/pages/privacy";
 import Terms from "@/pages/terms";
 import ShippingPolicy from "@/pages/shipping-policy";
 import CancellationRefund from "@/pages/cancellation-refund";
+import TestTailwind from "./test-tailwind";
 
 function DebugRoute({ path, component: Component, ...props }: any) {
   console.log(`DebugRoute: Checking path ${path}`);
@@ -55,6 +56,7 @@ function Router() {
         <DebugRoute path="/terms" component={Terms} />
         <DebugRoute path="/shipping-policy" component={ShippingPolicy} />
         <DebugRoute path="/cancellation-refund" component={CancellationRefund} />
+        <Route path="/test-tailwind" component={TestTailwind} />
         <Route>
           {() => {
             console.log('No route matched, showing NotFound');

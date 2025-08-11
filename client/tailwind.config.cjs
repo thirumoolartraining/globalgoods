@@ -5,7 +5,16 @@ module.exports = {
   darkMode: ["class"],
   content: [
     "./index.html",
-    "./src/**/*.{js,jsx,ts,tsx}",
+    "./src/**/*.{js,jsx,ts,tsx,mdx}",
+    "./src/**/*.css",
+    "./../shared/**/*.{js,jsx,ts,tsx,mdx}",
+    "./../node_modules/@radix-ui/**/*.{js,ts,jsx,tsx}",
+    "./src/pages/**/*.{js,jsx,ts,tsx}",
+    "./src/components/**/*.{js,jsx,ts,tsx}",
+    "./src/hooks/**/*.{js,jsx,ts,tsx}",
+    "./src/lib/**/*.{js,jsx,ts,tsx}",
+    "./src/App.tsx",
+    "./src/main.tsx"
   ],
   theme: {
     extend: {

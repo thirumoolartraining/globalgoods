@@ -76,7 +76,7 @@ export default function Shop() {
             <AlertTitle>Error</AlertTitle>
             <AlertDescription>
               Failed to load products. Please try again later.
-              {process.env.NODE_ENV === 'development' && (
+              {import.meta.env.MODE === 'development' && (
                 <div className="mt-2 p-2 bg-red-50 text-red-700 text-sm rounded">
                   {error instanceof Error ? error.message : 'Unknown error occurred'}
                 </div>

@@ -1,7 +1,20 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   darkMode: ["class"],
-  content: ["./client/index.html", "./client/src/**/*.{js,jsx,ts,tsx}"],
+  content: [
+    "./client/index.html",
+    "./client/src/**/*.{js,ts,jsx,tsx}",
+    "./shared/**/*.{js,ts,jsx,tsx}",
+    "./node_modules/@radix-ui/**/*.{js,ts,jsx,tsx}"
+  ],
+  safelist: [
+    // Add patterns for any dynamically generated classes
+    'bg-{red,blue,green,yellow,purple,indigo,pink}-500',
+    'text-{red,blue,green,yellow,purple,indigo,pink}-500',
+    'border-{red,blue,green,yellow,purple,indigo,pink}-500',
+    'hover:bg-{red,blue,green,yellow,purple,indigo,pink}-600',
+    'focus:ring-{red,blue,green,yellow,purple,indigo,pink}-500'
+  ],
   theme: {
     extend: {
       borderRadius: {

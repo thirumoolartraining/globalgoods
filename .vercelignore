@@ -1,44 +1,22 @@
-# Ignore everything by default
-*.*
+# Minimal safe ignores
+.git
+.vercel
+.vscode
+node_modules/
+dist/
+.vite/
+*.log
+*.tmp
+.DS_Store
+Thumbs.db
 
-# Allow these files and directories
-!package.json
-!package-lock.json
-!tsconfig.json
-!vite.config.ts
-!server/**/*
-!client/**/*
-!scripts/check-assets.cjs
-# Block root /public directory
-/public
-!client/public/**/*
-!dist/**/*
-!vercel.json
-
-# Ignore development and test files
-**/node_modules
-**/.git
-**/.github
-**/.vscode
-**/__tests__
-**/*.test.*
-**/*.spec.*
-**/*.d.ts
-**/*.md
-**/*.log
-**/.DS_Store
-**/Thumbs.db
-
-# Ignore environment files (except .env.production)
+# Environment files
 .env*
 !.env.production
 !.env.example
 
-# Ignore build artifacts
-build/
-coverage/
-*.tmp
-*.tmp.*
+# Build artifacts
+coverage
 *.bak
 *.swp
 *~

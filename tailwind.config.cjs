@@ -3,9 +3,8 @@ module.exports = {
   darkMode: ["class"],
   content: [
     "./client/index.html",
-    "./client/src/**/*.{js,ts,jsx,tsx}",
-    "./shared/**/*.{js,ts,jsx,tsx}",
-    "./node_modules/@radix-ui/**/*.{js,ts,jsx,tsx}"
+    "./client/src/**/*.{js,ts,jsx,tsx,html}",
+    "./shared/**/*.{ts,tsx}"
   ],
   safelist: [
     // Add patterns for any dynamically generated classes

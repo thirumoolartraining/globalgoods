@@ -8,7 +8,7 @@ import { Product } from "@/lib/types";
 import { useEffect, useRef } from "react";
 
 export default function Home() {
-  const { data: products = [] } = useQuery<Product[]>({
+  const { data: products = [], isLoading } = useQuery<Product[]>({
     queryKey: ["products"],
   });
 
@@ -136,19 +136,27 @@ export default function Home() {
             <h2 className="text-4xl md:text-5xl font-serif font-bold text-warm-ivory mt-4 mb-6">
               Finest Cashew Varieties
             </h2>
-            <p className="text-xl text-warm-ivory/80 max-w-3xl mx-auto">
+            <p className="text-xl text-white max-w-3xl mx-auto">
               Discover our carefully curated selection of premium cashews, each variety offering 
               unique flavors and textures to satisfy the most discerning palates.
             </p>
           </div>
           
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {featuredProducts.map((product) => (
-              <div key={product.id} className="fade-in">
-                <ProductCard product={product} />
-              </div>
-            ))}
-          </div>
+          {isLoading ? (
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+              {[...Array(4)].map((_, i) => (
+                <div key={i} className="h-96 bg-gray-100 dark:bg-gray-800 rounded-lg animate-pulse" />
+              ))}
+            </div>
+          ) : (
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+              {featuredProducts.map((product) => (
+                <div key={product.id} className="fade-in">
+                  <ProductCard product={product} />
+                </div>
+              ))}
+            </div>
+          )}
 
           <div className="text-center mt-12 fade-in">
             <Link href="/shop">

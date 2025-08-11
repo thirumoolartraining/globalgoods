@@ -48,9 +48,12 @@ export function ProductCard({ product }: ProductCardProps) {
       <div className="relative overflow-hidden aspect-square">
         <Link href={`/product/${product.id}`} className="block w-full h-full">
           <img 
-            src={staticUrl(product.image || "/images/fallback.jpg")}
-            alt={product.name} 
-            className="w-full h-full object-cover image-hover-zoom cursor-pointer"
+            src={staticUrl(product.images?.[0] || '/images/placeholder.jpg')} 
+            alt={product.name}
+            loading="lazy"
+            className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+            width={400}
+            height={400}
             onError={(e) => {
               // Fallback to a default image if the main image fails to load
               const target = e.target as HTMLImageElement;

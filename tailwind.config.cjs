@@ -1,10 +1,13 @@
+const path = require('path');
+
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   darkMode: ["class"],
   content: [
-    "./client/index.html",
-    "./client/src/**/*.{js,ts,jsx,tsx,html}",
-    "./shared/**/*.{ts,tsx}"
+    path.join(__dirname, 'client/index.html'),
+    path.join(__dirname, 'client/src/**/*.{js,ts,jsx,tsx,html}'),
+    path.join(__dirname, 'shared/**/*.ts'),
+    path.join(__dirname, 'shared/**/*.tsx')
   ],
   safelist: [
     { pattern: /^(container|mx-auto|grid|flex|gap-\d+|p-\d+|px-\d+|py-\d+|rounded-\w+|shadow(\-\w+)?|text-(xs|sm|base|lg|xl|2xl|3xl)|bg-(white|black|slate|gray|neutral)-(50|100|200|300|400|500))/ }

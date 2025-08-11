@@ -55,12 +55,16 @@ export default function Contact() {
     );
     
     // Open default email client with pre-filled email
-    window.location.href = `mailto:contact@rsenterprises.com?subject=${subject}&body=${body}`;
+    const email1 = 'contact@rsenterprises.com';
+    const email2 = 'rsenterprises5902@gmail.com';
+    const emailBody = `You can also reach us at: ${email1} or ${email2}\n\n${body}`;
+    
+    window.location.href = `mailto:${email1}?subject=${subject}&body=${encodeURIComponent(emailBody)}`;
     
     // Show success message
     toast({
       title: "Message Ready",
-      description: "Your email client should open with a pre-filled message. Please send it to contact us.",
+      description: `Your email client should open with a pre-filled message. You can send it to ${email1} or ${email2}.`,
     });
     
     // Reset form
@@ -142,10 +146,9 @@ export default function Contact() {
                     <Mail className="h-6 w-6 text-midnight" />
                   </div>
                   <div>
-                    <h3 className="font-semibold text-midnight mb-2 text-lg">Email Address</h3>
-                    <p className="text-stone-gray leading-relaxed">
-                      info@rsenterprises.online
-                    </p>
+                    <h3 className="font-semibold text-midnight mb-2 text-lg">Email Addresses</h3>
+                    <p className="text-stone-600">info@rsenterprises.online</p>
+                    <p className="text-stone-600">rsenterprises5902@gmail.com</p>
                   </div>
                 </div>
 

@@ -162,7 +162,7 @@ export function Layout({ children }: LayoutProps) {
               <div className="space-y-2">
                 <p>No: 46, Iyanar Koil Street<br />Sivalingapuram<br />Ariyankuppam, Pondicherry - 605007</p>
                 <p>Phone: +91 72002 30057</p>
-                <p>Email: info@rsenterprises.online</p>
+                <p>Email: info@rsenterprises.online<br />rsenterprises5902@gmail.com</p>
               </div>
             </div>
           </div>

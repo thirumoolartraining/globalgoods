@@ -7,12 +7,7 @@ module.exports = {
     "./shared/**/*.{ts,tsx}"
   ],
   safelist: [
-    // Add patterns for any dynamically generated classes
-    'bg-{red,blue,green,yellow,purple,indigo,pink}-500',
-    'text-{red,blue,green,yellow,purple,indigo,pink}-500',
-    'border-{red,blue,green,yellow,purple,indigo,pink}-500',
-    'hover:bg-{red,blue,green,yellow,purple,indigo,pink}-600',
-    'focus:ring-{red,blue,green,yellow,purple,indigo,pink}-500'
+    { pattern: /^(container|mx-auto|grid|flex|gap-\d+|p-\d+|px-\d+|py-\d+|rounded-\w+|shadow(\-\w+)?|text-(xs|sm|base|lg|xl|2xl|3xl)|bg-(white|black|slate|gray|neutral)-(50|100|200|300|400|500))/ }
   ],
   theme: {
     extend: {

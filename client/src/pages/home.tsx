@@ -118,11 +118,17 @@ export default function Home() {
               </div>
             </div>
             <div className="fade-in">
-              <img 
-                src="https://images.unsplash.com/photo-1581922819941-6ab31ab79afc?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=533&fit=crop&q=80" 
-                alt="Modern cashew processing facility" 
-                className="rounded-xl shadow-2xl image-hover-zoom w-full h-auto aspect-[3/2] object-cover"
-              />
+              <div className="relative w-full h-0 pb-[66.67%] overflow-hidden rounded-xl shadow-2xl">
+                <img 
+                  src="/images/homepage/growth.png" 
+                  alt="Modern cashew processing facility" 
+                  className="absolute inset-0 w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+                  onError={(e) => {
+                    console.error('Failed to load image:', e.currentTarget.src);
+                    e.currentTarget.src = 'https://images.unsplash.com/photo-1581922819941-6ab31ab79afc?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=533&fit=crop&q=80';
+                  }}
+                />
+              </div>
             </div>
           </div>
         </div>
